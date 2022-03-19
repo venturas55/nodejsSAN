@@ -1,0 +1,29 @@
+<div class="container p-4 pb-2 mb-5">
+  <div class="row">
+    <div class="col-md-12">
+
+      <table>
+        <tr><th>NIF</th>
+          <th>Puerto</th>
+          <th>Tipo</th>
+          <th>Apariencia</th>
+          <th>Periodo</th>
+          <th>DEL</th> <th>MOD</th></tr>
+        {{#each balizas}}
+          <tr>
+            <td><a href="/balizas/plantilla/{{nif}}">{{nif}}</a></td>
+            <td>{{puerto}}</td>
+            <td>{{tipo}} </td>
+            <td>{{apariencia}}</td>
+            <td>{{periodo}} </td>
+            <td><a href="/balizas/delete/{{nif}}"><button>BORRAR</button></a></td>
+            <td><a href="/balizas/edit/{{nif}}"><button>MOD</button></a></td>
+          </tr>
+          {{else}}
+            <tr>No hay balizas guardadas <a href="/balizas/add"> Crea una!</a></tr>
+        {{/each}}
+      </table>
+
+    </div>
+  </div>
+</div>
