@@ -52,7 +52,18 @@ body{
     transform: rotate(180deg);
   }
   
-  
+  #luz{
+    width: 40px;
+    height: 40px;
+    border:1px solid rgb(240, 240, 240);
+    background-color: rgb(240, 240, 240);
+    border-radius: 50%;
+    position:absolute;
+    top:15%;
+    left:15%;
+    display: block;
+    z-index:1000;
+  }
 
 
 @media (min-width: 992px){

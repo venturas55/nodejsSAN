@@ -1,3 +1,4 @@
+ <div id="luz"></div>
 <div class="row m-5">
     <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 m-4">
         <h1> Caracteristicas </h1>
@@ -27,8 +28,7 @@
                 <td class="table-warning" id="caracteristicaID">{{baliza.caracteristica}}</td>
             </tr>
         </table>;
-        <a class="btn btn-primary btn-xs btn-block" href="" class="btn btn-primary btn-lg btn-block"> ACTUALIZAR
-            CARACTERISTICAS</a>
+        <a class="btn btn-primary btn-xs btn-block" href="/balizas/editCaracteristicas/{{baliza.nif}}" class="btn btn-primary btn-lg btn-block"> ACTUALIZAR CARACTERISTICAS</a>
     </div>
     <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 m-4">
         <!-- id="divlocalizacion" -->
@@ -59,14 +59,14 @@
                 <td class="table-warning">{{baliza.longitud}}</td>
             </tr>
         </table>
-        <a class="btn btn-primary btn-xs btn-block" href="">ACTUALIZAR LOCALIZACION
+        <a class="btn btn-primary btn-xs btn-block" href="/balizas/editLocalizacion/{{baliza.nif}}">ACTUALIZAR LOCALIZACION
         </a>
         <a class="btn btn-primary btn-xs btn-block" target="_blank" href="">VER
             UBICACION
         </a>"
     </div>
     <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 m-4">
-        <h1> Localizacion </h1>
+        <h1> Lampara </h1>
         <table class="table table-hover">
             <tr>
                 <th>Altura(m)</th>
@@ -97,7 +97,7 @@
                 <td class='table-warning'>{{baliza.candelasInst}}</td>
             </tr>
         </table>
-        <a class="btn btn-primary btn-xs btn-block" href="" class="btn btn-primary btn-lg btn-block">ACTUALIZAR LAMPARA
+        <a class="btn btn-primary btn-xs btn-block" href="/balizas/editLampara/{{baliza.nif}}" class="btn btn-primary btn-lg btn-block">ACTUALIZAR LAMPARA
         </a>
     </div>
 </div>
@@ -106,20 +106,21 @@
     <div class="col-sm-12">
         <h1> Observaciones </h1>
         <table class="table">
-            <tr>
+        {{!--     <tr>
                 <th>Observaciones</th>
                 <th>Borrar</th>
-            </tr>
+            </tr> --}}
             {{#each obs}}
             <tr class='table-warning'>
                 <td>{{observaciones}}</td>
-                <td> <a href="" class="btn btn-primary btn-xs btn-block"> borrar </a> </td>
-            </tr>;
+                <td>    <a href="/baliza/observaciones/edit/{{this}}"><i class="fa-solid fa-pen-to-square"></i>Edit</a>
+                        <a href="/baliza/observaciones/delete/{{this}}"><i class="fa-solid fa-trash"></i>Del</a> </td>
+            </tr>
             {{/each}}
-            <form action="./modBBDDobservacion.php" method="post">
-                <input type="hidden" name="nif" value="{{obs.nif}}">
+            <form action="/balizas/observaciones/add" method="POST">
+                <input type="hidden" name="nif" value="{{baliza.nif}}">
                 <tr class='table-warning'>
-                    <td><input type="text" name="observacion" style="width: 100%;" /></td>
+                    <td><input type="text" name="observaciones" style="width: 100%;" /></td>
                     <td> <input type="submit" value="añadir" class="btn btn-primary btn-xs btn-block" /></td>
                 </tr>
             </form>
