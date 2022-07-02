@@ -7,6 +7,9 @@ router.get('/',(req,res)=>{
 } );
 
 router.get('/calculos',(req,res)=>{
-    res.render('calculos',{layout: 'layoutA'});
+    res.render('calculos',{layout: 'layoutCalculos'});
+});
+router.get('/plan',(req,res)=>{
+    res.render('plan',{layout: 'layoutSimple'});
 });
 module.exports=router;

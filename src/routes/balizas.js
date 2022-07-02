@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const helpers = require("../lib/helpers");
 
-const pool = require("../database");
+const pool = require("../database"); //pool hace referencia a la BBDD, podría haberlo llamado db 
 
 router.get("/add", (req, res) => {
   res.render("balizas/add");
@@ -16,8 +16,20 @@ router.post("/add", helpers.isLoggedIn, async (req, res) => {
     apariencia,
     periodo,
     caracteristica,
+    puerto,
+    num_local,
+    localizacion,
+    latitud,
+    longitud,
+    altura,
+    elevacion,
+    linterna,
+    alcanceNom,
+    alcanceLum,
+    candelasCalc,
+    candelasInst
   } = req.body;
-  const balizamiento = {
+  const newBalizamiento = {
     nif,
     num_internacional,
     tipo,
@@ -25,24 +37,49 @@ router.post("/add", helpers.isLoggedIn, async (req, res) => {
     apariencia,
     periodo,
     caracteristica,
+
   };
-  await pool.query("INSERT INTO balizamiento set ?", [balizamiento]);
+  const newBalizamientoLocalizacion = {
+    nif,
+    puerto,
+    num_local,
+    localizacion,
+    latitud,
+    longitud
+  };
+  const newBalizamientoLampara = {
+    nif,
+    altura,
+    elevacion,
+    linterna,
+    alcanceNom,
+    alcanceLum,
+    candelasCalc,
+    candelasInst
+  };
+  await pool.query("INSERT INTO balizamiento set ?", [newBalizamiento]);
+  await pool.query("INSERT INTO localizacion set ?", [newBalizamientoLocalizacion]);
+  await pool.query("INSERT INTO lampara set ?", [newBalizamientoLampara]);
   req.flash("success", "Baliza insertada correctamente");
-  res.redirect("/balizas/list");
+  res.redirect("/balizas/list"); //te redirige una vez insertado el item
 });
 router.get("/delete/:nif", helpers.isLoggedIn, async (req, res) => {
-  /*console.log(req.params.nif);
-    res.send('DELETED');*/
+  console.log(req.params.nif);
   const { nif } = req.params;
+  await pool.query("DELETE FROM mantenimiento WHERE nif=?", [nif]);
+  await pool.query("DELETE FROM observaciones WHERE nif=?", [nif]);
+  await pool.query("DELETE FROM localizacion WHERE nif=?", [nif]);
+  await pool.query("DELETE FROM lampara WHERE nif=?", [nif]);
   await pool.query("DELETE FROM balizamiento WHERE nif=?", [nif]);
   req.flash("success", "Baliza borrada correctamente");
   res.redirect("/balizas/list");
 });
-router.get("/list", async (req, res) => {
+router.get("/list", helpers.isLoggedIn,async (req, res) => {
   const balizas = await pool.query(
     "SELECT * FROM balizamiento b, localizacion l where b.nif=l.nif"
   );
   res.render("balizas/list", { balizas });
+  //res.render("balizas/list", { balizas: balizas });
   // NO FUNCIONA CON LA BARRA DELANTE res.render('/links/list');
 });
 router.get("/list/:busqueda", helpers.isLoggedIn, async (req, res) => {
@@ -192,7 +229,34 @@ router.post("/observaciones/add", async (req,res)=>{
   //res.render("/balizas/plantilla/"+nif);
   res.redirect("/balizas/plantilla/"+nif);
 });
-router.post("/observaciones/delete/:baliza", async (req,res)=>{
+router.post("/observaciones/delete/:observaciones", async (req,res)=>{
+  console.log(req);
+  console.log(JSON.stringify(req));
+  const {
+    nif,
+    observaciones,
+  } = req.body;
+  const mant = {
+    nif,
+    observaciones,
+  };
+  await pool.query("delete from observaciones where nif=? AND observaciones LIKE '%$?%'", [nif]);
+  req.flash("success", "Mantenimiento de baliza borrado correctamente");
+  //res.redirect("/balizas/list");
+  res.send("aqui: " +nif+" "+ mant+" ");
+});
+
+router.get("/observaciones/edit/:nif", async (req,res)=>{
+const { nif } = req.params;
+const baliza = await pool.query("SELECT * FROM observaciones WHERE nif=?", [
+  nif,
+]);
+/*console.log(baliza);
+console.log(baliza[0]);*/
+res.render("balizas/editObservaciones", { baliza: baliza[0] });
+});
+
+router.post("/observaciones/edit/:baliza", async (req,res)=>{
   console.log(req);
   console.log(JSON.stringify(req));
   const {
@@ -204,7 +268,7 @@ router.post("/observaciones/delete/:baliza", async (req,res)=>{
     observaciones,
   };
   //await pool.query("delete from observaciones where nif=? AND observaciones LIKE '%$?%'", [nif]);
-  req.flash("success", "Mantenimiento de baliza borrado correctamente");
+  req.flash("success", "Mantenimiento de modificado borrado correctamente");
   //res.redirect("/balizas/list");
   res.send("aqui: " +nif+" "+ mant+" ");
 });
@@ -214,7 +278,7 @@ router.get("/mantenimiento/edit/:baliza", async (req,res)=>{
   console.log({baliza});
   //await pool.query("delete from mantenimiento where nif='$nif' AND fecha='$fecha' AND mantenimiento LIKE '%$mantenimiento%'", [nif]);
   req.flash("success", "Mantenimiento de baliza editado correctamente");
-  //res.redirect("/balizas/list");
+  res.redirect("/balizas/list");
   res.send(baliza);
 });
 router.post("/mantenimiento/delete/:baliza", async (req,res)=>{

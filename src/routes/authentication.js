@@ -1,11 +1,11 @@
 const express = require('express');
 const { Passport } = require('passport');
 const router = express.Router();
-
 const passport=require('passport');
+
 const helpers = require('../lib/helpers');
 
-router.get('/signup',(req,res)=>{
+router.get('/signup',helpers.isNotLoggedIn,(req,res)=>{
     res.render('auth/signup')
 });
 
@@ -16,7 +16,7 @@ router.post('/signup', passport.authenticate('local.signup',{
     })
 );
 
-router.get('/signin',(req,res)=>{
+router.get('/signin',helpers.isNotLoggedIn,(req,res)=>{
     res.render('auth/signin');
 });
 

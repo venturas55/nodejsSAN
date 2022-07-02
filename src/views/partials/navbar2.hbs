@@ -39,8 +39,19 @@
   
         {{/if}}
         <li class="nav-item">
-          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Plan Inspeccion</a>
+          <a class="nav-link" href="/plan" tabindex="-1" aria-disabled="true">Plan Inspeccion</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/calculos" tabindex="-1" aria-disabled="true">Calculos</a>
+        </li>
+
+
+          {{#if user}}
+        <li class="nav-item">
+          <a class="nav-link" href="/logout " tabindex="-1" aria-disabled="true">Logout</a>
+        </li>
+        
+        {{else}}
 
         <li class="nav-item">
           <a class="nav-link" href="/signin" tabindex="-1" aria-disabled="true">Login</a>
@@ -48,6 +59,7 @@
         <li class="nav-item">
           <a class="nav-link" href="/signup" tabindex="-1" aria-disabled="true">Sign up</a>
         </li>
+           {{/if}}
       </ul>
     </div>
   </div>

@@ -23,4 +23,11 @@ helpers.isLoggedIn = (req,res,next)=>{
     return res.redirect('/signin');
 }
 
+helpers.isNotLoggedIn = (req,res,next)=>{
+    if(!req.isAuthenticated()){
+        return next();
+    }
+    return res.redirect('/profile');
+}
+
 module.exports = helpers;

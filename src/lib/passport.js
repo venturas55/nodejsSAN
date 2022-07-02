@@ -25,9 +25,9 @@ passport.use(
                 if (validPassword)
                     done(null, user, req.flash('success', "Welcome" + user.usuario));
                 else
-                    done(null, false, req.flash('message', "Incorrect password"));
+                    done(null, false, req.flash('message', "El password introducido es incorrecto"));
             } else {
-                return done(null, false, req.flash('message', "Username does not exists"));
+                return done(null, false, req.flash('message', "Ese usuario no existe"));
             }
         }
     )
@@ -42,17 +42,17 @@ passport.use(
             passReqToCallback: true,
         },
         async (req, username, password, done) => {
-            console.log(req.body);
 
-            const { email } = req.body;
+
+            //const { cuerpo } = req.body;
             const newUser = {
-                usuario: username,
+                usuario:    username,
                 contrasena: password,
-                email: email,
+                email:      req.body.email,
+                full_name:  req.body.fullname,
                 privilegio: "san",
             };
             newUser.contrasena = await helpers.encryptPass(password);
-
             const result = await pool.query("INSERT INTO usuarios SET ?", [newUser]);
             newUser.id = result.insertId;
             //console.log(result);
