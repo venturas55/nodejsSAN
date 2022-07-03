@@ -1,7 +1,9 @@
 const express = require('express');
 const morgan = require('morgan');
-const exphbs = require('express-handlebars');
-const path = require('path');
+const multer = require('multer');
+const fs = require('fs');
+const exphbs = require('express-handlebars'); //Para usar plantillas
+const path = require('path');               //Para manejar directorios, basicamente unirlos 
 const flash = require('connect-flash');  //Para mostar mensajes
 const session = require('express-session'); //Lo necesita el flash tb
 const  MySQLstore= require('express-mysql-session'); // para poder guardar la sesion en la sql
@@ -24,13 +26,13 @@ app.engine('.hbs', exphbs.engine({  //con esto se configura el app.engine
 }));
 app.set('view engine','.hbs'); //PAra utilizar el app.engine
 
+
 //Middleware
 app.use(session({
     secret: 'mysesion',
     resave: false,
     saveUninitialized:false,
     store: new MySQLstore(database)
-
 }))
 app.use(flash());       // Para poder usar el middleware de enviar mensajes popups
 app.use(morgan('dev'));
@@ -39,6 +41,29 @@ app.use(express.json()); //Para enviar y recibir jsons.
 app.use(passport.initialize()); //iniciar passport
 app.use(passport.session());    //para que sepa donde guardar y como manejar los datos
 
+
+const almacenar=multer.diskStorage({
+    destination: (req,file,cb)=>{
+        const {nif} = req.body;
+        console.log("El nif pasado es: " +nif);
+
+        const dir = path.join(__dirname,'public/img/imagenes/',nif);
+        fs.exists(dir, exist => {
+        if (!exist) {
+          return fs.mkdir(dir, error => cb(error, dir))
+        }
+        return cb(null, dir)
+        })
+   
+    },
+    filename:(req,file,cb) =>{
+        cb(null,file.originalname);
+    }
+});
+app.use(multer({
+    storage: almacenar,
+    limits:{fileSize:3000000,}
+  }).single('imagen'));
 
 //Variables globales
 app.use((req,res,next) =>{
@@ -51,7 +76,7 @@ app.use((req,res,next) =>{
 //Routes
 app.use(require('./routes')); //busca automaticamente el archivo index.js
 app.use(require('./routes/authentication'));
-app.use('/balizas',require('./routes/balizas')); //ruta de las balizas. siempre precedido por el primer argunmento '/balizas' 
+app.use('/balizas',require('./routes/balizas')); //ruta de las balizas. siempre precedido por el primer argumento '/balizas' 
 app.use(require('./routes/api'));
 
 //Public

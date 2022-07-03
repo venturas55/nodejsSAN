@@ -25,14 +25,14 @@ router.get('/api/prueba',async (req,res)=>{
 
 
 router.get('/api/baliza/:nif',async (req,res)=>{
-    const { json } = req.params;
-    console.log(json); 
+    const { nif } = req.params;
+    console.log(nif); 
     //console.log(json.nif);
     //console.log(json.peso);
-    //const baliza = await pool.query('SELECT * FROM balizamiento b  LEFT JOIN localizacion lo ON lo.nif=b.nif  LEFT JOIN lampara la ON la.nif=b.nif where b.nif=?',[nif]);
+    const baliza = await pool.query('SELECT * FROM balizamiento where nif=?',[nif]);
     //const observaciones = await pool.query('SELECT * FROM observaciones where nif=?',[nif]);
     //const mantenimiento = await pool.query('SELECT * FROM mantenimiento where nif=? order by fecha DESC',[nif]);
-    res.send(json);
+    res.send(baliza);
 });
 
 

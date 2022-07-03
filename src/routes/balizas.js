@@ -1,5 +1,7 @@
 const express = require("express");
 const router = express.Router();
+const fs = require('fs');
+const path = require('path'); 
 const helpers = require("../lib/helpers");
 
 const pool = require("../database"); //pool hace referencia a la BBDD, podría haberlo llamado db 
@@ -94,12 +96,27 @@ router.get("/list/:busqueda", helpers.isLoggedIn, async (req, res) => {
 });
 router.get("/plantilla/:nif", async (req, res) => {
   const { nif } = req.params;
+  var fotitos=[];
   const baliza = await pool.query('SELECT * FROM balizamiento b  LEFT JOIN localizacion lo ON lo.nif=b.nif  LEFT JOIN lampara la ON la.nif=b.nif where b.nif=?',[nif]);
   const observaciones = await pool.query('SELECT * FROM observaciones where nif=?',[nif]);
   const mantenimiento = await pool.query('SELECT * FROM mantenimiento where nif=? order by fecha DESC',[nif]);
-  console.log(observaciones);
-  console.log(mantenimiento[0]);
-  res.render("balizas/plantilla", { baliza: baliza[0], obs: observaciones,mant:mantenimiento });
+  //console.log(observaciones);
+  //console.log(mantenimiento[0]);
+
+  //listar
+  var directorio= path.join(__dirname,"../public/img/imagenes",nif);
+  fs.readdir(directorio, (err, files) => {
+    if(files){
+       files.forEach(file => {
+        fotitos.push(file);
+          console.log("este "+fotitos);
+      });
+    }
+      
+  }); 
+  //fin listar
+  console.log("final "+fotitos);
+  res.render("balizas/plantilla", {layout: 'layoutParpadeo', baliza: baliza[0], obs: observaciones,mant:mantenimiento,imagen:fotitos });
   // NO FUNCIONA CON LA BARRA DELANTE res.render('/links/list');
 });
 router.get("/editCaracteristicas/:nif", helpers.isLoggedIn, async (req, res) => {

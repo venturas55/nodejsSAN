@@ -1,6 +1,25 @@
- <div id="luz"></div>
+
 <div class="row m-5">
-    <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 m-4">
+    <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 m-2">
+         <h1> Fotos </h1>
+          <div class="miCarrusel">
+           {{#each imagen}}
+                          <img src="/img/imagenes/{{../baliza.nif}}/{{this}}" alt="/img/imagenes/{{../baliza.nif}}/{{this}}">  
+            {{/each}}
+              <img src="/img/imagenes/25460/tres.jpg" alt="dfhdhj">
+      
+            
+        </div>
+
+        <form action="/upload/{{baliza.nif}}" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="nif" value="{{baliza.nif}}" >
+            <input type="file" name="imagen">
+            <button type="submit">Upload</button>
+        </form>
+
+       <h3>Simulacion:</h3> <div id="luz"></div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 m-2">
         <h1> Caracteristicas </h1>
         <table class="table table-hover">
             <tr>
@@ -30,7 +49,7 @@
         </table>;
         <a class="btn btn-primary btn-xs btn-block" href="/balizas/editCaracteristicas/{{baliza.nif}}" class="btn btn-primary btn-lg btn-block"> ACTUALIZAR CARACTERISTICAS</a>
     </div>
-    <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 m-4">
+    <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 m-2">
         <!-- id="divlocalizacion" -->
         <h1> Localizacion </h1>
         <table class="table table-hover">
@@ -65,7 +84,7 @@
             UBICACION
         </a>
     </div>
-    <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 m-4">
+    <div class="col-lg-2 col-md-6 col-sm-6 col-xs-12 m-2">
         <h1> Lampara </h1>
         <table class="table table-hover">
             <tr>

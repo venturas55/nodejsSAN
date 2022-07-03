@@ -12,4 +12,11 @@ router.get('/calculos',(req,res)=>{
 router.get('/plan',(req,res)=>{
     res.render('plan',{layout: 'layoutSimple'});
 });
+
+router.post("/upload/:nif",(req,res)=>{
+    const { nif } = req.params;
+    console.log(req.file);
+    res.redirect("/balizas/plantilla/"+nif);
+  });
+
 module.exports=router;
