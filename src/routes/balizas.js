@@ -296,33 +296,37 @@ router.get("/mantenimiento/delete/:idMan", async (req,res)=>{
   res.redirect("/balizas/plantilla/"+nif);
 });
 router.get("/mantenimiento/edit/:idMan", async (req,res)=>{
-  const { baliza } = req.params;
-  console.log({baliza});
-  //await pool.query("delete from mantenimiento where nif='$nif' AND fecha='$fecha' AND mantenimiento LIKE '%$mantenimiento%'", [nif]);
-  req.flash("success", "Mantenimiento de baliza editado correctamente");
-  res.redirect("/balizas/list");
-  res.send(baliza);
+  const { idMan } = req.params;
+  //console.log("Que id es: "+idMan);
+  const mantenimient = await pool.query("SELECT * FROM mantenimiento WHERE id_mantenimiento=?", [idMan,]);
+  console.log("va");
+  console.log(mantenimient[0]);
+  res.render("balizas/editMantenimiento", { mant: mantenimient[0] });
+ 
 });
 router.post("/mantenimiento/edit/:idMan", async (req,res)=>{
 
   var {
-   id_observacion,
+   id_mantenimiento,
    nif,
-   observacionNueva,
+   fechaNueva,
+   mantenimientoNuevo
  } = req.body;
- console.log("1: "+id_observacion);
+ console.log("1: "+id_mantenimiento);
  console.log("2: "+nif);
- console.log("3: "+observacionNueva);
+ console.log("3: "+fechaNueva);
+ console.log("4: "+mantenimientoNuevo);
  const newObservacion = {
-   id_observacion,
+    id_mantenimiento,
    nif,
-   observaciones:observacionNueva,
+   fecha:fechaNueva,
+   mantenimiento:mantenimientoNuevo,
  };
-  await pool.query("UPDATE observaciones set ? WHERE id_observacion = ?", [
+  await pool.query("UPDATE mantenimiento set ? WHERE id_mantenimiento = ?", [
    newObservacion,
-   id_observacion,
+   id_mantenimiento,
  ]); 
- req.flash("success", "Observacion modificada correctamente en la baliza ");
+ req.flash("success", "Mantenimiento modificado correctamente en la baliza ");
  res.redirect("/balizas/plantilla/"+nif);
 });
 

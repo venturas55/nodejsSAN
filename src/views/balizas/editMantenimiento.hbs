@@ -1,0 +1,23 @@
+<h1>Cambios en las mantenimientoes del AtoN con NIF: {{mant.nif}}</h1>
+{{!-- <p>Uno: {{mant.id_mantenimiento}}</p>
+<p>Dos: {{mant.nif}}</p>
+<p>Tres: {{mant.fecha}} /  {{formatearSp mant.fecha}}  / {{formatearEn mant.fecha}} </p>
+<p>Cuatro: {{mant.mantenimiento}}</p> --}}
+<div class="container p-4">
+    <div class="row">
+        <div class="col-md-4 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <form action="/balizas/mantenimiento/edit/{{mant.id_mantenimiento}}" method="POST">
+                        <div class="form-group">
+                            <div class="form-group"><label for="mantenimiento">MANTENIMIENTO A MODIFICAR</label></div>
+                            <input value="{{mant.id_mantenimiento}}"  type="hidden" name="id_mantenimiento"/>
+                            <input value="{{mant.nif}}"  type="hidden" name="nif"  />
+                            <input type="date" value="{{formatearEn mant.fecha}}" class="form-control" name="fechaNueva" /> 
+                            <input value="{{mant.mantenimiento}}" class="form-control" type="text" name="mantenimientoNuevo" placeholder="Mantenimiento a modificar" /> </div>
+                            <button class="btn btn-success btn-block">Guardar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
