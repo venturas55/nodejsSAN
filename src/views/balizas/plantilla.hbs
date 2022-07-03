@@ -112,9 +112,10 @@
             </tr> --}}
             {{#each obs}}
             <tr class='table-warning'>
-                <td>{{observaciones}}</td>
-                <td>    <a href="/baliza/observaciones/edit/{{this.nif}}"><i class="fa-solid fa-pen-to-square"></i>Edit</a>
-                        <a href="/baliza/observaciones/delete/{{nif}}"><i class="fa-solid fa-trash"></i>Del</a> </td>
+              {{!--   <td>{{this.id_observacion}}</td> --}}
+                <td>{{this.observaciones}}</td>
+                <td>    <a href="/balizas/observaciones/edit/{{this.id_observacion}}"><i class="fa-solid fa-pen-to-square"></i>Edit</a>
+                                                <a type="submit" href="/balizas/observaciones/delete/{{this.id_observacion}}"><i class="fa-solid fa-trash"></i>Del</a> </td>
             </tr>
             {{/each}}
             <form action="/balizas/observaciones/add" method="POST">
@@ -139,18 +140,18 @@
             </tr>
             {{#each mant}}
             <tr class='table-warning'>
+                   <td>{{id_mantenimiento}}</td>
                 {{!-- <td>{{timeago fecha}}</td>    asi haciendo uso del timeago--}}
-                <td>{{ fecha}}</td>
+                <td>{{fecha}}</td>
                 <td>{{mantenimiento}}</td>
                 {{!-- <td> <a href="" class="btn btn-primary btn-xs btn-block"><i
                             class="fa-solid fa-pen-to-square">borrar</i> </a> </td> --}}
                 <td>
-                    <form action="/balizas/mantenimiento/edit" method="post">
                         <input type="hidden" name="nif" value='{{baliza.nif}}' />
                         <input type="hidden" name="fecha" value='{{fecha}}' />
                         <input type="hidden" name="mantenimiento" value='{{mantenimiento}}' />
-                        <a href="/baliza/mantenimiento/edit/{{baliza.nif}}"><i class="fa-solid fa-pen-to-square"></i>Edit</a>
-                        <a href="/baliza/mantenimiento/delete/{{this}}"><i class="fa-solid fa-trash"></i>Del</a>
+                        <a href="/balizas/mantenimiento/edit/{{this.id_mantenimiento}}"><i class="fa-solid fa-pen-to-square"></i>Edit</a>
+                        <a href="/balizas/mantenimiento/delete/{{this.id_mantenimiento}}"><i class="fa-solid fa-trash"></i>Del</a>
                 </td>
             </tr>
             {{!-- <form action="./modBBDDmantenimiento.php" method="post">
@@ -167,7 +168,7 @@
             <form action="/balizas/mantenimiento/add" method="POST">
                 <input type="hidden" name="nif" value='{{baliza.nif}}' />
                 <tr class='table-warning'>
-                    <td><input type="timestamp" name="fecha" /></td>
+                    <td><input type="date" name="fecha" /></td>
                     <td><input type="text" name="mantenimiento" /></td>
                     <td> <input type="submit" value="añadir" class="btn btn-primary btn-xs btn-block" /></td>
                 </tr>
