@@ -1,8 +1,7 @@
 
 <div class="container-fluid">
-    <div class="row m-5">
-
-        <div class="col-5 calculos mx-auto" id="coordenadas">
+    <div class="row m-1">
+        <div class="col-4 calculos mx-auto" id="coordenadas">
             <h1> I. COORDENADAS</h1>
 
             <div class="uno">
@@ -26,20 +25,14 @@
                 <p class="resultado">\{{resultado3}}</p>
                 <p>\{{error3}}</p>
             </div>
-            <br>
+            <i> Conversiones de coordenadas</i>
         </div>
-        <div class="col-5 calculos" id="alcances">
-            <h1> II. ALCANCES
-                <!-- <button id="btncuatro" class="btn btn-warning" v-on:click="calcularAlcance">Calcular</button> -->
-            </h1>
-
-
+        <div class="col-6 calculos mx-auto" id="alcances">
+            <h1> II. ALCANCES  </h1>
             <div class="uno">
-                <p> ALCANCE LUMINOSO MINIMO: <input type="number" placeholder="millas nauticas" v-model="alcance"
+                <p> ALCANCE LUMINOSO MINIMO: <input type="number" placeholder="millas nauticas" step="0.1" v-model="alcance"
                         size="2"> Millas Nauticas </p>
-            </div>
-
-            <div class="dos">
+      
                 <p> ZONA DE ESTUDIO <select name="visibilidad" v-model="visibilidad">
                         <option value="8.172">Mediterraneo-Baleares</option>
                         <option value="6.246">Cantabrico-Galia</option>
@@ -66,21 +59,18 @@
                         <option value="Poca">Poca</option>
                         <option value="Considerable">Considerable</option>
                     </select> Umbral= <span> \{{umbral}}</span> </p>
-                <p> DURACION DEL MENOR DESTELLO: <input type="number" v-model="destello" value="0.5" size="4"> </p>
-            </div>
+                <p> DURACION DEL MENOR DESTELLO: <input type="number" v-model="destello" step="0.05" value="0.5" size="4"> </p>
 
-            <div class="tres">
                 <p> FACTOR DE SERVICIO: <input type="text" v-model="coef1" size="1"></p>
                 <p> FACTOR DE ACRISTALAMIENTO: <input type="text" v-model="coef2" size="1"></p>
                 <p> FACTOR DE LUMINANCIA DE FONDO: <input type="text" v-model="coef3" size="1"></p>
             </div>
 
-            <div class="cuatro">
+            <div class="tres">
                 <p> INTENSIDAD DE CALCULO: <span class="resultado"> \{{Icalculo}} </span> Cd </p>
                 <p> INTENSIDAD DE EFICAZ:<span class="resultado">\{{Ieficaz}}</span> Cd</p>
                 <p> INTENSIDAD DE ESTACIONARIA:<span class="resultado"> \{{Iestacionaria}}</span> Cd</p>
             </div>
-            <br><br><br>
             <i> Calculos basados en la recomendacion E-200 series IALA</i>
         </div>
     </div>
@@ -90,10 +80,10 @@
 var app = new Vue({
   el: "#alcances",
   data: {
-    alcance: 5,
+    alcance: 2.3,
     visibilidad: 8.172,
     tipo: "Nocturna",
-    fondo: "Ninguna",
+    fondo: "Poca",
     umbral1: null,
     destello: "0.5",
     coef1: "0.7",

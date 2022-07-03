@@ -1,6 +1,7 @@
 
 .calculos {
-    background-color: #62898e;
+    height: 50%;
+    background-color: #9fd6e0db;
     text-align: center;
     margin: 10px;
     padding: 10px;
@@ -16,8 +17,8 @@
   }
   .calculos div {
     text-align: center;
-    margin: 10px;
-    padding: 5px;
+    margin: 5px;
+    padding: 3px;
     border: 2px solid rgb(5, 23, 43);
   }
   
@@ -36,14 +37,10 @@
     background-color: rgb(240, 167, 179);
   }
   
-  .calculos .cuatro {
-    border-radius: 10px;
-    background-color: rgb(114, 182, 194);
-  }
-  
-  .resultado {
-    border-radius: 10px;
-    border: 2px solid rgb(5, 23, 43);
+   .resultado {
+    border-radius: 5px;
+    border: 1px solid rgb(5, 23, 43);
     font-size: 150%;
-    background: rgb(212, 63, 63);
+    background: rgb(221, 92, 92);
+    padding: 0.1em;
   }
