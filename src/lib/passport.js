@@ -53,10 +53,19 @@ passport.use(
                 privilegio: "san",
             };
             newUser.contrasena = await helpers.encryptPass(password);
-            const result = await pool.query("INSERT INTO usuarios SET ?", [newUser]);
-            newUser.id = result.insertId;
-            //console.log(result);
-            return done(null, newUser);
+            const yaExiste = await pool.query("SELECT * FROM usuarios WHERE usuario = ?", newUser.usuario);
+            console.log("=> " + yaExiste);
+            if(yaExiste){
+                console.log("Ya existe");
+                return done(null,false,req.flash('message','El usuario ya existe! Puebe con otro nombre de usuario.'));
+            }
+            else{
+                console.log("No existe");
+                const result = await pool.query("INSERT INTO usuarios SET ?", [newUser]);
+                newUser.id = result.insertId;
+                console.log(result);
+                return done(null, newUser);
+            }
         }
     )
 );

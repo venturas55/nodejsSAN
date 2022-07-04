@@ -43,6 +43,7 @@ app.use(passport.initialize()); //iniciar passport
 app.use(passport.session());    //para que sepa donde guardar y como manejar los datos
 
 
+
 const almacenar=multer.diskStorage({
     destination: (req,file,cb)=>{
        
@@ -79,21 +80,7 @@ const almacenar=multer.diskStorage({
     }
 });
 
-const almacenarProfile=multer.diskStorage({
-    destination: (req,file,cb)=>{
-        const {user} = req.body;
-        const dir = path.join(__dirname,'public/img/profiles/');
-        fs.exists(dir, exist => {
-        if (!exist) {
-          return fs.mkdir(dir, error => cb(error, dir))
-        }
-        return cb(null, dir)
-        })
-    },
-    filename:(req,file,cb) =>{
-        cb(null,user);
-    }
-});
+
 app.use(multer({
     storage: almacenar,
     limits:{fileSize:3000000,}
@@ -102,7 +89,9 @@ app.use(multer({
 
 
 //Variables globales
+
 app.use((req,res,next) =>{
+    app.locals.signupMessage = req.flash('signupMessage');
     app.locals.success = req.flash('success');
     app.locals.message = req.flash('message');
     app.locals.user = req.user;

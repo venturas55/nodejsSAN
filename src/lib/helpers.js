@@ -16,14 +16,14 @@ helpers.verifyPassword = async(password,hashedPassword)=>{
     }
 }
 
-helpers.isLoggedIn = (req,res,next)=>{
+helpers.isAuthenticated = (req,res,next)=>{
     if(req.isAuthenticated()){
         return next();
     }
     return res.redirect('/signin');
 }
 
-helpers.isNotLoggedIn = (req,res,next)=>{
+helpers.isNotAuthenticated = (req,res,next)=>{
     if(!req.isAuthenticated()){
         return next();
     }

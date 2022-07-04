@@ -5,18 +5,19 @@ const passport=require('passport');
 
 const helpers = require('../lib/helpers');
 
-router.get('/signup',helpers.isNotLoggedIn,(req,res)=>{
+router.get('/signup',helpers.isNotAuthenticated,(req,res)=>{
     res.render('auth/signup')
 });
 
 router.post('/signup', passport.authenticate('local.signup',{
         successRedirect: '/profile',
         failureRedirect: '/signup',
+        passReqToCallback: true,
         failureFlash: true
     })
 );
 
-router.get('/signin',helpers.isNotLoggedIn,(req,res)=>{
+router.get('/signin',helpers.isNotAuthenticated,(req,res)=>{
     res.render('auth/signin');
 });
 
@@ -29,13 +30,13 @@ router.post('/signin',(req,res,next)=>{
    })(req,res,next);
 });
 
-router.get('/profile',helpers.isLoggedIn ,(req,res)=>{
+router.get('/profile',helpers.isAuthenticated ,(req,res)=>{
     res.render('profile');
 });
 
-router.get('/logout',helpers.isLoggedIn ,(req,res)=>{
+router.get('/logout',helpers.isAuthenticated ,(req,res)=>{
     req.logOut();
-    res.redirect('/balizas/list');
+    res.redirect('/');
 })
 
 module.exports = router;
