@@ -1,5 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+   {{#if user}}
   <img  src="/img/profiles/{{user.usuario}}.jpg" class="avatar avatar-s" alt="avatar" >
+  {{/if}}
   <div class="container">
     <a class="navbar-brand" href="/">BBDD SAN</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"

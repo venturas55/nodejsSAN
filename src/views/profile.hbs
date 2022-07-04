@@ -5,6 +5,7 @@
                 <div class="card-body">
 
                     <h3>Bienvenido {{user.usuario}} </h3>
+                    {{!-- //TODO:  Lo unico malo que la extensión no sé de donde sacarla para hacerla dinamica. sin complicarlo tanto --}}
                     <img  src="/img/profiles/{{user.usuario}}.jpg" class="avatar avatar-l" alt="avatar" >
                     <form action="/upload/{{user.usuario}}" method="POST" enctype="multipart/form-data">
                         <input type="hidden" name="user" value="{{user.usuario}}" >

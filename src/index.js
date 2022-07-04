@@ -9,6 +9,7 @@ const session = require('express-session'); //Lo necesita el flash tb
 const  MySQLstore= require('express-mysql-session'); // para poder guardar la sesion en la sql
 const passport = require('passport');
 const {database} =require('./keys');
+var Vue = require("vue").default;
 
 //Initialization
 const app = express();
@@ -48,7 +49,7 @@ const almacenar=multer.diskStorage({
         console.log("1: "+JSON.stringify(req.body));
         const {nif} = req.body;
         const {user} = req.body;
-
+        //Si usuario es undefined es que se subió una baliza, y configuro el storage para balizas
         if (typeof user === 'undefined') {
             const dir = path.join(__dirname,'public/img/imagenes/',nif);
          
@@ -58,7 +59,7 @@ const almacenar=multer.diskStorage({
             }
             return cb(null, dir);
             })
-        }else{
+        }else{//si no, entonces es una foto de perfil y va a otra carpeta
                const dir = path.join(__dirname,'public/img/profiles/');
                return cb(null, dir);
         }
@@ -67,11 +68,13 @@ const almacenar=multer.diskStorage({
     filename:(req,file,cb) =>{
         const {nif} = req.body;
         const {user} = req.body;
+        //Lo mismo para el nombre del archivo
         if (typeof user === 'undefined') {
+            //Si es una baliza mantengo el nombre original del archivo
             cb(null,file.originalname);
         }else{
-        cb(null,user+"."+file.originalname.split(".").pop());
-
+            //si es una foto de perfil la cuardo con el nombre del usuario
+            cb(null,user+"."+file.originalname.split(".").pop());
         }
     }
 });
