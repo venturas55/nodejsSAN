@@ -347,6 +347,14 @@ router.post("/mantenimiento/edit/:idMan", async (req,res)=>{
  res.redirect("/balizas/plantilla/"+nif);
 });
 
+router.get("/mapa/:nif", async (req,res)=>{
+  const { nif } = req.params;
+  const baliza = await pool.query('SELECT * FROM balizamiento b  LEFT JOIN localizacion lo ON lo.nif=b.nif  LEFT JOIN lampara la ON la.nif=b.nif where b.nif=?',[nif]);
+   res.render("mapa", {layout: 'layoutMapa', baliza: baliza[0],  });
+  // NO FUNCIONA CON LA BARRA DELANTE res.render('/links/list');
+  
+});
+
 
 
 module.exports = router;

@@ -14,6 +14,9 @@
                         <div class="form-group"><label for="candelasInst">CANDELAS INSTALADAS</label><input value="{{baliza.candelasInst}}" class="form-control" type="number" name="candelasInst" placeholder="candelasInst" /> </div>
                         <button class="btn btn-success btn-block">Guardar</button>
                  </form>
+                 <form action="/balizas/plantilla/{{baliza.nif}}" method="GET">
+                                <button class="btn btn-danger btn-block">Cancelar</button>
+                    </form>
             </div>
         </div>
     </div>

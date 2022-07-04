@@ -13,8 +13,12 @@
                         <div class="form-group"><label for="apariencia">APARIENCIA</label><input value="{{baliza.apariencia}}" class="form-control" type="text" name="apariencia" placeholder="apariencia"  />  </div>
                         <div class="form-group"><label for="periodo">PERIODO</label><input value="{{baliza.periodo}}" class="form-control" type="number" name="periodo" placeholder="periodo"/> </div>
                         <div class="form-group"><label for="caracteristica">CARACTERISTICA</label><input value="{{baliza.caracteristica}}" class="form-control" type="text" name="caracteristica" placeholder="caracteristica" /> </div>
+                            
                         <button class="btn btn-success btn-block">Guardar</button>
-                 </form>
+                    </form>
+                    <form action="/balizas/plantilla/{{baliza.nif}}" method="GET">
+                                <button class="btn btn-danger btn-block">Cancelar</button>
+                    </form>
             </div>
         </div>
     </div>
