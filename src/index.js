@@ -44,26 +44,59 @@ app.use(passport.session());    //para que sepa donde guardar y como manejar los
 
 const almacenar=multer.diskStorage({
     destination: (req,file,cb)=>{
+       
+        console.log("1: "+JSON.stringify(req.body));
         const {nif} = req.body;
-        console.log("El nif pasado es: " +nif);
+        const {user} = req.body;
 
-        const dir = path.join(__dirname,'public/img/imagenes/',nif);
+        if (typeof user === 'undefined') {
+            const dir = path.join(__dirname,'public/img/imagenes/',nif);
+         
+            fs.exists(dir, exist => {
+            if (!exist) {
+              return fs.mkdir(dir, error => cb(error, dir));
+            }
+            return cb(null, dir);
+            })
+        }else{
+               const dir = path.join(__dirname,'public/img/profiles/');
+               return cb(null, dir);
+        }
+
+    },
+    filename:(req,file,cb) =>{
+        const {nif} = req.body;
+        const {user} = req.body;
+        if (typeof user === 'undefined') {
+            cb(null,file.originalname);
+        }else{
+        cb(null,user+"."+file.originalname.split(".").pop());
+
+        }
+    }
+});
+
+const almacenarProfile=multer.diskStorage({
+    destination: (req,file,cb)=>{
+        const {user} = req.body;
+        const dir = path.join(__dirname,'public/img/profiles/');
         fs.exists(dir, exist => {
         if (!exist) {
           return fs.mkdir(dir, error => cb(error, dir))
         }
         return cb(null, dir)
         })
-   
     },
     filename:(req,file,cb) =>{
-        cb(null,file.originalname);
+        cb(null,user);
     }
 });
 app.use(multer({
     storage: almacenar,
     limits:{fileSize:3000000,}
   }).single('imagen'));
+
+
 
 //Variables globales
 app.use((req,res,next) =>{

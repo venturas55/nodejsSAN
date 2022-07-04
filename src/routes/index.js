@@ -15,8 +15,20 @@ router.get('/plan',(req,res)=>{
 
 router.post("/upload/:nif",(req,res)=>{
     const { nif } = req.params;
-    console.log(req.file);
-    res.redirect("/balizas/plantilla/"+nif);
+    const { user } = req.body;
+    console.log("Ruta: "+nif + " "+ user);
+    if (typeof user === 'undefined') {
+        res.redirect("/balizas/plantilla/"+nif);
+    }else{
+        res.redirect("/profile");
+    }
+ 
   });
+
+/*   router.post("/uploadprofile/:user",(req,res)=>{
+    const { user } = req.params;
+    console.log(req.file);
+    res.redirect("/profile");
+  }); */
 
 module.exports=router;

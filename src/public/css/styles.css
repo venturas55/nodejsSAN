@@ -65,6 +65,27 @@ a{
     background-attachment: fixed;
 }
 
+.avatar {
+  border: 1px solid rgb(26, 53, 255);
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.avatar-s{
+  height: 64px;
+  width: 64px;
+}
+
+.avatar-m{
+  height: 96px;
+  width: 96px;
+}
+
+.avatar-l{
+  height: 128px;
+  width: 128px;
+}
 .footer {
     margin:0px;
     padding: 0px;

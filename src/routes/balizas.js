@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path'); 
 const helpers = require("../lib/helpers");
 
-const pool = require("../database"); //pool hace referencia a la BBDD, podría haberlo llamado db 
+const db = require("../database"); //db hace referencia a la BBDD
 
 router.get("/add", (req, res) => {
   res.render("balizas/add");
@@ -59,25 +59,25 @@ router.post("/add", helpers.isLoggedIn, async (req, res) => {
     candelasCalc,
     candelasInst
   };
-  await pool.query("INSERT INTO balizamiento set ?", [newBalizamiento]);
-  await pool.query("INSERT INTO localizacion set ?", [newBalizamientoLocalizacion]);
-  await pool.query("INSERT INTO lampara set ?", [newBalizamientoLampara]);
+  await db.query("INSERT INTO balizamiento set ?", [newBalizamiento]);
+  await db.query("INSERT INTO localizacion set ?", [newBalizamientoLocalizacion]);
+  await db.query("INSERT INTO lampara set ?", [newBalizamientoLampara]);
   req.flash("success", "Baliza insertada correctamente");
   res.redirect("/balizas/list"); //te redirige una vez insertado el item
 });
 router.get("/delete/:nif", helpers.isLoggedIn, async (req, res) => {
   console.log(req.params.nif);
   const { nif } = req.params;
-  await pool.query("DELETE FROM mantenimiento WHERE nif=?", [nif]);
-  await pool.query("DELETE FROM observaciones WHERE nif=?", [nif]);
-  await pool.query("DELETE FROM localizacion WHERE nif=?", [nif]);
-  await pool.query("DELETE FROM lampara WHERE nif=?", [nif]);
-  await pool.query("DELETE FROM balizamiento WHERE nif=?", [nif]);
+  await db.query("DELETE FROM mantenimiento WHERE nif=?", [nif]);
+  await db.query("DELETE FROM observaciones WHERE nif=?", [nif]);
+  await db.query("DELETE FROM localizacion WHERE nif=?", [nif]);
+  await db.query("DELETE FROM lampara WHERE nif=?", [nif]);
+  await db.query("DELETE FROM balizamiento WHERE nif=?", [nif]);
   req.flash("success", "Baliza borrada correctamente");
   res.redirect("/balizas/list");
 });
 router.get("/list", helpers.isLoggedIn,async (req, res) => {
-  const balizas = await pool.query(
+  const balizas = await db.query(
     "SELECT * FROM balizamiento b, localizacion l where b.nif=l.nif"
   );
   res.render("balizas/list", { balizas });
@@ -88,7 +88,7 @@ router.get("/list/:busqueda", helpers.isLoggedIn, async (req, res) => {
   var { busqueda } = req.params;
   //Añadimos porcentajes para busqueda SQL que contenga 'busqueda' y lo que sea por delante y por detras
   busqueda = "%" + busqueda + "%";
-  const balizas = await pool.query(
+  const balizas = await db.query(
     "SELECT * FROM balizamiento b, localizacion l where b.nif=l.nif AND l.puerto like ? order by l.nif", busqueda);
   //like is case insensitive por defecto. En caso de quererlo sensitivo hay que añadir solo "like binary"
   res.render("balizas/list", { balizas });
@@ -97,9 +97,9 @@ router.get("/list/:busqueda", helpers.isLoggedIn, async (req, res) => {
 router.get("/plantilla/:nif", async (req, res) => {
   const { nif } = req.params;
   var fotitos=[];
-  const baliza = await pool.query('SELECT * FROM balizamiento b  LEFT JOIN localizacion lo ON lo.nif=b.nif  LEFT JOIN lampara la ON la.nif=b.nif where b.nif=?',[nif]);
-  const observaciones = await pool.query('SELECT * FROM observaciones where nif=?',[nif]);
-  const mantenimiento = await pool.query('SELECT * FROM mantenimiento where nif=? order by fecha DESC',[nif]);
+  const baliza = await db.query('SELECT * FROM balizamiento b  LEFT JOIN localizacion lo ON lo.nif=b.nif  LEFT JOIN lampara la ON la.nif=b.nif where b.nif=?',[nif]);
+  const observaciones = await db.query('SELECT * FROM observaciones where nif=?',[nif]);
+  const mantenimiento = await db.query('SELECT * FROM mantenimiento where nif=? order by fecha DESC',[nif]);
   //console.log(observaciones);
   //console.log(mantenimiento[0]);
 
@@ -121,7 +121,7 @@ router.get("/plantilla/:nif", async (req, res) => {
 });
 router.get("/editCaracteristicas/:nif", helpers.isLoggedIn, async (req, res) => {
   const { nif } = req.params;
-  const baliza = await pool.query("SELECT * FROM balizamiento WHERE nif=?", [
+  const baliza = await db.query("SELECT * FROM balizamiento WHERE nif=?", [
     nif,
   ]);
   /*console.log(baliza);
@@ -130,7 +130,7 @@ console.log(baliza[0]);*/
 });
 router.get("/editLocalizacion/:nif", helpers.isLoggedIn, async (req, res) => {
   const { nif } = req.params;
-  const baliza = await pool.query("SELECT * FROM localizacion WHERE nif=?", [
+  const baliza = await db.query("SELECT * FROM localizacion WHERE nif=?", [
     nif,
   ]);
   /*console.log(baliza);
@@ -139,7 +139,7 @@ console.log(baliza[0]);*/
 });
 router.get("/editLampara/:nif", helpers.isLoggedIn, async (req, res) => {
   const { nif } = req.params;
-  const baliza = await pool.query("SELECT * FROM lampara WHERE nif=?", [
+  const baliza = await db.query("SELECT * FROM lampara WHERE nif=?", [
     nif,
   ]);
   /*console.log(baliza);
@@ -169,7 +169,7 @@ router.post("/editCaracteristicas/:nif", helpers.isLoggedIn, async (req, res) =>
   };
   //console.log(newBaliza);
   console.log("req.params " + req.params.nif);
-  await pool.query("UPDATE BALIZAMIENTO set ? WHERE nif = ?", [
+  await db.query("UPDATE BALIZAMIENTO set ? WHERE nif = ?", [
     newBaliza,
     nifviejo,
   ]);
@@ -194,7 +194,7 @@ router.post("/editLocalizacion/:nif", helpers.isLoggedIn, async (req, res) => {
     longitud,
   };
   console.log("req.params " + req.params.nif);
-  await pool.query("UPDATE localizacion set ? WHERE nif = ?", [
+  await db.query("UPDATE localizacion set ? WHERE nif = ?", [
     newBaliza,
     nifviejo,
   ]);
@@ -224,7 +224,7 @@ router.post("/editLampara/:nif", helpers.isLoggedIn, async (req, res) => {
   };
   //console.log(newBaliza);
   console.log("req.params " + req.params.nif);
-  await pool.query("UPDATE lampara set ? WHERE nif = ?", [
+  await db.query("UPDATE lampara set ? WHERE nif = ?", [
     newBaliza,
     nifviejo,
   ]);
@@ -242,7 +242,7 @@ router.post("/observaciones/add", async (req,res)=>{
     observaciones,
   };
   console.log(observa);
-  await pool.query("INSERT INTO observaciones set ?", [observa]);
+  await db.query("INSERT INTO observaciones set ?", [observa]);
   req.flash("success", "Observacion insertada correctamente");
   //res.render("/balizas/plantilla/"+nif);
   res.redirect("/balizas/plantilla/"+nif);
@@ -250,16 +250,16 @@ router.post("/observaciones/add", async (req,res)=>{
 router.get("/observaciones/delete/:idObs", async (req,res)=>{
   console.log(req.params.idObs);
   const { idObs } = req.params;
-  const resp =   await pool.query("select nif from observaciones where id_observacion=?", [idObs]);
+  const resp =   await db.query("select nif from observaciones where id_observacion=?", [idObs]);
   const nif=resp[0].nif;
-  await pool.query("delete from observaciones where id_observacion=?", [idObs]);
+  await db.query("delete from observaciones where id_observacion=?", [idObs]);
   req.flash("success", "Observacion de baliza borrado correctamente "+ nif);
   res.redirect("/balizas/plantilla/"+nif);
 });
 router.get("/observaciones/edit/:idObs", async (req,res)=>{
 const { idObs } = req.params;
 console.log("Que id es: "+idObs);
-const observacion = await pool.query("SELECT * FROM observaciones WHERE id_observacion=?", [idObs,]);
+const observacion = await db.query("SELECT * FROM observaciones WHERE id_observacion=?", [idObs,]);
 //console.log(baliza);
 //console.log(baliza[0]);
 res.render("balizas/editObservaciones", { observacion: observacion[0] });
@@ -279,7 +279,7 @@ router.post("/observaciones/edit/:idObs", async (req,res)=>{
     nif,
     observaciones:observacionNueva,
   };
-   await pool.query("UPDATE observaciones set ? WHERE id_observacion = ?", [
+   await db.query("UPDATE observaciones set ? WHERE id_observacion = ?", [
     newObservacion,
     id_observacion,
   ]); 
@@ -299,23 +299,23 @@ router.post("/mantenimiento/add", async (req,res)=>{
     mantenimiento,
   };
   console.log(mant);
-  await pool.query("INSERT INTO mantenimiento set ?", [mant]);
+  await db.query("INSERT INTO mantenimiento set ?", [mant]);
   req.flash("success", "Mantenimiento en baliza insertado correctamente");
   res.redirect("/balizas/plantilla/"+nif);
 });
 router.get("/mantenimiento/delete/:idMan", async (req,res)=>{
   console.log(req.params.idMan);
   const { idMan } = req.params;
-  const resp =   await pool.query("select nif from mantenimiento where id_mantenimiento=?", [idMan]);
+  const resp =   await db.query("select nif from mantenimiento where id_mantenimiento=?", [idMan]);
   const nif=resp[0].nif;
-  await pool.query("delete from mantenimiento where id_mantenimiento=?", [idMan]);
+  await db.query("delete from mantenimiento where id_mantenimiento=?", [idMan]);
   req.flash("success", "mantenimiento de baliza borrado correctamente "+ nif);
   res.redirect("/balizas/plantilla/"+nif);
 });
 router.get("/mantenimiento/edit/:idMan", async (req,res)=>{
   const { idMan } = req.params;
   //console.log("Que id es: "+idMan);
-  const mantenimient = await pool.query("SELECT * FROM mantenimiento WHERE id_mantenimiento=?", [idMan,]);
+  const mantenimient = await db.query("SELECT * FROM mantenimiento WHERE id_mantenimiento=?", [idMan,]);
   console.log("va");
   console.log(mantenimient[0]);
   res.render("balizas/editMantenimiento", { mant: mantenimient[0] });
@@ -339,7 +339,7 @@ router.post("/mantenimiento/edit/:idMan", async (req,res)=>{
    fecha:fechaNueva,
    mantenimiento:mantenimientoNuevo,
  };
-  await pool.query("UPDATE mantenimiento set ? WHERE id_mantenimiento = ?", [
+  await db.query("UPDATE mantenimiento set ? WHERE id_mantenimiento = ?", [
    newObservacion,
    id_mantenimiento,
  ]); 
@@ -349,7 +349,7 @@ router.post("/mantenimiento/edit/:idMan", async (req,res)=>{
 
 router.get("/mapa/:nif", async (req,res)=>{
   const { nif } = req.params;
-  const baliza = await pool.query('SELECT * FROM balizamiento b  LEFT JOIN localizacion lo ON lo.nif=b.nif  LEFT JOIN lampara la ON la.nif=b.nif where b.nif=?',[nif]);
+  const baliza = await db.query('SELECT * FROM balizamiento b  LEFT JOIN localizacion lo ON lo.nif=b.nif  LEFT JOIN lampara la ON la.nif=b.nif where b.nif=?',[nif]);
    res.render("mapa", {layout: 'layoutMapa', baliza: baliza[0],  });
   // NO FUNCIONA CON LA BARRA DELANTE res.render('/links/list');
   

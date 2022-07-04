@@ -3,10 +3,18 @@
         <div class="col-md-4 mx-auto">
             <div class="card text-center">
                 <div class="card-body">
-                    <h3>Welcome {{user.usuario}} </h3>
+
+                    <h3>Bienvenido {{user.usuario}} </h3>
+                    <img  src="/img/profiles/{{user.usuario}}.jpg" class="avatar avatar-l" alt="avatar" >
+                    <form action="/upload/{{user.usuario}}" method="POST" enctype="multipart/form-data">
+                        <input type="hidden" name="user" value="{{user.usuario}}" >
+                        <input type="file" name="imagen">
+                        <button type="submit">Upload</button>
+                    </form>
                     <p>Nombre: {{user.full_name}} </p>
                     <p>Usuario: {{user.usuario}} </p>
                     <p>Correo: {{user.email}} </p>
+                     <p>Privilegio: {{user.privilegio}} </p>
                     <a href="/balizas/list" class="btn btn-primary m-4">
                     Mira el balizamiento</a>
                 </div>
