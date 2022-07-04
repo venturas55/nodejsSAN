@@ -72,6 +72,13 @@ a{
   object-position: center;
 }
 
+#formularioBusqueda{
+  padding: 5px;
+  height: 60px;
+  border: 2px solid black;
+  border-radius: 5px;
+  margin: 0 10px;
+}
 .avatar-s{
   height: 64px;
   width: 64px;

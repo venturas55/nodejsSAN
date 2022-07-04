@@ -39,4 +39,6 @@ router.get('/logout',helpers.isAuthenticated ,(req,res)=>{
     res.redirect('/');
 })
 
+//TODO: Añadir posibilidad de cambio de contraseña del usuario
+
 module.exports = router;
