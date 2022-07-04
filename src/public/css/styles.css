@@ -2,17 +2,24 @@ body{
     background: #bec2be;
     font-family: sans-serif;
 }
+#simulacionLuz{
+  float: right;
+  width: 40px;
+  height: 40px;
+  margin-top: 5px;
+  border:1px solid rgb(76, 75, 75);
+  border-radius: 50%;
+}
 
 #luz{
   width: 40px;
   height: 40px;
-  border:1px solid rgb(240, 240, 240);
   background-color: rgb(240, 240, 240);
   border-radius: 50%;
   display: block;
   z-index:100;
   margin: 0 auto;
-  margin-top: 15px;
+
 }
 .listado tr:hover, .listado tr:hover a{
   background-color: rgb(98, 150, 234);
@@ -79,6 +86,10 @@ a{
   border-radius: 5px;
   margin: 0 10px;
 }
+select{
+  text-align-last:center;
+}
+
 .avatar-s{
   height: 64px;
   width: 64px;

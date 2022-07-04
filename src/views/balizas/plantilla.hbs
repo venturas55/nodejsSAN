@@ -1,7 +1,8 @@
 
 <div class="row m-5">
     <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 m-2">
-         <h1> Fotos </h1>
+          <div id="simulacionLuz"> <div id="luz"></div></div> 
+          <h1>Fotos</h1>
           <div class="miCarrusel">
            {{#each imagen}}
                 <img src="/img/imagenes/{{../baliza.nif}}/{{this}}" alt="/img/imagenes/{{../baliza.nif}}/{{this}}">  
@@ -13,8 +14,6 @@
             <input type="file" name="imagen">
             <button type="submit">Upload</button>
         </form>
-
-       <h3>Simulacion:</h3> <div id="luz"></div>
     </div>
     <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 m-2">
         <h1> Caracteristicas </h1>
