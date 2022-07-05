@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-   {{#if user}}
-  <img  src="/img/profiles/{{user.usuario}}.jpg" class="avatar avatar-s" alt="avatar" >
+  {{#if user}}
+  <img src="/img/profiles/{{user.usuario}}.jpg" class="avatar avatar-s" alt="avatar">
   {{/if}}
   <div class="container">
     <a class="navbar-brand" href="/">BBDD SAN</a>
@@ -50,11 +50,11 @@
           <a class="nav-link" href="/calculos" tabindex="-1" aria-disabled="true">Calculos</a>
         </li>
 
-          {{#if user}}
+        {{#if user}}
         <li class="nav-item">
           <a class="nav-link" href="/logout " tabindex="-1" aria-disabled="true">Logout</a>
         </li>
-        
+
         {{else}}
 
         <li class="nav-item">
@@ -63,7 +63,7 @@
         <li class="nav-item">
           <a class="nav-link" href="/signup" tabindex="-1" aria-disabled="true">Sign up</a>
         </li>
-           {{/if}}
+        {{/if}}
       </ul>
       <form id="formularioBusqueda" class="form-inline my-2 my-lg-0">
         <input id="inputBuscar" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />

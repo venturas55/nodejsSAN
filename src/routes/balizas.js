@@ -71,18 +71,18 @@ router.get("/delete/:nif", helpers.isAuthenticated, async (req, res) => {
    
   console.log(req.params.nif);
   const { nif } = req.params;
-  /*await db.query("DELETE FROM mantenimiento WHERE nif=?", [nif]);
+  await db.query("DELETE FROM mantenimiento WHERE nif=?", [nif]);
   await db.query("DELETE FROM observaciones WHERE nif=?", [nif]);
   await db.query("DELETE FROM localizacion WHERE nif=?", [nif]);
   await db.query("DELETE FROM lampara WHERE nif=?", [nif]);
-  await db.query("DELETE FROM balizamiento WHERE nif=?", [nif]);*/
+  await db.query("DELETE FROM balizamiento WHERE nif=?", [nif]);
   //TODO: faltaria borrar la carpeta con las fotos
   req.flash("success", "Baliza borrada correctamente");
   res.redirect("/balizas/list");
 });
 router.get("/list", async (req, res) => {
   const balizas = await db.query(
-    "SELECT * FROM balizamiento b, localizacion l where b.nif=l.nif"
+    "SELECT * FROM balizamiento b left join localizacion l on b.nif=l.nif"
   );
   res.render("balizas/list", { balizas });
   //res.render("balizas/list", { balizas: balizas });

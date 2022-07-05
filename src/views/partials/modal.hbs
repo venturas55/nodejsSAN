@@ -10,11 +10,8 @@
         Esto conlleva su eliminación completa de la BBDD, y ya no habrá marcha
         atras.</p>
       <div class="card-body">
-        <a href="/balizas/delete/{{baliza.nif}}" class="btn btn-danger"    >Borrar</a>
-        <a
-          onclick="cierraModal();"
-          class="btn btn-warning"
-        >Cancelar</a>
+        <a href="/balizas/delete/{{baliza.nif}}" class="btn btn-danger">Borrar</a>
+        <a onclick="cierraModal();" class="btn btn-warning">Cancelar</a>
       </div>
     </div>
   </div>
@@ -25,7 +22,7 @@
     <span class="close" onclick="cierraModal();">&times;</span>
     <div class="centrado">
       <h4>Introduzca el NIF que desea forzar borrado</h4>
-      <input type="text" id="NIFforzarBorrado"/>
+      <input type="text" id="NIFforzarBorrado" />
       <div class="card-body">
         <a onclick="borrarNIF();" class="btn btn-danger">
           Borrar</a>
