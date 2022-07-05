@@ -1,4 +1,6 @@
 const bcrypt=require('bcryptjs');
+const path=require('path');
+const fs = require('fs');
 //const res = require('express/lib/response');
 const helpers = {};
 
@@ -28,6 +30,22 @@ helpers.isNotAuthenticated = (req,res,next)=>{
         return next();
     }
     return res.redirect('/profile');
+}
+
+helpers.listadoFotos = (req,res,next)=>{
+    const nif=req;
+    console.log(nif);
+    var fotitos = [];
+    var directorio = path.join(__dirname, "../public/img/imagenes", nif);
+    fs.readdir(directorio, (err, files) => {
+      if (files) {
+        files.forEach(file => {
+          fotitos.push(file);
+        });
+        console.log("===>"+fotitos);
+      }
+    });
+    return fotitos;
 }
 
 module.exports = helpers;

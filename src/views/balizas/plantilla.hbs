@@ -1,16 +1,20 @@
-
 <div class="row m-5">
     <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 m-2">
-          <div id="simulacionLuz"> <div id="luz"></div></div> 
-          <h1>Fotos</h1>
-          <div class="miCarrusel">
-           {{#each imagen}}
-                <img src="/img/imagenes/{{../baliza.nif}}/{{this}}" alt="/img/imagenes/{{../baliza.nif}}/{{this}}">  
-            {{/each}}
+        <div id="simulacionLuz">
+            <div id="luz"></div>
         </div>
-
-        <form action="/upload/{{baliza.nif}}" method="POST" enctype="multipart/form-data">
-            <input type="hidden" name="nif" value="{{baliza.nif}}" >
+        <h1>Fotos</h1>
+            <div class="miCarrusel">
+              
+                {{#each imagen}}
+                   
+                <img src="/img/imagenes/{{../baliza.nif}}/{{this}}" alt="/img/imagenes/{{../baliza.nif}}/{{this}}">
+              
+                {{/each}}
+                  
+            </div>
+        <form action="/balizas/upload/{{baliza.nif}}" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="nif" value="{{baliza.nif}}">
 
             <div class="input-group mb-3">
                 <div class="custom-file">
@@ -23,6 +27,7 @@
             </div>
 
         </form>
+          <a href="/balizas/fotos/{{baliza.nif}}" class="btn btn-primary btn-block"> GALERIA DE FOTOS</a>
     </div>
     <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 m-2">
         <h1> Caracteristicas </h1>
@@ -52,7 +57,8 @@
                 <td class="table-warning" id="caracteristicaID">{{baliza.caracteristica}}</td>
             </tr>
         </table>;
-        <a class="btn btn-primary btn-xs btn-block" href="/balizas/editCaracteristicas/{{baliza.nif}}" class="btn btn-primary btn-lg btn-block"> ACTUALIZAR CARACTERISTICAS</a>
+        <a class="btn btn-primary btn-xs btn-block" href="/balizas/editCaracteristicas/{{baliza.nif}}"
+            class="btn btn-primary btn-lg btn-block"> ACTUALIZAR CARACTERISTICAS</a>
     </div>
     <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 m-2">
         <!-- id="divlocalizacion" -->
@@ -83,8 +89,10 @@
                 <td class="table-warning">{{baliza.longitud}}</td>
             </tr>
         </table>
-        <a class="btn btn-primary btn-xs btn-block" href="/balizas/editLocalizacion/{{baliza.nif}}">ACTUALIZAR LOCALIZACION </a>
-        <a class="btn btn-primary btn-xs btn-block" target="_blank" href="/balizas/mapa/{{baliza.nif}}">VER UBICACION </a>
+        <a class="btn btn-primary btn-xs btn-block" href="/balizas/editLocalizacion/{{baliza.nif}}">ACTUALIZAR
+            LOCALIZACION </a>
+        <a class="btn btn-primary btn-xs btn-block" target="_blank" href="/balizas/mapa/{{baliza.nif}}">VER UBICACION
+        </a>
     </div>
     <div class="col-lg-2 col-md-6 col-sm-6 col-xs-12 m-2">
         <h1> Lampara </h1>
@@ -118,7 +126,8 @@
                 <td class='table-warning'>{{baliza.candelasInst}}</td>
             </tr>
         </table>
-        <a class="btn btn-primary btn-xs btn-block" href="/balizas/editLampara/{{baliza.nif}}" class="btn btn-primary btn-lg btn-block">ACTUALIZAR LAMPARA
+        <a class="btn btn-primary btn-xs btn-block" href="/balizas/editLampara/{{baliza.nif}}"
+            class="btn btn-primary btn-lg btn-block">ACTUALIZAR LAMPARA
         </a>
     </div>
 </div>
@@ -127,16 +136,19 @@
     <div class="col-sm-12">
         <h1> Observaciones </h1>
         <table class="table">
-        {{!--     <tr>
+            {{!-- <tr>
                 <th>Observaciones</th>
                 <th>Borrar</th>
             </tr> --}}
             {{#each obs}}
             <tr class='table-warning'>
-              {{!--   <td>{{this.id_observacion}}</td> --}}
+                {{!-- <td>{{this.id_observacion}}</td> --}}
                 <td>{{this.observaciones}}</td>
-                <td>    <a href="/balizas/observaciones/edit/{{this.id_observacion}}"><i class="fa-solid fa-pen-to-square"></i>Edit</a>
-                                                <a type="submit" href="/balizas/observaciones/delete/{{this.id_observacion}}"><i class="fa-solid fa-trash"></i>Del</a> </td>
+                <td> <a href="/balizas/observaciones/edit/{{this.id_observacion}}"><i
+                            class="fa-solid fa-pen-to-square"></i>Edit</a>
+                    <a type="submit" href="/balizas/observaciones/delete/{{this.id_observacion}}"><i
+                            class="fa-solid fa-trash"></i>Del</a>
+                </td>
             </tr>
             {{/each}}
             <form action="/balizas/observaciones/add" method="POST">
@@ -161,18 +173,20 @@
             </tr>
             {{#each mant}}
             <tr class='table-warning'>
-                  
-                {{!-- <td>{{timeago fecha}}</td>    asi haciendo uso del timeago--}}
+
+                {{!-- <td>{{timeago fecha}}</td> asi haciendo uso del timeago--}}
                 <td>{{formatearSp fecha}}</td>
                 <td>{{mantenimiento}}</td>
                 {{!-- <td> <a href="" class="btn btn-primary btn-xs btn-block"><i
                             class="fa-solid fa-pen-to-square">borrar</i> </a> </td> --}}
                 <td>
-                        <input type="hidden" name="nif" value='{{baliza.nif}}' />
-                        <input type="hidden" name="fecha" value='{{fecha}}' />
-                        <input type="hidden" name="mantenimiento" value='{{mantenimiento}}' />
-                        <a href="/balizas/mantenimiento/edit/{{this.id_mantenimiento}}"><i class="fa-solid fa-pen-to-square"></i>Edit</a>
-                        <a href="/balizas/mantenimiento/delete/{{this.id_mantenimiento}}"><i class="fa-solid fa-trash"></i>Del</a>
+                    <input type="hidden" name="nif" value='{{baliza.nif}}' />
+                    <input type="hidden" name="fecha" value='{{fecha}}' />
+                    <input type="hidden" name="mantenimiento" value='{{mantenimiento}}' />
+                    <a href="/balizas/mantenimiento/edit/{{this.id_mantenimiento}}"><i
+                            class="fa-solid fa-pen-to-square"></i>Edit</a>
+                    <a href="/balizas/mantenimiento/delete/{{this.id_mantenimiento}}"><i
+                            class="fa-solid fa-trash"></i>Del</a>
                 </td>
             </tr>
             {{!-- <form action="./modBBDDmantenimiento.php" method="post">
@@ -196,5 +210,5 @@
             </form>
         </table>
     </div>
-     <a href="/balizas/delete/{{baliza.nif}}"><button class="btn btn-danger">BORRAR</button></a>
+    <a href="/balizas/delete/{{baliza.nif}}"><button class="btn btn-danger">BORRAR</button></a>
 </div>

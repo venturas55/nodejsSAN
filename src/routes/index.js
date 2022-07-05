@@ -13,17 +13,7 @@ router.get('/plan',(req,res)=>{
     res.render('plan',{layout: 'layoutSimple'});
 });
 
-router.post("/upload/:nif",(req,res)=>{
-    const { nif } = req.params;
-    const { user } = req.body;
-    console.log("Ruta: "+nif + " "+ user);
-    if (typeof user === 'undefined') {
-        res.redirect("/balizas/plantilla/"+nif);
-    }else{
-        res.redirect("/profile");
-    }
- 
-  });
+
 
 /*   router.post("/uploadprofile/:user",(req,res)=>{
     const { user } = req.params;
