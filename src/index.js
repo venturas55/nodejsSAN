@@ -9,7 +9,6 @@ const session = require('express-session'); //Lo necesita el flash tb
 const  MySQLstore= require('express-mysql-session'); // para poder guardar la sesion en la sql
 const passport = require('passport');
 const {database} =require('./keys');
-var Vue = require("vue").default;
 
 //Initialization
 const app = express();
@@ -42,8 +41,7 @@ app.use(express.json()); //Para enviar y recibir jsons.
 app.use(passport.initialize()); //iniciar passport
 app.use(passport.session());    //para que sepa donde guardar y como manejar los datos
 
-
-
+//MIDDLEWARE MULTER
 const almacenar=multer.diskStorage({
     destination: (req,file,cb)=>{
        
@@ -80,11 +78,12 @@ const almacenar=multer.diskStorage({
     }
 });
 
-
 app.use(multer({
     storage: almacenar,
     limits:{fileSize:3000000,}
   }).single('imagen'));
+
+//MIDDLEWARE?? DE UN NOTIFIER??
 
 
 

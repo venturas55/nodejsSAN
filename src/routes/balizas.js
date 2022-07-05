@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const fs = require('fs');
 const {unlink} = require('fs-extra');
 const path = require('path');
 
@@ -68,18 +67,18 @@ router.post("/add", helpers.isAuthenticated, async (req, res) => {
   res.redirect("/balizas/list"); //te redirige una vez insertado el item
 });
 router.get("/delete/:nif", helpers.isAuthenticated, async (req, res) => {
-  alert({type: `success`, msg: `Everything finished!`});
-
+  console.log("VOY A BORRAR LA PUTA BALIZA"); 
+   
   console.log(req.params.nif);
   const { nif } = req.params;
-/*   await db.query("DELETE FROM mantenimiento WHERE nif=?", [nif]);
+  /*await db.query("DELETE FROM mantenimiento WHERE nif=?", [nif]);
   await db.query("DELETE FROM observaciones WHERE nif=?", [nif]);
   await db.query("DELETE FROM localizacion WHERE nif=?", [nif]);
   await db.query("DELETE FROM lampara WHERE nif=?", [nif]);
-  await db.query("DELETE FROM balizamiento WHERE nif=?", [nif]); */
+  await db.query("DELETE FROM balizamiento WHERE nif=?", [nif]);*/
   //TODO: faltaria borrar la carpeta con las fotos
   req.flash("success", "Baliza borrada correctamente");
- // res.redirect("/balizas/list");
+  res.redirect("/balizas/list");
 });
 router.get("/list", async (req, res) => {
   const balizas = await db.query(
@@ -161,7 +160,7 @@ router.get("/plantilla/:nif", async (req, res) => {
   var fotitos= helpers.listadoFotos(nif);
 
   console.log("==>" + fotitos);
-  res.render("balizas/plantilla", { layout: 'layoutParpadeo', baliza: baliza[0], obs: observaciones, mant: mantenimiento, imagen: fotitos });
+  res.render("balizas/plantilla", { layout: 'layoutPlantilla', baliza: baliza[0], obs: observaciones, mant: mantenimiento, imagen: fotitos });
   // NO FUNCIONA CON LA BARRA DELANTE res.render('/links/list');
 });
 router.get("/editCaracteristicas/:nif", helpers.isAuthenticated, async (req, res) => {
