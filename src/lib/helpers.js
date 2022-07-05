@@ -1,5 +1,5 @@
 const bcrypt=require('bcryptjs');
-const res = require('express/lib/response');
+//const res = require('express/lib/response');
 const helpers = {};
 
 helpers.encryptPass = async (password) =>{

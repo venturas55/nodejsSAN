@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const helpers = require("../lib/helpers");
 
+
 const db = require("../database"); //db hace referencia a la BBDD
 
 router.get("/add", helpers.isAuthenticated, (req, res) => {
@@ -66,16 +67,18 @@ router.post("/add", helpers.isAuthenticated, async (req, res) => {
   res.redirect("/balizas/list"); //te redirige una vez insertado el item
 });
 router.get("/delete/:nif", helpers.isAuthenticated, async (req, res) => {
+  alert({type: `success`, msg: `Everything finished!`});
+
   console.log(req.params.nif);
   const { nif } = req.params;
-  await db.query("DELETE FROM mantenimiento WHERE nif=?", [nif]);
+/*   await db.query("DELETE FROM mantenimiento WHERE nif=?", [nif]);
   await db.query("DELETE FROM observaciones WHERE nif=?", [nif]);
   await db.query("DELETE FROM localizacion WHERE nif=?", [nif]);
   await db.query("DELETE FROM lampara WHERE nif=?", [nif]);
-  await db.query("DELETE FROM balizamiento WHERE nif=?", [nif]);
+  await db.query("DELETE FROM balizamiento WHERE nif=?", [nif]); */
   //TODO: faltaria borrar la carpeta con las fotos
   req.flash("success", "Baliza borrada correctamente");
-  res.redirect("/balizas/list");
+ // res.redirect("/balizas/list");
 });
 router.get("/list", async (req, res) => {
   const balizas = await db.query(
@@ -96,6 +99,9 @@ router.get("/list/:busqueda", async (req, res) => {
   // NO FUNCIONA CON LA BARRA DELANTE res.render('/links/list');
 });
 
+router.get("fotos/:nif",async (req,res)=>{
+  
+});
 
 router.get("/list/:filtro/:valor", async (req, res) => {
   var obj = req.params;
@@ -125,15 +131,13 @@ router.get("/list/:filtro/:valor", async (req, res) => {
   // NO FUNCIONA CON LA BARRA DELANTE res.render('/links/list');
 });
 
-
 router.get("/plantilla/:nif", async (req, res) => {
   const { nif } = req.params;
   var fotitos = [];
   const baliza = await db.query('SELECT * FROM balizamiento b  LEFT JOIN localizacion lo ON lo.nif=b.nif  LEFT JOIN lampara la ON la.nif=b.nif where b.nif=?', [nif]);
   const observaciones = await db.query('SELECT * FROM observaciones where nif=?', [nif]);
   const mantenimiento = await db.query('SELECT * FROM mantenimiento where nif=? order by fecha DESC', [nif]);
-  //console.log(observaciones);
-  //console.log(mantenimiento[0]);
+
 
   //listar
   var directorio = path.join(__dirname, "../public/img/imagenes", nif);
@@ -285,7 +289,7 @@ router.get("/observaciones/delete/:idObs", helpers.isAuthenticated, async (req, 
   const resp = await db.query("select nif from observaciones where id_observacion=?", [idObs]);
   const nif = resp[0].nif;
   await db.query("delete from observaciones where id_observacion=?", [idObs]);
-  req.flash("success", "Observacion de baliza borrado correctamente " + nif);
+  req.flash("success", "Observacion de baliza "+ nif+" borrada correctamente." );
   res.redirect("/balizas/plantilla/" + nif);
 });
 router.get("/observaciones/edit/:idObs", helpers.isAuthenticated, async (req, res) => {
@@ -315,7 +319,7 @@ router.post("/observaciones/edit/:idObs", helpers.isAuthenticated, async (req, r
     newObservacion,
     id_observacion,
   ]);
-  req.flash("success", "Observacion modificada correctamente en la baliza ");
+  req.flash("success", "Observacion modificada correctamente en la baliza "+nif);
   res.redirect("/balizas/plantilla/" + nif);
 });
 
@@ -341,7 +345,7 @@ router.get("/mantenimiento/delete/:idMan", helpers.isAuthenticated, async (req, 
   const resp = await db.query("select nif from mantenimiento where id_mantenimiento=?", [idMan]);
   const nif = resp[0].nif;
   await db.query("delete from mantenimiento where id_mantenimiento=?", [idMan]);
-  req.flash("success", "mantenimiento de baliza borrado correctamente " + nif);
+  req.flash("success", "mantenimiento de baliza "+nif+" borrado correctamente ");
   res.redirect("/balizas/plantilla/" + nif);
 });
 router.get("/mantenimiento/edit/:idMan", helpers.isAuthenticated, async (req, res) => {
@@ -354,7 +358,6 @@ router.get("/mantenimiento/edit/:idMan", helpers.isAuthenticated, async (req, re
 
 });
 router.post("/mantenimiento/edit/:idMan", helpers.isAuthenticated, async (req, res) => {
-
   var {
     id_mantenimiento,
     nif,
@@ -375,7 +378,7 @@ router.post("/mantenimiento/edit/:idMan", helpers.isAuthenticated, async (req, r
     newObservacion,
     id_mantenimiento,
   ]);
-  req.flash("success", "Mantenimiento modificado correctamente en la baliza ");
+  req.flash("success", "Mantenimiento modificado correctamente en la baliza "+nif);
   res.redirect("/balizas/plantilla/" + nif);
 });
 
@@ -383,8 +386,6 @@ router.get("/mapa/:nif", async (req, res) => {
   const { nif } = req.params;
   const baliza = await db.query('SELECT * FROM balizamiento b  LEFT JOIN localizacion lo ON lo.nif=b.nif  LEFT JOIN lampara la ON la.nif=b.nif where b.nif=?', [nif]);
   res.render("mapa", { layout: 'layoutMapa', baliza: baliza[0], });
-  // NO FUNCIONA CON LA BARRA DELANTE res.render('/links/list');
-
 });
 
 

@@ -11,8 +11,17 @@
 
         <form action="/upload/{{baliza.nif}}" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="nif" value="{{baliza.nif}}" >
-            <input type="file" name="imagen">
-            <button type="submit">Upload</button>
+
+            <div class="input-group mb-3">
+                <div class="custom-file">
+                    <input type="file" name="imagen" class="custom-file-input" id="inputGroupFile02">
+                    <label class="custom-file-label" for="inputGroupFile02">Choose file</label>
+                </div>
+                <div class="input-group-append">
+                    <button type="submit" class="input-group-text">Upload</button>
+                </div>
+            </div>
+
         </form>
     </div>
     <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 m-2">
@@ -187,5 +196,5 @@
             </form>
         </table>
     </div>
-     <a href="/balizas/delete/{{nif}}"><button class="btn btn-danger">BORRAR</button></a>
+     <a href="/balizas/delete/{{baliza.nif}}"><button class="btn btn-danger">BORRAR</button></a>
 </div>
