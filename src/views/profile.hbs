@@ -1,16 +1,33 @@
 <div class="container p-4">
-    <div class="row">
+    <div class="row4">
         <div class="col-md-5 mx-auto">
             <div class="card text-center">
                 <div class="card-body">
 
-                    <h3>Bienvenido {{user.usuario}} </h3>
+                    <h3>Bienvenid@ {{user.usuario}} </h3>
                     {{!-- //TODO:  Lo unico malo que la extensión no sé de donde sacarla para hacerla dinamica. sin complicarlo tanto --}}
-                    <img  src="/img/profiles/{{user.usuario}}.jpg" class="avatar avatar-l" alt="avatar" >
+                    <img  src="/img/profiles/{{user.usuario}}.jpg" class="avatar avatar-l m-2" alt="avatar" >
+
                     <form action="/upload/{{user.usuario}}" method="POST" enctype="multipart/form-data">
                         <input type="hidden" name="user" value="{{user.usuario}}" >
-                        <input type="file" name="imagen">
-                        <button type="submit">Upload</button>
+
+                 {{!--        <input type="file" name="imagen">
+                        <button type="submit">Upload</button> --}}
+
+
+                        <div class="input-group mb-3">
+                            <div class="custom-file">
+                                <input type="file" name="imagen" class="custom-file-input" id="inputGroupFile02">
+                                <label class="custom-file-label" for="inputGroupFile02">Choose file</label>
+                            </div>
+                            <div class="input-group-append">
+                                <button type="submit" class="input-group-text">Upload</button>
+                            </div>
+                        </div>
+
+
+
+
                     </form>
                     <p>Nombre: {{user.full_name}} </p>
                     <p>Usuario: {{user.usuario}} </p>

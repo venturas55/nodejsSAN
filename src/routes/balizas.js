@@ -90,11 +90,16 @@ router.get("/list", async (req, res) => {
 });
 router.get("/list/:busqueda", async (req, res) => {
   var { busqueda } = req.params;
-  //Añadimos porcentajes para busqueda SQL que contenga 'busqueda' y lo que sea por delante y por detras
-  busqueda = "%" + busqueda + "%";
-  const balizas = await db.query(
-    "SELECT * FROM balizamiento b, localizacion l where b.nif=l.nif AND l.puerto like ? order by l.nif", busqueda);
-  //like is case insensitive por defecto. En caso de quererlo sensitivo hay que añadir solo "like binary"
+  var balizas;
+  if(busqueda==='Ext'){
+    console.log("Externas");
+     balizas = await db.query("SELECT * FROM balizamiento b, localizacion l where b.nif=l.nif AND l.puerto not like '%valencia%' and l.puerto not like '%sagunto%' and l.puerto not like '%gandia%' order by l.nif");
+  }
+  else{
+    busqueda = "%" + busqueda + "%";
+     balizas = await db.query("SELECT * FROM balizamiento b, localizacion l where b.nif=l.nif AND l.puerto like ? order by l.nif", busqueda);
+    //like is case insensitive por defecto. En caso de quererlo sensitivo hay que añadir solo "like binary"
+  }
   res.render("balizas/list", { balizas });
   // NO FUNCIONA CON LA BARRA DELANTE res.render('/links/list');
 });
@@ -110,16 +115,21 @@ router.get("/fotos/:nif/:src/delete",async (req,res)=>{
   req.flash("success", "Foto de baliza "+ nif+" borrada correctamente." );
   res.redirect("/balizas/fotos/" + nif);
 });
-router.post("/upload/:nif",(req,res)=>{
+router.post("/upload/:nif",async (req,res)=>{
   const { nif } = req.params;
   const { user } = req.body;
-  console.log("Ruta: "+nif + " "+ user);
+  console.log(req.params);
+  console.log(req.body);
   if (typeof user === 'undefined') {
     req.flash("success", "Foto de la baliza "+nif+ " subida correctamente!");
       res.redirect("/balizas/plantilla/"+nif);
   }else{
+    //const oldUser = await pool.query("SELECT * FROM usuarios WHERE usuario=?", user);
+   // var newUser=oldUser;
+    //newUser.profilePicture = 
+   // await db.query("UPDATE usuarios set ? WHERE usuario = ?", [ newUser,  oldUser, ]);
     req.flash("success", "La foto del perfil de usuario ha sido actualizada con exito");
-      res.redirect("/profile");
+    res.redirect("/profile");
   }
 
 });
