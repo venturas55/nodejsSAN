@@ -60,6 +60,7 @@ const almacenar=multer.diskStorage({
             })
         }else{//si no, entonces es una foto de perfil y va a otra carpeta
                const dir = path.join(__dirname,'public/img/profiles/');
+               console.log("dir"+dir);
                return cb(null, dir);
         }
 
@@ -70,25 +71,20 @@ const almacenar=multer.diskStorage({
         //Lo mismo para el nombre del archivo
         if (typeof user === 'undefined') {
             //Si es una baliza mantengo el nombre original del archivo
-            cb(null,file.originalname);
+            cb(null,file.originalname.toLocaleLowerCase());
         }else{
             //si es una foto de perfil la cuardo con el nombre del usuario
-            cb(null,user+"."+file.originalname.split(".").pop());
+            cb(null,user.toLocaleLowerCase()+"."+file.originalname.split(".").pop().toLocaleLowerCase());
         }
     }
 });
 
 app.use(multer({
     storage: almacenar,
-    limits:{fileSize:3000000,}
+    limits:{fileSize:5000000,}
   }).single('imagen'));
 
-//MIDDLEWARE?? DE UN NOTIFIER??
-
-
-
 //Variables globales
-
 app.use((req,res,next) =>{
     app.locals.signupMessage = req.flash('signupMessage');
     app.locals.success = req.flash('success');

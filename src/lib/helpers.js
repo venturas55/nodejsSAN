@@ -42,10 +42,15 @@ helpers.listadoFotos = (req,res,next)=>{
         files.forEach(file => {
           fotitos.push(file);
         });
-        console.log("===>"+fotitos);
       }
     });
     return fotitos;
+}
+
+helpers.existeFotoPerfil = (req,res,next)=>{
+    var ruta = path.join(__dirname, "../public/img/profiles/",req.usuario+".jpg"); //TODO: gestionar la extension de foto perfil
+    var flag=fs.existsSync(ruta);
+    return flag;
 }
 
 module.exports = helpers;

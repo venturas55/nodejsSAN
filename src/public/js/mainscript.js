@@ -11,6 +11,7 @@ function aBuscar(e) {
 //======================================
 var modal1 = document.getElementById("myModal1");
 var modal2 = document.getElementById("myModal2");
+var modal3 = document.getElementById("myModal3");
 
 function abreModal1() {
   modal1.style.display = "block";
@@ -19,20 +20,41 @@ function abreModal2() {
   modal2.style.display = "block";
 }
 
+function abreModal3() {
+  modal3.style.display = "block";
+}
+
 function borrarNIF() {
   var NIFforzarBorrado = document.getElementById("NIFforzarBorrado").value;
   window.location.href = "/balizas/delete/" + NIFforzarBorrado;
 }
 
+
+function cambiarUsuario(){
+var passcheck=document.getElementById("contrasenaConfirmacion").value;
+//TODO: verificar el pass con la base de datos
+
+
+var botonformulario=document.getElementById("enviarCambios");
+botonformulario.click();
+passcheck="";
+
+}
+
 function cierraModal() {
   modal1.style.display = "none";
   modal2.style.display = "none";
+  modal3.style.display = "none";
+  passcheck="";
 }
+
 
 window.onclick = function (event) {
   console.log("cierra modal");
-  if (event.target == modal1) {
+  //TODO: (event.target == modal) LOS 3 MODALES
+  if (event.target == modal) {
     modal1.style.display = "none";
     modal2.style.display = "none";
+    modal3.style.display = "none";
   }
 };

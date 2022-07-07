@@ -54,9 +54,9 @@ passport.use(
             };
             newUser.contrasena = await helpers.encryptPass(password);
             const yaExiste = await pool.query("SELECT * FROM usuarios WHERE usuario=?", newUser.usuario);
-            console.log(yaExiste[0].usuario);
+            
             if(yaExiste[0]){
-                console.log("Ya existe");
+                console.log("Ya existe"+yaExiste[0].usuario);
                 return done(null,false,req.flash('message','El usuario ya existe! Puebe con otro nombre de usuario.'));
             }
             else{
