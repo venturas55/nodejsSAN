@@ -80,7 +80,16 @@ const almacenar=multer.diskStorage({
 });
 app.use(multer({
     storage: almacenar,
-    limits:{fileSize:5000000,}
+    limits:{fileSize:5000000,},
+    fileFilter: (req,file,cb)=>{
+        const filetypes = /jpg/;
+        const mimetype = filetypes.test(file.mimetype); 
+        const extname = filetypes.test(path.extname(file.originalname)); 
+        if(mimetype && extname){
+            return cb(null, true);
+        }
+        cb("Error: Archivo debe ser *.jpg");
+    }
   }).single('imagen'));
 
 //Variables globales
