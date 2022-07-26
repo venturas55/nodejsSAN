@@ -19,11 +19,9 @@ passport.use(
             if (rows.length > 0) {
                 const user = rows[0];
                 console.log(user);
-                var prueba = await helpers.encryptPass(user.contrasena);
-                console.log("Pass "+prueba);
                 const validPassword = await helpers.verifyPassword(password,user.contrasena);
                 if (validPassword)
-                    done(null, user, req.flash('success', "Welcome" + user.usuario));
+                    done(null, user, req.flash('success', "Welcome " + user.usuario));
                 else
                     done(null, false, req.flash('message', "El password introducido es incorrecto"));
             } else {
@@ -53,31 +51,37 @@ passport.use(
                 privilegio: "san",
             };
             newUser.contrasena = await helpers.encryptPass(password);
-            const yaExiste = await pool.query("SELECT * FROM usuarios WHERE usuario=?", newUser.usuario);
-            
-            if(yaExiste[0]){
-                console.log("Ya existe"+yaExiste[0].usuario);
+            const result = await pool.query("INSERT INTO usuarios SET ?", [newUser]);
+            newUser.id = result.insertId;
+            return done(null, newUser); //Es el que se almacena en sesion
+
+             /*const result = await pool.query("SELECT * FROM usuarios WHERE usuario=?", newUser.usuario);
+            console.log(result);
+
+            if(result[0]){
+                console.log("Ya existe"+result[0].usuario);
                 return done(null,false,req.flash('message','El usuario ya existe! Puebe con otro nombre de usuario.'));
             }
             else{
-                console.log("No existe");
+                console.log("newUser"+[newUser]);
                 const result = await pool.query("INSERT INTO usuarios SET ?", [newUser]);
                 newUser.id = result.insertId;
                 console.log(result);
                 return done(null, newUser);
-            }
+            } */
+
         }
     )
 );
 
 //comprobar esto
 passport.serializeUser((user, done) => {
-    done(null, user.usuario);
+    done(null, user.id);
 });
 
 passport.deserializeUser(async (id, done) => {
-    const rows = await pool.query("SELECT * FROM usuarios WHERE usuario= ?", [
-        id,
-    ]);
+    console.log([id]);
+    const rows = await pool.query("SELECT * FROM usuarios WHERE id= ?", [id]);
+    //done(new Error('borra la puta sesion'), rows[0]);
     done(null, rows[0]);
 });

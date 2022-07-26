@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 03-07-2022 a las 09:02:20
--- Versión del servidor: 8.0.20
--- Versión de PHP: 7.4.6
+-- Tiempo de generación: 26-07-2022 a las 21:21:45
+-- Versión del servidor: 10.4.25-MariaDB
+-- Versión de PHP: 8.0.21
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -20,6 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `san`
 --
+CREATE DATABASE IF NOT EXISTS `san` DEFAULT CHARACTER SET utf16 COLLATE utf16_spanish2_ci;
+USE `san`;
 
 -- --------------------------------------------------------
 
@@ -194,12 +196,12 @@ INSERT INTO `cochecito` (`usuario`, `fecha`, `horaE`, `horaS`, `motivo`) VALUES
 --
 
 CREATE TABLE `eliminados` (
-  `fecha` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `fecha` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `usuario` varchar(10) NOT NULL,
   `item` varchar(50) NOT NULL,
-  `cantidad` int DEFAULT NULL,
-  `fila` int DEFAULT NULL,
-  `columna` int DEFAULT NULL,
+  `cantidad` int(11) DEFAULT NULL,
+  `fila` int(11) DEFAULT NULL,
+  `columna` int(11) DEFAULT NULL,
   `descripcion` varchar(250) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Tabla de elementos de inventario eliminados';
 
@@ -210,11 +212,11 @@ CREATE TABLE `eliminados` (
 --
 
 CREATE TABLE `inventario` (
-  `id` mediumint NOT NULL,
+  `id` mediumint(9) NOT NULL,
   `item` varchar(50) NOT NULL,
-  `cantidad` int DEFAULT NULL,
-  `fila` int DEFAULT NULL,
-  `columna` int DEFAULT NULL,
+  `cantidad` int(11) DEFAULT NULL,
+  `fila` int(11) DEFAULT NULL,
+  `columna` int(11) DEFAULT NULL,
   `descripcion` varchar(250) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='tabla de inventario';
 
@@ -295,8 +297,8 @@ INSERT INTO `inventario` (`id`, `item`, `cantidad`, `fila`, `columna`, `descripc
 
 CREATE TABLE `lampara` (
   `nif` varchar(8) NOT NULL,
-  `altura` int DEFAULT NULL,
-  `elevacion` int DEFAULT NULL,
+  `altura` int(11) DEFAULT NULL,
+  `elevacion` int(11) DEFAULT NULL,
   `alcanceNom` float(10,2) DEFAULT NULL,
   `linterna` varchar(200) DEFAULT NULL,
   `candelasCalc` float(12,2) DEFAULT NULL,
@@ -545,7 +547,7 @@ INSERT INTO `localizacion` (`nif`, `puerto`, `num_local`, `localizacion`, `latit
 --
 
 CREATE TABLE `logs` (
-  `fecha` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `fecha` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `usuario` varchar(10) NOT NULL,
   `accion` varchar(20) DEFAULT NULL,
   `observacion` varchar(150) DEFAULT NULL
@@ -555,96 +557,96 @@ CREATE TABLE `logs` (
 -- Volcado de datos para la tabla `logs`
 --
 
-INSERT INTO `logs` (`usuario`, `accion`, `observacion`) VALUES
-('adrian', 'login', ''),
-('adrian', 'login', ''),
-('adrian', 'login', ''),
-('adrian', 'elimado', ''),
-('adrian', 'Item elimi', 'delete from inventario where id=62'),
-('adrian', 'login', ''),
-('adrian', 'Item elimi', 'delete from inventario where id=63'),
-('adrian', 'Item elimi', 'delete from inventario where id=64'),
-('adrian', 'Item elimi', 'delete from inventario where id=65'),
-('adrian', 'logout', ''),
-('pepe', 'login', ''),
-('pepe', 'logout', ''),
-('adrian', 'login', ''),
-('adrian', 'Item elimi', 'delete from inventario where id=66'),
-('adrian', 'Item elimi', 'delete from inventario where id=67'),
-('adrian', 'Item elimi', 'delete from inventario where id=68'),
-('adrian', 'Item añadi', 'insert into inventario values(NULL,\'fgg\',4,6,1,\'fg\')'),
-('adrian', 'Item añadi', 'insert into inventario values(NULL,\'gjfgjfkj\',5,6,1,\'6\')'),
-('adrian', 'Item elimi', 'fgg 4 6 1 fg'),
-('adrian', 'Item elimi', 'gjfgjfkj 5 6 1 6'),
-('adrian', 'logout', ''),
-('adrian', 'login', ''),
-('adrian', 'login', ''),
-('adrian', 'login', ''),
-('adrian', 'Mantenimie', 'insert into mantenimiento values(25700,\'2019-06-05\',\'sfg\')'),
-('', 'Mantenimiendo añadid', 'insert into mantenimiento values(25740,\'2019-06-05\',\'Se recupera la boya varada en la playa de pinedo\')'),
-('', 'Item añadido', 'insert into inventario values(NULL,\'prueba\',2,5,3,\'e\')'),
-('', 'Item añadido', 'insert into inventario values(NULL,\'p2\',2,5,3,\'3\')'),
-('adrian', 'login', ''),
-('adrian', 'Item eliminado', 'delete prueba 2 5 3 e'),
-('adrian', 'Item eliminado', 'delete p2 2 5 3 3'),
-('', 'Item añadido', 'insert into inventario values(NULL,\'Pintura Spray VERDE\',8,5,1,\'6038 400ml\')'),
-('', 'Item añadido', 'insert into inventario values(NULL,\'Pintura Spray ROJO\',8,5,1,\'RAL 3024 400ml\')'),
-('', 'Item añadido', 'insert into inventario values(NULL,\'Pintura Spray BLANCO\',8,5,1,\'RAL 9016 400ml\')'),
-('', 'Item añadido', 'insert into inventario values(NULL,\'Pintura Spray AMARILLO\',8,5,1,\'RAL 1023 400ml\')'),
-('', 'Item añadido', 'insert into inventario values(NULL,\'Pintura Spray NEGRO\',8,5,1,\'RAL 9017 400ml\')'),
-('', 'Item añadido', 'insert into inventario values(NULL,\'Disolvente\',5,5,1,\'\')'),
-('adrian', 'login', ''),
-('adrian', 'Mantenimiendo borrad', 'delete from mantenimiento where nif=26285 AND fecha=\'2019-01-11\' AND mantenimiento=\'eSTOY CON GORRIZ\''),
-('adrian', 'logout', ''),
-('marcos', 'login', ''),
-('marcos', 'Mantenimiendo borrad', 'delete from mantenimiento where nif=25700 AND fecha=\'2019-06-05\' AND mantenimiento=\'sfg\''),
-('marcos', 'Mantenimiendo añadid', 'insert into mantenimiento values(25700,\'2019-06-07\',\'sdd\')'),
-('marcos', 'Mantenimiendo borrad', 'delete from mantenimiento where nif=25700 AND fecha=\'2019-06-07\' AND mantenimiento=\'sdd\''),
-('marcos', 'logout', ''),
-('adrian', 'login', ''),
-('marcos', 'login', ''),
-('marcos', 'logout', ''),
-('adrian', 'logout', ''),
-('pepe', 'login', ''),
-('adrian', 'login', ''),
-('adrian', 'login', ''),
-('adrian', 'login', ''),
-('adrian', 'Modificacion Localiz', 'UPDATE localizacion set puerto=&quot;Canet de Berenguer&quot;, num_local=1,localizacion=&quot;Extremo dique de Levante&quot;,latitud=&quot;39º 40.337\''),
-('pepe', 'login', ''),
-('pepe', 'logout', ''),
-('adrian', 'login', ''),
-('pepe', 'login', ''),
-('pepe', 'Modificacion Caracte', 'UPDATE balizamiento set num_internacional=&quot;E-0198&quot;, tipo=&quot;Faro&quot;,apariencia=&quot;GpD(3)&quot;,periodo=20.00,caracteristica=&quot;L'),
-('pepe', 'Modificacion Localiz', 'UPDATE localizacion set puerto=&quot;Gandia&quot;, num_local=1,localizacion=&quot;Extremo del cabo de Cullera&quot;,latitud=&quot;39º 11.188´N&quot;,l'),
-('pepe', 'Modificacion lampara', 'UPDATE lampara set altura=14, elevacion=28,alcanceNom=19.00,alcanceLum=0,linterna=&quot;1&quot;,candelasCalc=0, candelasInst=0 where nif=25650'),
-('pepe', 'Modificacion Localiz', 'UPDATE localizacion set puerto=&quot;Gandia&quot;, num_local=0,localizacion=&quot;Extremo del cabo de Cullera&quot;,latitud=&quot;39º 11.188´N&quot;,l'),
-('pepe', 'Mantenimiendo añadid', 'insert into mantenimiento values(26190,\'2019-04-21\',\'Varada en playa norte Port Saplaya debido a fuerte temporal (Baja)\')'),
-('pepe', 'Mantenimiendo borrad', 'delete from mantenimiento where nif=26190 AND fecha=\'2019-04-21\' AND mantenimiento=\'Varada en playa norte Port Saplaya debido a fuerte temporal\''),
-('pepe', 'Modificacion lampara', 'UPDATE lampara set altura=4, elevacion=4,alcanceNom=3.00,alcanceLum=2.3,linterna=&quot;MCL140&quot;,candelasCalc=10.1, candelasInst=0.00 where nif=261'),
-('adrian', 'login', ''),
-('adrian', 'Uso coche añadido', 'insert into cochecito values(\'adrian\',\'2019-06-11\',\'07:56\',\'12:56\',\'asdd\')'),
-('adrian', 'login', ''),
-('adrian', 'logout', ''),
-('adrian', 'login', ''),
-('adrian', 'logout', ''),
-('adrian', 'login', ''),
-('adrian', 'Uso coche borrado', 'delete from cochecito where usuario=\'adrian\' AND fecha=\'2019-06-11\''),
-('adrian', 'login', ''),
-('adrian', 'Uso coche añadido', 'insert into cochecito values(\'adrian\',\'2019-06-12\',\'08:13\',\'\',\'Revision balizamiento\')'),
-('adrian', 'Uso coche añadido', 'insert into cochecito values(\'adrian\',\'2019-06-11\',\'08:14\',\'14:15\',\'Deplazamiento a Cullera\')'),
-('adrian', 'login', ''),
-('adrian', 'Uso coche añadido', 'insert into cochecito values(\'adrian\',\'2019-06-13\',\'06:00\',\'dfgdg\',\'06:00\')'),
-('adrian', 'login', ''),
-('adrian', 'Uso coche modificado', 'update cochecito set fecha=\'\', horaE=\'08:14\',horaS=\'horaSout\',motivo=\'prueba\' where usuario=\'adrian\' AND fecha=\'2019-06-13\''),
-('adrian', 'Uso coche modificado', 'update cochecito set fecha=\'\', horaE=\'\',horaS=\'\',motivo=\'\' where usuario=\'adrian\' AND fecha=\'2019-06-12\''),
-('adrian', 'Uso coche modificado', 'update cochecito set fecha=\'2019-06-03\', horaE=\'08:00\',horaS=\'12:45\',motivo=\'Revision Balizamiento\' where usuario=\'adrian\' AND fecha=\'2019-09-13\''),
-('adrian', 'Uso coche modificado', 'update cochecito set fecha=\'2019-06-04\', horaE=\'08:21\',horaS=\'14:21\',motivo=\'Desplazamiento al Faro de Cullera\' where usuario=\'adrian\' AND fecha=\'2019'),
-('adrian', 'Uso coche añadido', 'insert into cochecito values(\'adrian\',\'2019-06-07\',\'08:07\',\'14:22\',\'Revision Balizamiento\')'),
-('adrian', 'Uso coche añadido', 'insert into cochecito values(\'adrian\',\'2019-06-10\',\'08:20\',\'14:30\',\'Revision Balizamiento\')'),
-('adrian', 'Uso coche añadido', 'insert into cochecito values(\'adrian\',\'2019-06-11\',\'08:15\',\'14:25\',\'Desplazamiento al Faro de Cullera\')'),
-('adrian', 'Uso coche añadido', 'insert into cochecito values(\'adrian\',\'2019-06-12\',\'08:15\',\'13:30\',\'Revision Boyas Valencia\')'),
-('adrian', 'logout', ''),
-('adrian', 'login', '');
+INSERT INTO `logs` (`fecha`, `usuario`, `accion`, `observacion`) VALUES
+('2022-07-26 18:28:50', 'adrian', 'login', ''),
+('2022-07-26 18:28:50', 'adrian', 'login', ''),
+('2022-07-26 18:28:50', 'adrian', 'login', ''),
+('2022-07-26 18:28:50', 'adrian', 'elimado', ''),
+('2022-07-26 18:28:50', 'adrian', 'Item elimi', 'delete from inventario where id=62'),
+('2022-07-26 18:28:50', 'adrian', 'login', ''),
+('2022-07-26 18:28:50', 'adrian', 'Item elimi', 'delete from inventario where id=63'),
+('2022-07-26 18:28:50', 'adrian', 'Item elimi', 'delete from inventario where id=64'),
+('2022-07-26 18:28:50', 'adrian', 'Item elimi', 'delete from inventario where id=65'),
+('2022-07-26 18:28:50', 'adrian', 'logout', ''),
+('2022-07-26 18:28:50', 'pepe', 'login', ''),
+('2022-07-26 18:28:50', 'pepe', 'logout', ''),
+('2022-07-26 18:28:50', 'adrian', 'login', ''),
+('2022-07-26 18:28:50', 'adrian', 'Item elimi', 'delete from inventario where id=66'),
+('2022-07-26 18:28:50', 'adrian', 'Item elimi', 'delete from inventario where id=67'),
+('2022-07-26 18:28:50', 'adrian', 'Item elimi', 'delete from inventario where id=68'),
+('2022-07-26 18:28:50', 'adrian', 'Item añadi', 'insert into inventario values(NULL,\'fgg\',4,6,1,\'fg\')'),
+('2022-07-26 18:28:50', 'adrian', 'Item añadi', 'insert into inventario values(NULL,\'gjfgjfkj\',5,6,1,\'6\')'),
+('2022-07-26 18:28:50', 'adrian', 'Item elimi', 'fgg 4 6 1 fg'),
+('2022-07-26 18:28:50', 'adrian', 'Item elimi', 'gjfgjfkj 5 6 1 6'),
+('2022-07-26 18:28:50', 'adrian', 'logout', ''),
+('2022-07-26 18:28:50', 'adrian', 'login', ''),
+('2022-07-26 18:28:50', 'adrian', 'login', ''),
+('2022-07-26 18:28:50', 'adrian', 'login', ''),
+('2022-07-26 18:28:50', 'adrian', 'Mantenimie', 'insert into mantenimiento values(25700,\'2019-06-05\',\'sfg\')'),
+('2022-07-26 18:28:50', '', 'Mantenimiendo añadid', 'insert into mantenimiento values(25740,\'2019-06-05\',\'Se recupera la boya varada en la playa de pinedo\')'),
+('2022-07-26 18:28:50', '', 'Item añadido', 'insert into inventario values(NULL,\'prueba\',2,5,3,\'e\')'),
+('2022-07-26 18:28:50', '', 'Item añadido', 'insert into inventario values(NULL,\'p2\',2,5,3,\'3\')'),
+('2022-07-26 18:28:50', 'adrian', 'login', ''),
+('2022-07-26 18:28:50', 'adrian', 'Item eliminado', 'delete prueba 2 5 3 e'),
+('2022-07-26 18:28:50', 'adrian', 'Item eliminado', 'delete p2 2 5 3 3'),
+('2022-07-26 18:28:50', '', 'Item añadido', 'insert into inventario values(NULL,\'Pintura Spray VERDE\',8,5,1,\'6038 400ml\')'),
+('2022-07-26 18:28:50', '', 'Item añadido', 'insert into inventario values(NULL,\'Pintura Spray ROJO\',8,5,1,\'RAL 3024 400ml\')'),
+('2022-07-26 18:28:50', '', 'Item añadido', 'insert into inventario values(NULL,\'Pintura Spray BLANCO\',8,5,1,\'RAL 9016 400ml\')'),
+('2022-07-26 18:28:50', '', 'Item añadido', 'insert into inventario values(NULL,\'Pintura Spray AMARILLO\',8,5,1,\'RAL 1023 400ml\')'),
+('2022-07-26 18:28:50', '', 'Item añadido', 'insert into inventario values(NULL,\'Pintura Spray NEGRO\',8,5,1,\'RAL 9017 400ml\')'),
+('2022-07-26 18:28:50', '', 'Item añadido', 'insert into inventario values(NULL,\'Disolvente\',5,5,1,\'\')'),
+('2022-07-26 18:28:50', 'adrian', 'login', ''),
+('2022-07-26 18:28:50', 'adrian', 'Mantenimiendo borrad', 'delete from mantenimiento where nif=26285 AND fecha=\'2019-01-11\' AND mantenimiento=\'eSTOY CON GORRIZ\''),
+('2022-07-26 18:28:50', 'adrian', 'logout', ''),
+('2022-07-26 18:28:50', 'marcos', 'login', ''),
+('2022-07-26 18:28:50', 'marcos', 'Mantenimiendo borrad', 'delete from mantenimiento where nif=25700 AND fecha=\'2019-06-05\' AND mantenimiento=\'sfg\''),
+('2022-07-26 18:28:50', 'marcos', 'Mantenimiendo añadid', 'insert into mantenimiento values(25700,\'2019-06-07\',\'sdd\')'),
+('2022-07-26 18:28:50', 'marcos', 'Mantenimiendo borrad', 'delete from mantenimiento where nif=25700 AND fecha=\'2019-06-07\' AND mantenimiento=\'sdd\''),
+('2022-07-26 18:28:50', 'marcos', 'logout', ''),
+('2022-07-26 18:28:50', 'adrian', 'login', ''),
+('2022-07-26 18:28:50', 'marcos', 'login', ''),
+('2022-07-26 18:28:50', 'marcos', 'logout', ''),
+('2022-07-26 18:28:50', 'adrian', 'logout', ''),
+('2022-07-26 18:28:50', 'pepe', 'login', ''),
+('2022-07-26 18:28:50', 'adrian', 'login', ''),
+('2022-07-26 18:28:50', 'adrian', 'login', ''),
+('2022-07-26 18:28:50', 'adrian', 'login', ''),
+('2022-07-26 18:28:50', 'adrian', 'Modificacion Localiz', 'UPDATE localizacion set puerto=&quot;Canet de Berenguer&quot;, num_local=1,localizacion=&quot;Extremo dique de Levante&quot;,latitud=&quot;39º 40.337\''),
+('2022-07-26 18:28:50', 'pepe', 'login', ''),
+('2022-07-26 18:28:50', 'pepe', 'logout', ''),
+('2022-07-26 18:28:50', 'adrian', 'login', ''),
+('2022-07-26 18:28:50', 'pepe', 'login', ''),
+('2022-07-26 18:28:50', 'pepe', 'Modificacion Caracte', 'UPDATE balizamiento set num_internacional=&quot;E-0198&quot;, tipo=&quot;Faro&quot;,apariencia=&quot;GpD(3)&quot;,periodo=20.00,caracteristica=&quot;L'),
+('2022-07-26 18:28:50', 'pepe', 'Modificacion Localiz', 'UPDATE localizacion set puerto=&quot;Gandia&quot;, num_local=1,localizacion=&quot;Extremo del cabo de Cullera&quot;,latitud=&quot;39º 11.188´N&quot;,l'),
+('2022-07-26 18:28:50', 'pepe', 'Modificacion lampara', 'UPDATE lampara set altura=14, elevacion=28,alcanceNom=19.00,alcanceLum=0,linterna=&quot;1&quot;,candelasCalc=0, candelasInst=0 where nif=25650'),
+('2022-07-26 18:28:50', 'pepe', 'Modificacion Localiz', 'UPDATE localizacion set puerto=&quot;Gandia&quot;, num_local=0,localizacion=&quot;Extremo del cabo de Cullera&quot;,latitud=&quot;39º 11.188´N&quot;,l'),
+('2022-07-26 18:28:50', 'pepe', 'Mantenimiendo añadid', 'insert into mantenimiento values(26190,\'2019-04-21\',\'Varada en playa norte Port Saplaya debido a fuerte temporal (Baja)\')'),
+('2022-07-26 18:28:50', 'pepe', 'Mantenimiendo borrad', 'delete from mantenimiento where nif=26190 AND fecha=\'2019-04-21\' AND mantenimiento=\'Varada en playa norte Port Saplaya debido a fuerte temporal\''),
+('2022-07-26 18:28:50', 'pepe', 'Modificacion lampara', 'UPDATE lampara set altura=4, elevacion=4,alcanceNom=3.00,alcanceLum=2.3,linterna=&quot;MCL140&quot;,candelasCalc=10.1, candelasInst=0.00 where nif=261'),
+('2022-07-26 18:28:50', 'adrian', 'login', ''),
+('2022-07-26 18:28:50', 'adrian', 'Uso coche añadido', 'insert into cochecito values(\'adrian\',\'2019-06-11\',\'07:56\',\'12:56\',\'asdd\')'),
+('2022-07-26 18:28:50', 'adrian', 'login', ''),
+('2022-07-26 18:28:50', 'adrian', 'logout', ''),
+('2022-07-26 18:28:50', 'adrian', 'login', ''),
+('2022-07-26 18:28:50', 'adrian', 'logout', ''),
+('2022-07-26 18:28:50', 'adrian', 'login', ''),
+('2022-07-26 18:28:50', 'adrian', 'Uso coche borrado', 'delete from cochecito where usuario=\'adrian\' AND fecha=\'2019-06-11\''),
+('2022-07-26 18:28:50', 'adrian', 'login', ''),
+('2022-07-26 18:28:50', 'adrian', 'Uso coche añadido', 'insert into cochecito values(\'adrian\',\'2019-06-12\',\'08:13\',\'\',\'Revision balizamiento\')'),
+('2022-07-26 18:28:50', 'adrian', 'Uso coche añadido', 'insert into cochecito values(\'adrian\',\'2019-06-11\',\'08:14\',\'14:15\',\'Deplazamiento a Cullera\')'),
+('2022-07-26 18:28:50', 'adrian', 'login', ''),
+('2022-07-26 18:28:50', 'adrian', 'Uso coche añadido', 'insert into cochecito values(\'adrian\',\'2019-06-13\',\'06:00\',\'dfgdg\',\'06:00\')'),
+('2022-07-26 18:28:50', 'adrian', 'login', ''),
+('2022-07-26 18:28:50', 'adrian', 'Uso coche modificado', 'update cochecito set fecha=\'\', horaE=\'08:14\',horaS=\'horaSout\',motivo=\'prueba\' where usuario=\'adrian\' AND fecha=\'2019-06-13\''),
+('2022-07-26 18:28:50', 'adrian', 'Uso coche modificado', 'update cochecito set fecha=\'\', horaE=\'\',horaS=\'\',motivo=\'\' where usuario=\'adrian\' AND fecha=\'2019-06-12\''),
+('2022-07-26 18:28:50', 'adrian', 'Uso coche modificado', 'update cochecito set fecha=\'2019-06-03\', horaE=\'08:00\',horaS=\'12:45\',motivo=\'Revision Balizamiento\' where usuario=\'adrian\' AND fecha=\'2019-09-13\''),
+('2022-07-26 18:28:50', 'adrian', 'Uso coche modificado', 'update cochecito set fecha=\'2019-06-04\', horaE=\'08:21\',horaS=\'14:21\',motivo=\'Desplazamiento al Faro de Cullera\' where usuario=\'adrian\' AND fecha=\'2019'),
+('2022-07-26 18:28:50', 'adrian', 'Uso coche añadido', 'insert into cochecito values(\'adrian\',\'2019-06-07\',\'08:07\',\'14:22\',\'Revision Balizamiento\')'),
+('2022-07-26 18:28:50', 'adrian', 'Uso coche añadido', 'insert into cochecito values(\'adrian\',\'2019-06-10\',\'08:20\',\'14:30\',\'Revision Balizamiento\')'),
+('2022-07-26 18:28:50', 'adrian', 'Uso coche añadido', 'insert into cochecito values(\'adrian\',\'2019-06-11\',\'08:15\',\'14:25\',\'Desplazamiento al Faro de Cullera\')'),
+('2022-07-26 18:28:50', 'adrian', 'Uso coche añadido', 'insert into cochecito values(\'adrian\',\'2019-06-12\',\'08:15\',\'13:30\',\'Revision Boyas Valencia\')'),
+('2022-07-26 18:28:50', 'adrian', 'logout', ''),
+('2022-07-26 18:28:50', 'adrian', 'login', '');
 
 -- --------------------------------------------------------
 
@@ -653,7 +655,7 @@ INSERT INTO `logs` (`usuario`, `accion`, `observacion`) VALUES
 --
 
 CREATE TABLE `mantenimiento` (
-  `id_mantenimiento` int UNSIGNED NOT NULL,
+  `id_mantenimiento` int(10) UNSIGNED NOT NULL,
   `nif` varchar(8) NOT NULL,
   `fecha` date NOT NULL,
   `mantenimiento` varchar(250) NOT NULL
@@ -1222,7 +1224,7 @@ INSERT INTO `mantenimiento` (`id_mantenimiento`, `nif`, `fecha`, `mantenimiento`
 --
 
 CREATE TABLE `observaciones` (
-  `id_observacion` int UNSIGNED NOT NULL,
+  `id_observacion` int(10) UNSIGNED NOT NULL,
   `nif` varchar(8) NOT NULL,
   `observaciones` varchar(250) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='tabla de observaciones del balizamiento';
@@ -1332,18 +1334,16 @@ INSERT INTO `observaciones` (`id_observacion`, `nif`, `observaciones`) VALUES
 
 CREATE TABLE `sessions` (
   `session_id` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
-  `expires` int UNSIGNED NOT NULL,
-  `data` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin
-) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_spanish_ci;
+  `expires` int(11) UNSIGNED NOT NULL,
+  `data` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_spanish2_ci;
 
 --
 -- Volcado de datos para la tabla `sessions`
 --
 
 INSERT INTO `sessions` (`session_id`, `expires`, `data`) VALUES
-('0FVnGc7wNX68e2hr7RiZOcqDRp_rkbpL', 1656879398, '{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"flash\":{}}'),
-('mGvFyw7itj4-HIG3QjA_zYOYGDV3GgXr', 1656883582, '{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"flash\":{},\"passport\":{\"user\":\"user1\"}}'),
-('s0jI5LEeZf157xJrUCxD65EEMU7wrDur', 1656879398, '{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"flash\":{}}');
+('p9iDmA8rHqYpHPmzyrbmX4nN5Y36k7hs', 1658956215, '{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"flash\":{},\"passport\":{\"user\":1}}');
 
 -- --------------------------------------------------------
 
@@ -1352,6 +1352,7 @@ INSERT INTO `sessions` (`session_id`, `expires`, `data`) VALUES
 --
 
 CREATE TABLE `usuarios` (
+  `id` int(11) NOT NULL,
   `usuario` varchar(50) NOT NULL,
   `contrasena` varchar(250) NOT NULL,
   `email` varchar(200) DEFAULT NULL,
@@ -1363,14 +1364,10 @@ CREATE TABLE `usuarios` (
 -- Volcado de datos para la tabla `usuarios`
 --
 
-INSERT INTO `usuarios` (`usuario`, `contrasena`, `email`, `full_name`, `privilegio`) VALUES
-('adrian', 'adrian', NULL, NULL, 'admin'),
-('invitado', '', NULL, NULL, NULL),
-('marcos', 'bruixo', NULL, NULL, 'san'),
-('pepe', 'pepe', NULL, NULL, 'admin'),
-('raul', 'raulito', NULL, NULL, 'san'),
-('rosa1213', '$2a$10$jq9ZwrfwJd5ZzeJUCTSnYO6KCSu/eepJtuZabaZzUdlk2Ek/MPePi', 'rosa1@rosa1.esfgh', 'rosa marifgh', 'san'),
-('user1', '$2a$10$FnvZM/pll.MmM1ib4KT/B.4bRm7EhkCmzmma0TlJfI/9AyNjlivEO', 'correo@prueba.es', 'Nombre usuario1', 'san');
+INSERT INTO `usuarios` (`id`, `usuario`, `contrasena`, `email`, `full_name`, `privilegio`) VALUES
+(1, 'user1', '$2a$10$FEnVNECHkhfiJYhsgRCdh.dAsJE4tp3NmQzqEJmNpzEgnlcN5h8km', 'user1@user1.com', 'user1 completo', 'san'),
+(3, 'yo', '$2a$10$OGUMq6xucVM3BrYXdTFq7OkGUVmQcFTHQlrv7koyFGbIn9wIRJ1Pq', 'uasaeg@akshg.es', 'yo', 'san'),
+(4, 'usuario1', '$2a$10$DMW5Gih.Hdz1/9jGqAElQO1B7PiO7QbrSZBsM6lijd7rY9jnxhUTW', 'uasaeg@akshg.es', 'usuario1', 'san');
 
 --
 -- Índices para tablas volcadas
@@ -1430,63 +1427,17 @@ ALTER TABLE `sessions`
 -- Indices de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  ADD PRIMARY KEY (`usuario`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
 --
 
 --
--- AUTO_INCREMENT de la tabla `inventario`
+-- AUTO_INCREMENT de la tabla `usuarios`
 --
-ALTER TABLE `inventario`
-  MODIFY `id` mediumint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=79;
-
---
--- AUTO_INCREMENT de la tabla `mantenimiento`
---
-ALTER TABLE `mantenimiento`
-  MODIFY `id_mantenimiento` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=552;
-
---
--- AUTO_INCREMENT de la tabla `observaciones`
---
-ALTER TABLE `observaciones`
-  MODIFY `id_observacion` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=98;
-
---
--- Restricciones para tablas volcadas
---
-
---
--- Filtros para la tabla `cochecito`
---
-ALTER TABLE `cochecito`
-  ADD CONSTRAINT `cochecito_FK` FOREIGN KEY (`usuario`) REFERENCES `usuarios` (`usuario`);
-
---
--- Filtros para la tabla `lampara`
---
-ALTER TABLE `lampara`
-  ADD CONSTRAINT `lampara_FK` FOREIGN KEY (`nif`) REFERENCES `balizamiento` (`nif`) ON UPDATE CASCADE;
-
---
--- Filtros para la tabla `localizacion`
---
-ALTER TABLE `localizacion`
-  ADD CONSTRAINT `localizacion_FK` FOREIGN KEY (`nif`) REFERENCES `balizamiento` (`nif`) ON UPDATE CASCADE;
-
---
--- Filtros para la tabla `mantenimiento`
---
-ALTER TABLE `mantenimiento`
-  ADD CONSTRAINT `mantenimiento_FK` FOREIGN KEY (`nif`) REFERENCES `balizamiento` (`nif`) ON UPDATE CASCADE;
-
---
--- Filtros para la tabla `observaciones`
---
-ALTER TABLE `observaciones`
-  ADD CONSTRAINT `observaciones_FK` FOREIGN KEY (`nif`) REFERENCES `balizamiento` (`nif`) ON UPDATE CASCADE;
+ALTER TABLE `usuarios`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

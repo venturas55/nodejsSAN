@@ -7,9 +7,17 @@ La base de datos creada y poblada con ciertos datos se encuentra en ./database
 Para correr en modo desarrollo ejecutar:    npm run dev
 
 
+En caso de recibir el error:
+            code: 'EADDRINUSE',
+            errno: 'EADDRINUSE',
+            syscall: 'listen',
+            address: '::',
+            port: 4000
+checkear si node esta en uso, y acabar con el:
 
-
-
+    ps aux | grep node
+    kill -9 PROCESS_ID
+    killall node
 
 
 

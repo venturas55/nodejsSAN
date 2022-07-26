@@ -12,7 +12,7 @@ router.get('/signup', helpers.isNotAuthenticated, (req, res) => {
 router.post('/signup', passport.authenticate('local.signup', {
     successRedirect: '/profile',
     failureRedirect: '/signup',
-    passReqToCallback: true,
+    //passReqToCallback: true,
     failureFlash: true
 })
 );
@@ -22,11 +22,10 @@ router.get('/signin', helpers.isNotAuthenticated, (req, res) => {
     res.render('auth/signin');
 });
 router.post('/signin', (req, res, next) => {
-    passport.authenticate('local.signin', {
+    const p = passport.authenticate('local.signin', {
         successRedirect: '/profile',
         failureRedirect: '/signin',
         failureFlash: true
-
     })(req, res, next);
 });
 
@@ -36,8 +35,6 @@ router.get('/logout', helpers.isAuthenticated, (req, res) => {
     req.logOut();
     res.redirect('/');
 })
-
-
 
 
 //TODO: Añadir posibilidad de cambio de contraseña del usuario

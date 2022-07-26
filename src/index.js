@@ -78,7 +78,6 @@ const almacenar=multer.diskStorage({
         }
     }
 });
-
 app.use(multer({
     storage: almacenar,
     limits:{fileSize:5000000,}

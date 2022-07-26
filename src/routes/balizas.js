@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const {unlink} = require('fs-extra');
+const { unlink } = require('fs-extra');
 const path = require('path');
 
 const helpers = require("../lib/helpers");
@@ -80,13 +80,13 @@ router.get("/list", async (req, res) => {
 router.get("/list/:busqueda", async (req, res) => {
   var { busqueda } = req.params;
   var balizas;
-  if(busqueda==='Ext'){
+  if (busqueda === 'Ext') {
     console.log("Externas");
-     balizas = await db.query("SELECT * FROM balizamiento b, localizacion l where b.nif=l.nif AND l.puerto not like '%valencia%' and l.puerto not like '%sagunto%' and l.puerto not like '%gandia%' order by l.nif");
+    balizas = await db.query("SELECT * FROM balizamiento b, localizacion l where b.nif=l.nif AND l.puerto not like '%valencia%' and l.puerto not like '%sagunto%' and l.puerto not like '%gandia%' order by l.nif");
   }
-  else{
+  else {
     busqueda = "%" + busqueda + "%";
-     balizas = await db.query("SELECT * FROM balizamiento b, localizacion l where b.nif=l.nif AND l.puerto like ? order by l.nif", busqueda);
+    balizas = await db.query("SELECT * FROM balizamiento b, localizacion l where b.nif=l.nif AND l.puerto like ? order by l.nif", busqueda);
     //like is case insensitive por defecto. En caso de quererlo sensitivo hay que añadir solo "like binary"
   }
   res.render("balizas/list", { balizas });
@@ -121,12 +121,12 @@ router.get("/list/:filtro/:valor", async (req, res) => {
 });
 router.get("/plantilla/:nif", async (req, res) => {
   const { nif } = req.params;
-  
+
   const baliza = await db.query('SELECT * FROM balizamiento b  LEFT JOIN localizacion lo ON lo.nif=b.nif  LEFT JOIN lampara la ON la.nif=b.nif where b.nif=?', [nif]);
   const observaciones = await db.query('SELECT * FROM observaciones where nif=?', [nif]);
   const mantenimiento = await db.query('SELECT * FROM mantenimiento where nif=? order by fecha DESC', [nif]);
 
-  var fotitos= helpers.listadoFotos(nif);
+  var fotitos = helpers.listadoFotos(nif);
 
   res.render("balizas/plantilla", { layout: 'layoutPlantilla', baliza: baliza[0], obs: observaciones, mant: mantenimiento, imagen: fotitos });
   // NO FUNCIONA CON LA BARRA DELANTE res.render('/links/list');
@@ -248,8 +248,7 @@ router.post("/editLampara/:nif", helpers.isAuthenticated, async (req, res) => {
 
 //CRUD delete
 router.get("/delete/:nif", helpers.isAuthenticated, async (req, res) => {
-  console.log("VOY A BORRAR LA PUTA BALIZA"); 
-   
+  console.log("VOY A BORRAR LA PUTA BALIZA");
   console.log(req.params.nif);
   const { nif } = req.params;
   await db.query("DELETE FROM mantenimiento WHERE nif=?", [nif]);
@@ -284,7 +283,7 @@ router.get("/observaciones/delete/:idObs", helpers.isAuthenticated, async (req, 
   const resp = await db.query("select nif from observaciones where id_observacion=?", [idObs]);
   const nif = resp[0].nif;
   await db.query("delete from observaciones where id_observacion=?", [idObs]);
-  req.flash("success", "Observacion de baliza "+ nif+" borrada correctamente." );
+  req.flash("success", "Observacion de baliza " + nif + " borrada correctamente.");
   res.redirect("/balizas/plantilla/" + nif);
 });
 router.get("/observaciones/edit/:idObs", helpers.isAuthenticated, async (req, res) => {
@@ -314,7 +313,7 @@ router.post("/observaciones/edit/:idObs", helpers.isAuthenticated, async (req, r
     newObservacion,
     id_observacion,
   ]);
-  req.flash("success", "Observacion modificada correctamente en la baliza "+nif);
+  req.flash("success", "Observacion modificada correctamente en la baliza " + nif);
   res.redirect("/balizas/plantilla/" + nif);
 });
 //GESTION CRUD mantenimiento
@@ -340,7 +339,7 @@ router.get("/mantenimiento/delete/:idMan", helpers.isAuthenticated, async (req, 
   const resp = await db.query("select nif from mantenimiento where id_mantenimiento=?", [idMan]);
   const nif = resp[0].nif;
   await db.query("delete from mantenimiento where id_mantenimiento=?", [idMan]);
-  req.flash("success", "mantenimiento de baliza "+nif+" borrado correctamente ");
+  req.flash("success", "mantenimiento de baliza " + nif + " borrado correctamente ");
   res.redirect("/balizas/plantilla/" + nif);
 });
 router.get("/mantenimiento/edit/:idMan", helpers.isAuthenticated, async (req, res) => {
@@ -373,7 +372,7 @@ router.post("/mantenimiento/edit/:idMan", helpers.isAuthenticated, async (req, r
     newObservacion,
     id_mantenimiento,
   ]);
-  req.flash("success", "Mantenimiento modificado correctamente en la baliza "+nif);
+  req.flash("success", "Mantenimiento modificado correctamente en la baliza " + nif);
   res.redirect("/balizas/plantilla/" + nif);
 });
 
@@ -384,26 +383,42 @@ router.get("/mapa/:nif", async (req, res) => {
   res.render("mapa", { layout: 'layoutMapa', baliza: baliza[0], });
 });
 
+router.get("/mapaGeneral/:valor", (req, res) => {
+  const { valor } = req.params;
+  console.log("Mapa " + valor);
+  switch (valor) {
+    case "1":
+      res.render("mapaValencia", { layout: 'layoutMapa' });
+      break;
+    case '2':
+      res.render("mapaSagunto", { layout: 'layoutMapa' });
+      break;
+    case "3":
+      res.render("mapaGandia", { layout: 'layoutMapa' });
+      break;
+  }
+});
+
 //GESTION FOTOS
-router.get("/fotos/:nif",async (req,res)=>{
+router.get("/fotos/:nif", async (req, res) => {
   const nif = req.params.nif;
   var fotos = helpers.listadoFotos(nif);
-  res.render("balizas/fotos", { fotos,nif });
+  res.render("balizas/fotos", { fotos, nif });
 });
-router.get("/fotos/:nif/:src/delete",async (req,res)=>{
+router.get("/fotos/:nif/:src/delete", async (req, res) => {
   const nif = req.params.nif;
   const src = req.params.src;
-  await unlink(path.resolve('src/public/img/imagenes/'+nif+"/"+src));
-  req.flash("success", "Foto de baliza "+ nif+" borrada correctamente." );
+  await unlink(path.resolve('src/public/img/imagenes/' + nif + "/" + src));
+  req.flash("success", "Foto de baliza " + nif + " borrada correctamente.");
   res.redirect("/balizas/fotos/" + nif);
 });
-router.post("/upload/:nif",async (req,res)=>{
+router.post("/upload/:nif", async (req, res) => {
   console.log("Subiendo foto baliza");
   const { nif } = req.params;
   console.log(req.params);
   console.log(req.body);
-  req.flash("success", "Foto de la baliza "+nif+ " subida correctamente!");
-  res.redirect("/balizas/plantilla/"+nif);
+  req.flash("success", "Foto de la baliza " + nif + " subida correctamente!");
+  res.redirect("/balizas/plantilla/" + nif);
 });
 
 module.exports = router;
