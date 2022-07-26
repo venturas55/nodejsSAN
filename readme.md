@@ -40,6 +40,10 @@ checkear si node esta en uso, y acabar con el:
 
 
 
+
+
+
+
 ```sql
 CREATE USER 'foo'@'localhost' IDENTIFIED WITH mysql_native_password BY 'bar';
 ```
