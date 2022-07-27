@@ -301,9 +301,7 @@ router.post("/observaciones/edit/:idObs", helpers.isAuthenticated, async (req, r
     nif,
     observacionNueva,
   } = req.body;
-  console.log("1: " + id_observacion);
-  console.log("2: " + nif);
-  console.log("3: " + observacionNueva);
+
   const newObservacion = {
     id_observacion,
     nif,

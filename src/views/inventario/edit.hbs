@@ -1,0 +1,27 @@
+
+<div class="container p-2">
+   <h1 class=" col-md-8 mx-auto">Cambios en el inventario</h1>
+    <div class="row">
+        <div class="col-md-8 mx-auto p-4">
+             
+            <div class="card">
+                <div class="card-body">
+                    <h1> ITEM {{item.id}} </h1>
+                    <form action="/inventario/edit/{{item.id}}" method="POST">
+                        <div class="form-group"> <input type="hidden"   value="{{item.id}}" class="form-control" type="text" name="id"   /> </div>
+                        <div class="form-group"> <label for="item">Item</label><input value="{{item.item}}" class="form-control" type="text" name="item" placeholder="item"  /> </div>
+                        <div class="form-group"> <label for="descripcion">Descripcion</label><input value="{{item.descripcion}}" class="form-control" type="text" name="descripcion" placeholder="descripcion" />  </div>
+                        <div class="form-group"><label for="cantidad">Cantidad</label><input value="{{item.cantidad}}" class="form-control" type="number" name="cantidad" placeholder="cantidad"  />  </div>
+                        <div class="form-group"><label for="fila">Fila</label><input value="{{item.fila}}" class="form-control" type="number" name="fila" placeholder="fila"/> </div>
+                        <div class="form-group"><label for="columna">Columna</label><input value="{{item.columna}}" class="form-control" type="number" name="columna" placeholder="columna" /> </div>
+                            
+                        <button class="btn btn-success btn-block">Guardar</button>
+                    </form>
+                    <form action="/inventario" method="GET">
+                                <button class="btn btn-danger btn-block">Cancelar</button>
+                    </form>
+            </div>
+        </div>
+    </div>
+</div>
+

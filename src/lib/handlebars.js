@@ -19,6 +19,12 @@ helpers.formatearEn = (timestamp) =>{
   return [timestamp.getFullYear(), mnth,day ].join("-");
 }
 
+helpers.ifCond = (v1,v2,options)=>{
+  if(v1.fila === v2) {
+      return options.fn(this);
+    }
+    return options.inverse(this);
+}
 
 helpers.suma = (balizas)=>{
     var total=0;

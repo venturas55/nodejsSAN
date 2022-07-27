@@ -35,17 +35,17 @@ router.post('/profile/edit/', helpers.isAuthenticated, async (req, res) => {
 
     console.log(req.body.oldcontrasena + " / " + user.contrasena);
     const validPassword = await helpers.verifyPassword(req.body.oldcontrasena, user.contrasena);
-    if (validPassword){
+    if (validPassword) {
         user.usuario = req.body.usuario;
         user.email = req.body.email;
         user.full_name = req.body.full_name;
         user.contrasena = await helpers.encryptPass(req.body.newcontrasena);
         console.log("guardando en la BBDD");
         //console.log(user);
-        const result = await db.query("UPDATE usuarios SET ? where id= ?", [user,user.id]);
+        const result = await db.query("UPDATE usuarios SET ? where id= ?", [user, user.id]);
         const tieneFoto = helpers.existeFotoPerfil(req.user);
         res.render('profile', { tieneFoto: tieneFoto });
-    }else{
+    } else {
         res.send("Password incorrecto");
     }
 
@@ -74,6 +74,50 @@ router.post('/upload/:usuario', helpers.isAuthenticated, (req, res) => {
     req.flash("success", "La foto del perfil de usuario ha sido actualizada con exito");
     res.redirect("/profile");
 });
+
+//GESTION INVENTARIO
+router.get('/inventario', async (req, res) => {
+    const inventario = await db.query("select * from inventario order by fila,columna");
+    res.render('inventario/inventario', { inventario });
+});
+
+router.get('/inventario/edit/:id', async (req, res) => {
+    const { id } = req.params;
+    console.log(id);
+    const item = await db.query("select * from inventario where id=?", id);
+    console.log(item[0]);
+    res.render('inventario/edit',  {item : item[0]} );
+});
+router.post('/inventario/edit/:id', async (req, res) => {
+    var {
+        id,
+        item,
+        descripcion,
+        cantidad,
+        fila,
+        columna
+      } = req.body;
+    
+      const nuevoItem = {
+        id,
+        item,
+        descripcion,
+        cantidad,
+        fila,
+        columna
+      };
+     await db.query("update inventario set ? where id=?", [nuevoItem, id]);
+
+    res.redirect("/inventario");
+});
+
+router.get("/inventario/delete/:id", helpers.isAuthenticated, async (req, res) => {
+    console.log(req.params.idObs);
+    const { id } = req.params;
+    await db.query("delete from inventario where id=?", [id]);
+    req.flash("success", "Item eliminado correctamente.");
+    res.redirect("/inventario");
+  });
 
 router.get('/error', (req, res) => {
     console.log("Redirect");

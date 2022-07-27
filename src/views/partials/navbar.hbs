@@ -1,20 +1,20 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark justify-content-between">
   {{#if user}}
   <img src="/img/profiles/{{user.usuario}}.jpg" class="avatar avatar-s" alt="avatar">
   {{/if}}
-  <div class="container">
-    <a class="navbar-brand" href="/">BBDD SAN</a>
+  {{!-- <div class="container"> --}}
+    <a class="navbar-brand" href="/balizas/list">BBDD SAN</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
       aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    {{!-- <div class="collapse navbar-collapse" id="navbarSupportedContent"> --}}
       <ul class="navbar-nav ml-auto">
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            ListadoBalizamiento
+            APV
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <a class="dropdown-item" href="/balizas/list">Listado global</a>
@@ -26,9 +26,49 @@
             <a class="dropdown-item" href="/balizas/mapaGeneral/1">Mapa Valencia</a>
             <a class="dropdown-item" href="/balizas/mapaGeneral/2">Mapa Sagunto</a>
             <a class="dropdown-item" href="/balizas/mapaGeneral/3">Mapa Gandia</a>
+            {{!--
+            // START
+            <a class="dropdown-item dropdown-toggle" role="button" data-toggle="dropdown" aria-expanded="false">
+              Externo
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="/balizas/list/Marina">Marina JCI</a></li>
+              <li><a class="dropdown-item" href="/balizas/list/Perello">CN Perello</a></li>
+              <li><a class="dropdown-item" href="/balizas/list/Cullera">Puerto Cullera</a></li>
+              <li><a class="dropdown-item" href="/balizas/list/Oliva">CN Oliva</a></li>
+              <li><a class="dropdown-item" href="/balizas/list/Canet">CN Canet</a></li>
+              <li><a class="dropdown-item" href="/balizas/list/Sapla">CN Port Saplaya</a></li>
+
+            </ul>
+            // END /
+
+            --}}
 
           </div>
         </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            Externo
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="/balizas/list/Perello">CN Perello</a>
+            <a class="dropdown-item" href="/balizas/list/Cullera">Puerto Cullera</a>
+            <a class="dropdown-item" href="/balizas/list/Oliva">CN Oliva</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/balizas/list/Marina">Marina JCI</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/balizas/list/Canet">CN Canet</a>
+            <a class="dropdown-item" href="/balizas/list/Sapla">CN Port Saplaya</a>
+            <a class="dropdown-item" href="/balizas/mapaGeneral/3">Mapa Gandia</a>
+          </div>
+        </li>
+
+
+
+
+
         {{#if user}}
 
         <li class="nav-item dropdown">
@@ -38,7 +78,7 @@
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <a class="dropdown-item" href="/balizas/add ">Baliza Nueva</a>
-            <a class="dropdown-item" onclick="abreModal2();return false;">Forzar un borrado</a>
+            <a class="dropdown-item" onclick="abreModal2()">Forzar un borrado</a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="/profile">Ver Perfil</a>
             <a class="dropdown-item" href="/logout ">Logout</a>
@@ -55,7 +95,10 @@
 
         {{#if user}}
         <li class="nav-item">
-          <a class="nav-link" href="/logout " tabindex="-1" aria-disabled="true">Logout</a>
+          <a class="nav-link" href="/inventario" tabindex="-1" aria-disabled="true">Inventario</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/logout" tabindex="-1" aria-disabled="true">Logout</a>
         </li>
 
         {{else}}
@@ -79,6 +122,8 @@
         </select>
         <button id="botonBuscar" class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
       </form>
-    </div>
-  </div>
+      {{!--
+    </div> --}}
+    {{!--
+  </div> --}}
 </nav>
