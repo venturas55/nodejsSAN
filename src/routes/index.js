@@ -88,7 +88,7 @@ router.get('/inventario/edit/:id', async (req, res) => {
     console.log(item[0]);
     res.render('inventario/edit',  {item : item[0]} );
 });
-router.post('/inventario/edit/:id', async (req, res) => {
+router.post('/inventario/edit/:id', helpers.isAuthenticated, async (req, res) => {
     var {
         id,
         item,
