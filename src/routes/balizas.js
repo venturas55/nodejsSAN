@@ -247,7 +247,7 @@ router.post("/editLampara/:nif", helpers.isAuthenticated, async (req, res) => {
 });
 
 //CRUD delete
-router.get("/delete/:nif", helpers.isAuthenticated, async (req, res) => {
+router.get("/delete/:nif", helpers.isAdmin , async (req, res) => {
   console.log("VOY A BORRAR LA PUTA BALIZA");
   console.log(req.params.nif);
   const { nif } = req.params;

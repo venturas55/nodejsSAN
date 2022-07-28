@@ -5,59 +5,46 @@
         <div class="card-body">
 
           <h3>Bienvenid@ {{user.usuario}} </h3>
-            {{>avatar}}
+          {{>avatar}}
           <input type="hidden" name="id" value="{{user.id}}" />
 
-          <form
-            action="/profile/edit/"
-            method="POST"
-            enctype="multipart/form-data"
-          >
+          <form action="/profile/edit/" method="POST" enctype="multipart/form-data">
 
 
 
             <div class="form-group">
               <input type="hidden" name="id" value="{{user.id}}" />
               <label for="full_name">Nombre completo
-                <input type="text" value="{{user.full_name}}" name="full_name"  class="form-control"/>
+                <input type="text" value="{{user.full_name}}" name="full_name" class="form-control" />
               </label>
             </div>
             <div class="form-group">
               <label for="usuario">Usuario
-              <input type="text" value="{{user.usuario}}" name="usuario"  class="form-control"/>
+                <input type="text" value="{{user.usuario}}" name="usuario" class="form-control" />
               </label>
             </div>
             <div class="form-group">
               <label for="email">eMail
-              <input type="text" value="{{user.email}}" name="email"  class="form-control"/></label>
+                <input type="text" value="{{user.email}}" name="email" class="form-control" /></label>
             </div>
 
             <div class="form-group">
               <label for="newcontrasena">Nueva Contraseña
-              <input
-                type="password"
-                placeholder="Nueva contraseña"
-                name="newcontrasena"  class="form-control"
-              /></label>
-                 <div class="form-group">
-              <label for="newcontrasena2">Confirme Contraseña
-              <input
-                type="password"
-                placeholder="Repita contraseña"
-                name="newcontrasena2"  class="form-control"
-              /></label>
-                    <div class="form-group">
-              <label for="oldcontrasena">Vieja Contraseña
-              <input
-                type="password"
-                value=""
-                name="oldcontrasena"  class="form-control"
-              /></label>
-            </div>
-            <a href="/profile/borrarfoto/{{user.id}}/{{user.pictureURL}}" class="btn btn-primary">Eliminar foto perfil</a>
-            <button id="enviarCambios" class="btn btn-primary m-4 d-none">
-              Guardar cambios form
-            </button>
+                <input type="password" placeholder="Nueva contraseña" name="newcontrasena"
+                  class="form-control" /></label>
+              <div class="form-group">
+                <label for="newcontrasena2">Confirme Contraseña
+                  <input type="password" placeholder="Repita contraseña" name="newcontrasena2"
+                    class="form-control" /></label>
+                <div class="form-group">
+                  <label for="oldcontrasena">Vieja Contraseña
+                    <input type="password" value="" name="oldcontrasena" class="form-control" /></label>
+                </div>
+                <a href="/profile/borrarfoto/{{user.id}}/{{user.pictureURL}}" class="btn btn-primary">Eliminar foto
+                  perfil</a>
+                <button id="enviarCambios" class="btn btn-primary m-4 d-none">
+                  Guardar cambios form
+                </button>
           </form>
           <div class="form-group">
             <button onclick="abreModal3(); " class="btn btn-primary m-4">

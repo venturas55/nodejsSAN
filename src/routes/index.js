@@ -77,13 +77,25 @@ router.get("/profile/delete/:id", helpers.isAuthenticated, async (req, res) => {
 router.post('/upload/:id', helpers.isAuthenticated, async (req, res) => {
     const { id } = req.params;
     //console.log(req.file);
-    var usuarioMod = await db.query("select * from usuarios where id = ?", id);
-    usuarioMod = usuarioMod[0];
-    usuarioMod.pictureURL = req.file.filename;
-    await db.query("UPDATE usuarios set  ? WHERE id=?", [usuarioMod, id]);
+    var usuario = await db.query("select * from usuarios where id = ?", id);
+    usuario = usuario[0];
+
+    //borramos la foto anterior del perfil
+    const filePath = path.resolve('src/public/img/profiles/' + usuario.pictureURL);
+    access(filePath, constants.F_OK, async (err) => {
+        if (err) {
+            console.log("No tiene foto de perfil");
+        } else {
+            console.log('File exists. Deleting now ...');
+            await unlink(filePath);
+        }
+    });
+
+    //Ponemos la nueva
+    usuario.pictureURL = req.file.filename;
+    await db.query("UPDATE usuarios set  ? WHERE id=?", [usuario, id]);
     req.flash("success", "La foto del perfil de usuario ha sido actualizada con exito");
 
-    //TODO: borrar foto de perfil anterior???
     res.redirect("/profile");
 });
 router.get("/profile/borrarfoto/:id/:url", helpers.isAuthenticated, async (req, res) => {
@@ -151,7 +163,12 @@ router.get("/inventario/delete/:id", helpers.isAuthenticated, async (req, res) =
 //MOSTRAR ERROR
 router.get('/error', (req, res) => {
     console.log("Redirect");
-    res.redirect('/error');
+    res.render('error');
+});
+
+router.get('/noperm', (req, res) => {
+    console.log("Redirect");
+    res.render('noPermission');
 });
 
 

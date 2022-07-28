@@ -32,6 +32,22 @@ helpers.isNotAuthenticated = (req,res,next)=>{
     return res.redirect('/profile');
 }
 
+helpers.isAdmin = (req,res,next)=>{
+    if(req.user.privilegio=="admin"){
+        return next();
+    }
+    return res.redirect('/noperm');
+}
+
+helpers.isNotAdmin = (req,res,next)=>{
+    if(!req.user.privilegio=="admin"){
+        return next();
+    }
+    return res.redirect('/noperm');
+}
+
+
+
 helpers.listadoFotos = (req,res,next)=>{
     const nif=req;
     console.log(nif);
