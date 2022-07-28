@@ -63,10 +63,23 @@ helpers.listadoFotos = (req,res,next)=>{
     return fotitos;
 }
 
-helpers.existeFotoPerfil = (req,res,next)=>{
-    var ruta = path.join(__dirname, "../public/img/profiles/",req.usuario+".jpg"); //TODO: gestionar la extension de foto perfil
+helpers.listadoDocumentos = (req,res,next)=>{
+    var documentos = [];
+    var directorio = path.join(__dirname, "../public/informes");
+    fs.readdir(directorio, (err, files) => {
+      if (files) {
+        files.forEach(file => {
+            documentos.push(file);
+        });
+      }
+    });
+    return documentos;
+}
+
+/* helpers.existeFotoPerfil = (req,res,next)=>{
+    var ruta = path.join(__dirname, "../public/img/profiles/",req.pictureURL); 
     var flag=fs.existsSync(ruta);
     return flag;
-}
+} */
 
 module.exports = helpers;

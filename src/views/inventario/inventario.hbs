@@ -8,8 +8,9 @@
                 <div class="table-responsive">
                     <table id="tablainventario" class="table table-sm table-dark">
                         <tr class="info-color-dark">
+                                <th>Tipo</th>
                             <th>ITEM</th>
-                            <th>descripcion</th>
+                            <th>Descripcion</th>
                             <th>Cantidad</th>
                             <th>Fila</th>
                             <th>Columna</th>
@@ -18,7 +19,7 @@
                             
                                     {{#each inventario}}
                                             <tr>
-                                            <td>{{ this.item }}  </td> <td>{{ this.descripcion }}  </td> <td>{{ this.cantidad }}</td> <td>{{this.fila}} </td>  <td>{{this.columna}}</td> <td>    <a href="/inventario/edit/{{this.id}}"  class="text-primary"><i
+                                          <td>{{ this.tipo }}  </td>   <td>{{ this.item }}  </td> <td>{{ this.descripcion }}  </td> <td>{{ this.cantidad }}</td> <td>{{this.fila}} </td>  <td>{{this.columna}}</td> <td>    <a href="/inventario/edit/{{this.id}}"  class="text-primary"><i
                             class="fa-solid fa-pen-to-square"></i>Edit</a>
                     <a href="/inventario/delete/{{this.id}}" class="text-primary"><i
                             class="fa-solid fa-trash"></i>Del</a></td>

@@ -9,6 +9,7 @@
                     <h1> ITEM {{item.id}} </h1>
                     <form action="/inventario/edit/{{item.id}}" method="POST">
                         <div class="form-group"> <input type="hidden"   value="{{item.id}}" class="form-control" type="text" name="id"   /> </div>
+                          <div class="form-group"> <label for="tipo">Tipo</label><input value="{{item.tipo}}" class="form-control" type="text" name="tipo" placeholder="tipo"  /> </div>
                         <div class="form-group"> <label for="item">Item</label><input value="{{item.item}}" class="form-control" type="text" name="item" placeholder="item"  /> </div>
                         <div class="form-group"> <label for="descripcion">Descripcion</label><input value="{{item.descripcion}}" class="form-control" type="text" name="descripcion" placeholder="descripcion" />  </div>
                         <div class="form-group"><label for="cantidad">Cantidad</label><input value="{{item.cantidad}}" class="form-control" type="number" name="cantidad" placeholder="cantidad"  />  </div>

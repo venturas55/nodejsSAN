@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const path = require('path');
 const helpers = require('../lib/helpers');
-
 const db = require("../database"); //db hace referencia a la BBDD
 const { unlink } = require('fs-extra');
 const { access, constants } = require('node:fs');
@@ -74,30 +73,6 @@ router.get("/profile/delete/:id", helpers.isAuthenticated, async (req, res) => {
 });
 
 //GESTION  foto perfil
-router.post('/upload/:id', helpers.isAuthenticated, async (req, res) => {
-    const { id } = req.params;
-    //console.log(req.file);
-    var usuario = await db.query("select * from usuarios where id = ?", id);
-    usuario = usuario[0];
-
-    //borramos la foto anterior del perfil
-    const filePath = path.resolve('src/public/img/profiles/' + usuario.pictureURL);
-    access(filePath, constants.F_OK, async (err) => {
-        if (err) {
-            console.log("No tiene foto de perfil");
-        } else {
-            console.log('File exists. Deleting now ...');
-            await unlink(filePath);
-        }
-    });
-
-    //Ponemos la nueva
-    usuario.pictureURL = req.file.filename;
-    await db.query("UPDATE usuarios set  ? WHERE id=?", [usuario, id]);
-    req.flash("success", "La foto del perfil de usuario ha sido actualizada con exito");
-
-    res.redirect("/profile");
-});
 router.get("/profile/borrarfoto/:id/:url", helpers.isAuthenticated, async (req, res) => {
     console.log(req.params);
     const { url } = req.params;
@@ -133,6 +108,7 @@ router.get('/inventario/edit/:id', async (req, res) => {
 router.post('/inventario/edit/:id', helpers.isAuthenticated, async (req, res) => {
     var {
         id,
+        tipo,
         item,
         descripcion,
         cantidad,
@@ -142,6 +118,7 @@ router.post('/inventario/edit/:id', helpers.isAuthenticated, async (req, res) =>
 
     const nuevoItem = {
         id,
+        tipo,
         item,
         descripcion,
         cantidad,
@@ -165,7 +142,6 @@ router.get('/error', (req, res) => {
     console.log("Redirect");
     res.render('error');
 });
-
 router.get('/noperm', (req, res) => {
     console.log("Redirect");
     res.render('noPermission');

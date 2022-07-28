@@ -1,6 +1,5 @@
 const express = require('express');
 const morgan = require('morgan');
-const multer = require('multer');
 const fs = require('fs');
 const exphbs = require('express-handlebars'); //Para usar plantillas
 const path = require('path');               //Para manejar directorios, basicamente unirlos 
@@ -41,46 +40,6 @@ app.use(express.json()); //Para enviar y recibir jsons.
 app.use(passport.initialize()); //iniciar passport
 app.use(passport.session());    //para que sepa donde guardar y como manejar los datos
 
-
-//MIDDLEWARE MULTER
-const almacenar=multer.diskStorage({
-    destination: (req,file,cb)=>{
-        const {nif} = req.body;
-        const {user} = req.body;
-        //Si usuario es undefined es que se subió una baliza, y configuro el storage para balizas
-        if (typeof user === 'undefined') {
-            const dir = path.join(__dirname,'public/img/imagenes/',nif);
-         
-            fs.exists(dir, exist => {
-            if (!exist) {
-              return fs.mkdir(dir, error => cb(error, dir));
-            }
-            return cb(null, dir);
-            })
-        }else{//si no, entonces es una foto de perfil y va a otra carpeta
-               const dir = path.join(__dirname,'public/img/profiles/');
-               console.log("dir"+dir);
-               return cb(null, dir);
-        }
-    },
-    filename:(req,file,cb) =>{
-        cb(null,new Date().getTime()+path.extname(file.originalname).toLowerCase());
-    }
-});
-app.use(multer({
-    storage: almacenar,
-    limits:{fileSize:5000000,},
-   /*  fileFilter: (req,file,cb)=>{
-        const filetypes = /jpg/;
-        const mimetype = filetypes.test(file.mimetype); 
-        const extname = filetypes.test(path.extname(file.originalname)); 
-        if(mimetype && extname){
-            return cb(null, true);
-        }
-        return cb("Error: Archivo debe ser *.jpg");
-    } */
-  }).single('imagen'));
-
 //Variables globales
 app.use((req,res,next) =>{
     app.locals.signupMessage = req.flash('signupMessage');
@@ -95,6 +54,8 @@ app.use(require('./routes')); //busca automaticamente el archivo index.js
 app.use(require('./routes/authentication'));
 app.use('/balizas',require('./routes/balizas')); //ruta de las balizas. siempre precedido por el primer argumento '/balizas' 
 app.use(require('./routes/api'));
+app.use(require('./routes/documentos'));
+app.use(require('./routes/fotos'));
 
 //Public
 app.use(express.static(path.join(__dirname,'public')));

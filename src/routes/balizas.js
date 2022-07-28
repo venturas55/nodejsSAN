@@ -2,9 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { unlink } = require('fs-extra');
 const path = require('path');
-
 const helpers = require("../lib/helpers");
-
 const db = require("../database"); //db hace referencia a la BBDD
 
 //CRUD create
@@ -374,13 +372,26 @@ router.post("/mantenimiento/edit/:idMan", helpers.isAuthenticated, async (req, r
   res.redirect("/balizas/plantilla/" + nif);
 });
 
+//GESTION FOTOS DE BALIZAS
+router.get("/fotos/:nif", async (req, res) => {
+    const nif = req.params.nif;
+    var fotos = helpers.listadoFotos(nif);
+    res.render("balizas/fotos", { fotos, nif });
+  });
+router.get("/fotos/:nif/:src/delete", async (req, res) => {
+    const nif = req.params.nif;
+    const src = req.params.src;
+    await unlink(path.resolve('src/public/img/imagenes/' + nif + "/" + src));
+    req.flash("success", "Foto de baliza " + nif + " borrada correctamente.");
+    res.redirect("/balizas/fotos/" + nif);
+  });
+
 //GESTION mapa
 router.get("/mapa/:nif", async (req, res) => {
   const { nif } = req.params;
   const baliza = await db.query('SELECT * FROM balizamiento b  LEFT JOIN localizacion lo ON lo.nif=b.nif  LEFT JOIN lampara la ON la.nif=b.nif where b.nif=?', [nif]);
   res.render("mapa", { layout: 'layoutMapa', baliza: baliza[0], });
 });
-
 router.get("/mapaGeneral/:valor", (req, res) => {
   const { valor } = req.params;
   console.log("Mapa " + valor);
@@ -397,26 +408,6 @@ router.get("/mapaGeneral/:valor", (req, res) => {
   }
 });
 
-//GESTION FOTOS
-router.get("/fotos/:nif", async (req, res) => {
-  const nif = req.params.nif;
-  var fotos = helpers.listadoFotos(nif);
-  res.render("balizas/fotos", { fotos, nif });
-});
-router.get("/fotos/:nif/:src/delete", async (req, res) => {
-  const nif = req.params.nif;
-  const src = req.params.src;
-  await unlink(path.resolve('src/public/img/imagenes/' + nif + "/" + src));
-  req.flash("success", "Foto de baliza " + nif + " borrada correctamente.");
-  res.redirect("/balizas/fotos/" + nif);
-});
-router.post("/upload/:nif", async (req, res) => {
-  console.log("Subiendo foto baliza");
-  const { nif } = req.params;
-  console.log(req.params);
-  console.log(req.body);
-  req.flash("success", "Foto de la baliza " + nif + " subida correctamente!");
-  res.redirect("/balizas/plantilla/" + nif);
-});
+
 
 module.exports = router;

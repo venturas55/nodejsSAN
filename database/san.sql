@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 26-07-2022 a las 21:21:45
+-- Tiempo de generación: 28-07-2022 a las 17:55:40
 -- Versión del servidor: 10.4.25-MariaDB
 -- Versión de PHP: 8.0.21
 
@@ -20,8 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `san`
 --
-CREATE DATABASE IF NOT EXISTS `san` DEFAULT CHARACTER SET utf16 COLLATE utf16_spanish2_ci;
-USE `san`;
 
 -- --------------------------------------------------------
 
@@ -86,7 +84,7 @@ INSERT INTO `balizamiento` (`nif`, `num_internacional`, `tipo`, `telecontrol`, `
 ('25842.5', '', 'Boya Cilíndrica verde.', 'Si.', 'Ct', '1.00', 'L 0,5 + oc 0,5'),
 ('25843', 'E-0201.75', 'Boya Castillete', 'Si', 'DR', '3.00', 'L 0.5 oc 2.5'),
 ('25843.5', '', 'Boya Cilíndrica roja', 'Si', 'Ct', '1.00', 'L 0,5 + oc 0,5'),
-('25843.8', '', 'Boya Cilíndrica roja', 'Si', 'Ct. 1s.', '1.00', 'L 0,5 + oc 0,5'),
+('25843.8', '', 'Boya Cilíndrica roja', 'Si', 'Ct. R', '1.00', 'L 0,5 + oc 0,5'),
 ('25844', '', 'Boya oceanográfica Castillete amarilla y marca de tope', 'RTU 37', 'GpD (4)A', '11.00', '[(L 0.5 oc 1.5) x3] L 0.5 oc 4.5'),
 ('25920', 'E-0204.2', 'Baliza TPS 3.3', 'RTU 13', 'GpD (4) V', '11.00', '[(L 0.5 oc 1.5) x3] L 0.5 oc 4.5'),
 ('25940', 'E-0204', 'Baliza TPS 3.3', '', 'GpDR', '3.00', 'L 0.5 oc 2.5'),
@@ -213,6 +211,7 @@ CREATE TABLE `eliminados` (
 
 CREATE TABLE `inventario` (
   `id` mediumint(9) NOT NULL,
+  `tipo` varchar(50) DEFAULT NULL,
   `item` varchar(50) NOT NULL,
   `cantidad` int(11) DEFAULT NULL,
   `fila` int(11) DEFAULT NULL,
@@ -224,70 +223,70 @@ CREATE TABLE `inventario` (
 -- Volcado de datos para la tabla `inventario`
 --
 
-INSERT INTO `inventario` (`id`, `item`, `cantidad`, `fila`, `columna`, `descripcion`) VALUES
-(1, 'BDL300 G', 3, 6, 4, 'Baliza modelo BDL300 color verde'),
-(2, 'BDL300 R', 1, 6, 4, 'Baliza modelo BDL300 color roja'),
-(3, 'Optica BDL300', 2, 6, 4, 'Solo la óptica para modelo BDL300'),
-(4, 'Optica BDL120', 20, 6, 4, 'Solo la óptica para modelo BDL120'),
-(5, 'BDL120 R', 1, 6, 4, 'Baliza modelo BDL120 color Roja'),
-(6, 'Optica BDL120 2018', NULL, 6, 4, 'Solo la óptica para modelo BDL120 año 2018'),
-(8, 'Panel 20w 36cmx31xm', 1, 5, 2, 'Panel solar de 20w de medidas 36cmx31'),
-(9, 'Panel 10w 27cmx48cm', 3, 5, 2, 'Panel solar de 10w de medidas 27cmx48'),
-(10, 'BDL 120 HI W', 1, 5, 3, 'Baliza de alta intensidad color blanco'),
-(11, 'MCL 120 Y', 1, 5, 3, 'Baliza color amarillo'),
-(12, 'MCL 120 W', 1, 5, 3, 'Baliza color blanco'),
-(13, 'MBL 160 Y', 2, 5, 3, 'Baliza color amarillo'),
-(14, 'BDL 120 G', 1, 5, 4, 'Baliza BDL120 de color verde'),
-(15, 'BDL 120 R', 1, 5, 4, 'Baliza BDL120 de color roja'),
-(16, 'BDL 120 W', 1, 5, 4, 'Baliza BDL120 de color blanca'),
-(17, 'Corona amarilla completa', 1, 5, 4, 'Una corona amarilla entera'),
-(18, 'Corona roja completa', 3, 5, 4, 'Una corona roja entera'),
-(19, 'Corona verde completa', 3, 5, 4, 'Una corona verde entera'),
-(20, 'Piña verde de 50w', 1, 5, 4, 'Una piña verde 50w'),
-(21, 'Piña blanca de 50w', 1, 5, 4, 'Una piña blanca 50w'),
-(22, 'Discos amarillos', 5, 5, 4, 'Discos amarillos 02827'),
-(25, 'Panel 66w 66x78', 6, 4, 2, 'Panel solar de 66w de medidas 66cmx78cm'),
-(26, 'Cuandro de Anfer MOSCAD', 1, 4, 2, 'Un cuadro completo de Anfer para telecomunicaciones'),
-(27, 'MBL 160 R', 1, 4, 3, 'Baliza MBL160 de color roja'),
-(28, 'MCL 140 G', 1, 4, 3, 'Baliza MCL140 de color verde'),
-(29, 'BDL 120 Y', 1, 4, 3, 'Baliza BDL120 de color amarilla'),
-(30, 'BDL 120 Y', 2, 4, 4, 'Baliza BDL120 de color amarilla'),
-(31, 'Panel 95w 66x78', 3, 3, 2, 'Panel solar de 95w de medidas 66cmx78cm'),
-(32, 'Antena GPS', 1, 4, 2, 'Antena GPS marca Garmin'),
-(33, 'BDL 120 R', 4, 3, 3, 'Baliza BDL120 de color roja'),
-(34, 'BDL 120 R old', 1, 3, 3, 'Baliza BDL120 de color roja vieja'),
-(35, 'Radial', 1, 3, 4, 'Radial'),
-(36, 'Analizador de Baterias', 1, 3, 4, ''),
-(37, 'Taladro Metabo', 1, 3, 4, 'Taladro Metabo 18LT'),
-(38, 'Taladro Bosch', 1, 3, 4, 'Taladro Bosch GST-60P'),
-(39, 'Sistema Alimentacion', 3, 2, 2, 'Sistema alimentacion C20'),
-(40, 'Cargador', 9, 2, 2, 'Blue Power Charger ISA'),
-(41, 'BKL 120 W', 1, 2, 3, 'Baliza BKL 120 blanca'),
-(42, 'BKL 120 Y', 1, 2, 3, 'Baliza BKL 120 amarilla'),
-(43, 'BDL 120 G', 3, 2, 3, 'Baliza BDL 120 verde'),
-(44, 'DES22', 6, 2, 4, 'Destellador D22'),
-(45, 'DES33', 1, 2, 4, 'Destellador D33'),
-(46, 'Tarjeta BKL120', 2, 2, 4, 'Tarjeta BKL 120'),
-(47, 'Disco LEDs Y', 30, 2, 4, 'Disco LEDs amarillo'),
-(48, 'Disco LEDs G', 30, 2, 4, 'Disco LEDs verde'),
-(49, 'Disco LEDs W', 3, 2, 4, 'Disco LEDs blanco'),
-(50, 'Disco LEDs R', 22, 2, 4, 'Disco LEDs rojo'),
-(51, 'Bateria SB6', 6, 1, 1, 'Bateria SB6 de 200Ah medidas 24x19cm'),
-(52, 'Grupo monofasico', 1, 1, 1, 'Grupo monofasico Ayerbe de 1,5kw'),
-(53, 'Cargador Bateria', 1, 1, 1, 'Cargador bateria Krauser 20A'),
-(54, 'Bateria SB12', 7, 1, 2, 'Bateria SB6 de 100Ah medidas 24x19cm'),
-(55, 'AS12V', 3, 1, 3, 'Bateria de 10Ah 15x10cm'),
-(56, 'AS06V', 3, 1, 3, 'Bateria de 10Ah 15x5cm'),
-(57, 'PR2020 STECA', 3, 1, 4, 'Regulador carga fotovoltaica PR2020 STECA'),
-(58, 'PRS 2020 STECA', 2, 1, 4, 'Regulador carga fotovoltaica PRS2020 STECA'),
-(59, 'PR2020 STECA IP65', 1, 1, 4, 'Regulador carga fotovoltaica PR2020 STECA IP65'),
-(60, 'Soldador', 1, 1, 4, 'Soldador portatil Fronius TransPocket 1500'),
-(73, 'Pintura Spray VERDE', 8, 5, 1, '6038 400ml'),
-(74, 'Pintura Spray ROJO', 8, 5, 1, 'RAL 3024 400ml'),
-(75, 'Pintura Spray BLANCO', 8, 5, 1, 'RAL 9016 400ml'),
-(76, 'Pintura Spray AMARILLO', 8, 5, 1, 'RAL 1023 400ml'),
-(77, 'Pintura Spray NEGRO', 8, 5, 1, 'RAL 9017 400ml'),
-(78, 'Disolvente', 5, 5, 1, '');
+INSERT INTO `inventario` (`id`, `tipo`, `item`, `cantidad`, `fila`, `columna`, `descripcion`) VALUES
+(1, 'baliza', 'BDL300 G', 3, 6, 4, 'Baliza modelo BDL300 color verde'),
+(2, 'baliza', 'BDL300 R', 1, 6, 4, 'Baliza modelo BDL300 color roja'),
+(3, 'baliza', 'Optica BDL300', 2, 6, 4, 'Solo la óptica para modelo BDL300'),
+(4, 'baliza', 'Optica BDL120', 20, 6, 4, 'Solo la óptica para modelo BDL120'),
+(5, 'baliza', 'BDL120 R', 1, 6, 4, 'Baliza modelo BDL120 color Roja'),
+(6, 'baliza', 'Optica BDL120 2018', NULL, 6, 4, 'Solo la óptica para modelo BDL120 año 2018'),
+(8, NULL, 'Panel 20w 36cmx31xm', 1, 5, 2, 'Panel solar de 20w de medidas 36cmx31'),
+(9, NULL, 'Panel 10w 27cmx48cm', 3, 5, 2, 'Panel solar de 10w de medidas 27cmx48'),
+(10, 'baliza', 'BDL 120 HI W', 1, 5, 3, 'Baliza de alta intensidad color blanco'),
+(11, 'baliza', 'MCL 120 Y', 1, 5, 3, 'Baliza color amarillo'),
+(12, 'baliza', 'MCL 120 W', 1, 5, 3, 'Baliza color blanco'),
+(13, NULL, 'MBL 160 Y', 2, 5, 3, 'Baliza color amarillo'),
+(14, 'baliza', 'BDL 120 G', 1, 5, 4, 'Baliza BDL120 de color verde'),
+(15, 'baliza', 'BDL 120 R', 1, 5, 4, 'Baliza BDL120 de color roja'),
+(16, 'baliza', 'BDL 120 W', 1, 5, 4, 'Baliza BDL120 de color blanca'),
+(17, NULL, 'Corona amarilla completa', 1, 5, 4, 'Una corona amarilla entera'),
+(18, NULL, 'Corona roja completa', 3, 5, 4, 'Una corona roja entera'),
+(19, NULL, 'Corona verde completa', 3, 5, 4, 'Una corona verde entera'),
+(20, NULL, 'Piña verde de 50w', 1, 5, 4, 'Una piña verde 50w'),
+(21, NULL, 'Piña blanca de 50w', 1, 5, 4, 'Una piña blanca 50w'),
+(22, 'baliza', 'Discos amarillos', 5, 5, 4, 'Discos amarillos 02827'),
+(25, NULL, 'Panel 66w 66x78', 6, 4, 2, 'Panel solar de 66w de medidas 66cmx78cm'),
+(26, NULL, 'Cuandro de Anfer MOSCAD', 1, 4, 2, 'Un cuadro completo de Anfer para telecomunicaciones'),
+(27, 'baliza', 'MBL 160 R', 1, 4, 3, 'Baliza MBL160 de color roja'),
+(28, 'baliza', 'MCL 140 G', 1, 4, 3, 'Baliza MCL140 de color verde'),
+(29, 'baliza', 'BDL 120 Y', 1, 4, 3, 'Baliza BDL120 de color amarilla'),
+(30, 'baliza', 'BDL 120 Y', 2, 4, 4, 'Baliza BDL120 de color amarilla'),
+(31, NULL, 'Panel 95w 66x78', 3, 3, 2, 'Panel solar de 95w de medidas 66cmx78cm'),
+(32, NULL, 'Antena GPS', 1, 4, 2, 'Antena GPS marca Garmin'),
+(33, 'baliza', 'BDL 120 R', 4, 3, 3, 'Baliza BDL120 de color roja'),
+(34, 'baliza', 'BDL 120 R old', 1, 3, 3, 'Baliza BDL120 de color roja vieja'),
+(35, 'herramienta', 'Radial', 1, 3, 4, 'Radial'),
+(36, NULL, 'Analizador de Baterias', 1, 3, 4, ''),
+(37, NULL, 'Taladro Metabo', 1, 3, 4, 'Taladro Metabo 18LT'),
+(38, NULL, 'Taladro Bosch', 1, 3, 4, 'Taladro Bosch GST-60P'),
+(39, NULL, 'Sistema Alimentacion', 3, 2, 2, 'Sistema alimentacion C20'),
+(40, 'cargador', 'Cargador', 9, 2, 2, 'Blue Power Charger ISA'),
+(41, NULL, 'BKL 120 W', 1, 2, 3, 'Baliza BKL 120 blanca'),
+(42, NULL, 'BKL 120 Y', 1, 2, 3, 'Baliza BKL 120 amarilla'),
+(43, 'baliza', 'BDL 120 G', 3, 2, 3, 'Baliza BDL 120 verde'),
+(44, 'destellador', 'DES22', 6, 2, 4, 'Destellador D22'),
+(45, 'destellador', 'DES33', 1, 2, 4, 'Destellador D33'),
+(46, 'piezas', 'Tarjeta BKL120', 2, 2, 4, 'Tarjeta BKL 120'),
+(47, 'baliza', 'Disco LEDs Y', 30, 2, 4, 'Disco LEDs amarillo'),
+(48, 'baliza', 'Disco LEDs G', 30, 2, 4, 'Disco LEDs verde'),
+(49, 'baliza', 'Disco LEDs W', 3, 2, 4, 'Disco LEDs blanco'),
+(50, 'baliza', 'Disco LEDs R', 22, 2, 4, 'Disco LEDs rojo'),
+(51, 'bateria', 'Bateria SB6', 6, 1, 1, 'Bateria SB6 de 200Ah medidas 24x19cm'),
+(52, NULL, 'Grupo monofasico', 1, 1, 1, 'Grupo monofasico Ayerbe de 1,5kw'),
+(53, 'cargador', 'Cargador Bateria', 1, 1, 1, 'Cargador bateria Krauser 20A'),
+(54, 'bateria', 'Bateria SB12', 7, 1, 2, 'Bateria SB6 de 100Ah medidas 24x19cm'),
+(55, 'bateria', 'AS12V', 3, 1, 3, 'Bateria de 10Ah 15x10cm'),
+(56, 'bateria', 'AS06V', 3, 1, 3, 'Bateria de 10Ah 15x5cm'),
+(57, 'regulador', 'PR2020 STECA', 3, 1, 4, 'Regulador carga fotovoltaica PR2020 STECA'),
+(58, 'regulador', 'PRS 2020 STECA', 2, 1, 4, 'Regulador carga fotovoltaica PRS2020 STECA'),
+(59, 'regulador', 'PR2020 STECA IP65', 1, 1, 4, 'Regulador carga fotovoltaica PR2020 STECA IP65'),
+(60, 'herramienta', 'Soldador', 1, 1, 4, 'Soldador portatil Fronius TransPocket 1500'),
+(73, NULL, 'Pintura Spray VERDE', 8, 5, 1, 'RAL 6038 400ml'),
+(74, 'pintura', 'Pintura Spray ROJO', 8, 5, 1, 'RAL 3024 400ml'),
+(75, 'pintura', 'Pintura Spray BLANCO', 8, 5, 1, 'RAL 9016 400ml'),
+(76, 'pintura', 'Pintura Spray AMARILLO', 8, 5, 1, 'RAL 1023 400ml'),
+(77, 'pintura', 'Pintura Spray NEGRO', 8, 5, 1, 'RAL 9017 400ml'),
+(78, NULL, 'Disolvente', 5, 5, 1, '');
 
 -- --------------------------------------------------------
 
@@ -469,7 +468,7 @@ INSERT INTO `localizacion` (`nif`, `puerto`, `num_local`, `localizacion`, `latit
 ('25842.5', 'Puerto de Valencia.', '18', 'Boya a Er. Bocana Dársena de Servicios Náuticos.', '39º 26.454´N', '00º 19.056´ W'),
 ('25843', 'Puerto de Valencia.', '17', '1ª boya a Br. Dársena de Servicios Náuticos.', '39º 26.402´N', '00º 19.076´ W'),
 ('25843.5', 'Puerto de Valencia.', '19', '2ª boya a Br. Dársena de Servicios Náuticos.', '39º 26.439´N', '00º 19.094´ W'),
-('25843.8', 'Puerto de Valencia.', '19', '3ª boya Br. Dársena de Servicios Náuticos', '39º 26,484Ž N', '00º 19,093Ž W'),
+('25843.8', 'Puerto de Valencia.', '19', '3ª boya Br. Dársena de Servicios Náuticos', '39º 26.484\' N', '00º 19.093\' W'),
 ('25920', 'Puerto de Valencia.', '22', 'E. Turia Er.', '39º 26.901´N', '00º 19.284´ W'),
 ('25940', 'Puerto de Valencia.', '23', 'Br E.Turia.', '39º 26.990´N', '00º 19.237´ W'),
 ('26020', 'Puerto de Valencia.', '26', 'RCNV Contra dique ángulo Sur', '39º 25.242´N', '00º 19.052´ W'),
@@ -485,24 +484,24 @@ INSERT INTO `localizacion` (`nif`, `puerto`, `num_local`, `localizacion`, `latit
 ('26048', 'Puerto de Valencia.', '34', '1ª Baliza de babor del nuevo contradique de la amp. N', '39º 26.679´N', '00º 17.930´ W'),
 ('26048.1', 'Puerto de Valencia.', '35', '2ª baliza de Br, Extremo contradique de la ampliación N', '39º 27.070´N', '00º 17.719´ W'),
 ('26048.2', 'Puerto de Valencia.', '100', 'Darsena Norte', '39º 27.155´N', '00º 18.042\' W'),
-('26048.3', 'Puerto Valencia', '101', 'Darsena Norte', '39º 27.104´N', '00º 17.882\' W'),
-('26049', 'Marina Real Juan Carlos I.Valencia', '38', 'Boya a babor Bocana Norte', '39º 27.850´N', '00º 18.509\' W'),
-('26050', 'Marina Real Juan Carlos I.Valencia', '39', 'Extremo Dique de abrigo Bocana Norte', '39º 27.767´N', '00º 18.509\' W'),
-('26052', 'Marina Real Juan Carlos I.Valencia', '40', 'Extremo Contradique Bocana Norte', '39º 27.665´N', '00º 18.632\' W'),
-('26055', 'Marina Real Juan Carlos I.Valencia', '41', 'Espigón de cierre Extremo oeste Darsena Sur', '39º 27.599´N', '00º 18.753\' W'),
+('26048.3', 'Puerto de Valencia', '101', 'Darsena Norte', '39º 27.104´N', '00º 17.882\' W'),
+('26049', 'Marina Real Juan Carlos I.', '38', 'Boya a babor Bocana Norte', '39º 27.850´N', '00º 18.509\' W'),
+('26050', 'Marina Real Juan Carlos I.', '39', 'Extremo Dique de abrigo Bocana Norte', '39º 27.767´N', '00º 18.509\' W'),
+('26052', 'Marina Real Juan Carlos I.', '40', 'Extremo Contradique Bocana Norte', '39º 27.665´N', '00º 18.632\' W'),
+('26055', 'Marina Real Juan Carlos I.', '41', 'Espigón de cierre Extremo oeste Darsena Sur', '39º 27.599´N', '00º 18.753\' W'),
 ('26055.5', 'Marina Real Juan Carlos I', '43', 'Dique - Extremo - Darsena Sur', '39º 27.615´N', '00º 18.833\' W'),
-('26055.6', 'Marina Real Juan Carlos I.Valencia.', '45', '1ª Baliza a babor Canal de Acceso', '39º 27.634´N', '00º 19.016\' W'),
-('26056', 'Marina Real Juan Carlos I.Valencia', '42', 'Angulo Oeste- Darsena Norte - Explanada', '39º 27.668´N', '00º 18.755\' W'),
+('26055.6', 'Marina Real Juan Carlos I.', '45', '1ª Baliza a babor Canal de Acceso', '39º 27.634´N', '00º 19.016\' W'),
+('26056', 'Marina Real Juan Carlos I.', '42', 'Angulo Oeste- Darsena Norte - Explanada', '39º 27.668´N', '00º 18.755\' W'),
 ('26058', 'Marina Real Juan Carlos I', '44', 'Espigón - Extremo - Darsena Auxiliar', '39º 27.677´N', '00º 19.002\' W'),
-('26058.1', 'Marina Real JC I. Valencia', '51', 'Angulo oeste - Darsena auxiliar', '39º 27.683´N', '00º 19.112\' W'),
-('26058.15', 'Semaforo a estribor - Puente móvil. Valencia', '102', 'Marina Real Juan Carlos I', '39º 27,683´ N', '000º 19.112´ W'),
-('26058.16', 'Semáforo a babor - Puente móvil. Valencia', '103', 'Marina Real Juan Carlos I', '39º 27,638´ N', '000º 19.112´ W'),
-('26058.17', 'Semáforo sobre tablero del puente móvil. Valencia', '104', 'Marina Real Juan Carlos I', '39º 27,666´ N', '000º 19.133´ W'),
-('26058.2', 'Marina Real Juan Carlos I.Valencia', '46', '1ª Baliza a estribor Canal de Acceso', '39º 27.685´N', '00º 19.328\' W'),
-('26058.4', 'Marina Real Juan Carlos I.Valencia.', '47', '2ª Baliza a babor Darsena Auxiliar', '39º 27.642´N', '00º 19.315\' W'),
-('26058.6', 'Marina Real Juan Carlos I.Valencia.', '48', '2ª Baliza a estribor Canal de acceso', '39º 27.617´N', '00º 19.505\' W'),
-('26058.8', 'Marina Real Juan Carlos I.Valencia.', '49', '3ª Baliza a babor Darsena auxiliar', '39º 27.562´N', '00º 19.466\' W'),
-('26060', 'Marina Real Juan Carlos I.Valencia', '50', 'Darsena interior, en el extremo de la rampa de varadero', '39º 27.669´N', '00º 19.560\' W'),
+('26058.1', 'Marina Real Juan Carlos I.', '51', 'Angulo oeste - Darsena auxiliar', '39º 27.683´N', '00º 19.112\' W'),
+('26058.15', 'Marina Semaforo a estribor - Puente móvil.', '102', 'Marina Real Juan Carlos I', '39º 27,683´ N', '000º 19.112´ W'),
+('26058.16', 'Marina Semáforo a babor - Puente móvil', '103', 'Marina Real Juan Carlos I', '39º 27,638´ N', '000º 19.112´ W'),
+('26058.17', 'Marina Semáforo sobre tablero del puente móvil', '104', 'Marina Real Juan Carlos I', '39º 27,666´ N', '000º 19.133´ W'),
+('26058.2', 'Marina Real Juan Carlos I.', '46', '1ª Baliza a estribor Canal de Acceso', '39º 27.685´N', '00º 19.328\' W'),
+('26058.4', 'Marina Real Juan Carlos I.', '47', '2ª Baliza a babor Darsena Auxiliar', '39º 27.642´N', '00º 19.315\' W'),
+('26058.6', 'Marina Real Juan Carlos I.', '48', '2ª Baliza a estribor Canal de acceso', '39º 27.617´N', '00º 19.505\' W'),
+('26058.8', 'Marina Real Juan Carlos I.', '49', '3ª Baliza a babor Darsena auxiliar', '39º 27.562´N', '00º 19.466\' W'),
+('26060', 'Marina Real Juan Carlos I.', '50', 'Darsena interior, en el extremo de la rampa de varadero', '39º 27.669´N', '00º 19.560\' W'),
 ('26150', 'PORT-SAPLAYA', '1', 'Extremo dique Sur', '39º 30,614\' N', '00º 19,111\' W'),
 ('26160', 'PORT-SAPLAYA', '2', 'Extremo dique Norte', '39º 30,602\' N', '00º 19,065\' W'),
 ('26190', 'Port saplaya', '3', 'Señaliza pontona hundida', '39º 32.740\' N', '00º 16.940\' W'),
@@ -1298,7 +1297,7 @@ INSERT INTO `observaciones` (`id_observacion`, `nif`, `observaciones`) VALUES
 (62, '26285', 'LDRs a 180º'),
 (63, '26290', 'LDRs a 180º'),
 (64, '26311', ' SE REPINTARÁ EN 2019'),
-(65, '26311', 'LDRs a 180º'),
+(65, '26311', 'LDRs a 180º.'),
 (66, '26312', 'LDRs a 180º'),
 (67, '26313', 'LDRs a 180º'),
 (68, '26314', 'LDRs a 180º'),
@@ -1343,7 +1342,7 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`session_id`, `expires`, `data`) VALUES
-('p9iDmA8rHqYpHPmzyrbmX4nN5Y36k7hs', 1658956215, '{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"flash\":{},\"passport\":{\"user\":1}}');
+('9IqML7z5jE82NCbKsV9VXecXKa_2lFbQ', 1659117285, '{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"flash\":{},\"passport\":{\"user\":1}}');
 
 -- --------------------------------------------------------
 
@@ -1357,17 +1356,16 @@ CREATE TABLE `usuarios` (
   `contrasena` varchar(250) NOT NULL,
   `email` varchar(200) DEFAULT NULL,
   `full_name` varchar(150) DEFAULT NULL,
-  `privilegio` varchar(20) DEFAULT NULL
+  `privilegio` varchar(20) DEFAULT NULL,
+  `pictureURL` varchar(100) CHARACTER SET utf16 COLLATE utf16_spanish2_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='tabla de usuarios';
 
 --
 -- Volcado de datos para la tabla `usuarios`
 --
 
-INSERT INTO `usuarios` (`id`, `usuario`, `contrasena`, `email`, `full_name`, `privilegio`) VALUES
-(1, 'user1', '$2a$10$FEnVNECHkhfiJYhsgRCdh.dAsJE4tp3NmQzqEJmNpzEgnlcN5h8km', 'user1@user1.com', 'user1 completo', 'san'),
-(3, 'yo', '$2a$10$OGUMq6xucVM3BrYXdTFq7OkGUVmQcFTHQlrv7koyFGbIn9wIRJ1Pq', 'uasaeg@akshg.es', 'yo', 'san'),
-(4, 'usuario1', '$2a$10$DMW5Gih.Hdz1/9jGqAElQO1B7PiO7QbrSZBsM6lijd7rY9jnxhUTW', 'uasaeg@akshg.es', 'usuario1', 'san');
+INSERT INTO `usuarios` (`id`, `usuario`, `contrasena`, `email`, `full_name`, `privilegio`, `pictureURL`) VALUES
+(1, 'user1', '$2a$10$FEnVNECHkhfiJYhsgRCdh.dAsJE4tp3NmQzqEJmNpzEgnlcN5h8km', 'user1@user1.com', 'user1 completo', 'san', '1659021033725.bmp');
 
 --
 -- Índices para tablas volcadas
@@ -1437,7 +1435,7 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
