@@ -41,11 +41,10 @@ app.use(express.json()); //Para enviar y recibir jsons.
 app.use(passport.initialize()); //iniciar passport
 app.use(passport.session());    //para que sepa donde guardar y como manejar los datos
 
+
 //MIDDLEWARE MULTER
 const almacenar=multer.diskStorage({
     destination: (req,file,cb)=>{
-       
-        console.log("1: "+JSON.stringify(req.body));
         const {nif} = req.body;
         const {user} = req.body;
         //Si usuario es undefined es que se subió una baliza, y configuro el storage para balizas
@@ -63,33 +62,23 @@ const almacenar=multer.diskStorage({
                console.log("dir"+dir);
                return cb(null, dir);
         }
-
     },
     filename:(req,file,cb) =>{
-        const {nif} = req.body;
-        const {user} = req.body;
-        //Lo mismo para el nombre del archivo
-        if (typeof user === 'undefined') {
-            //Si es una baliza mantengo el nombre original del archivo
-            cb(null,file.originalname.toLocaleLowerCase());
-        }else{
-            //si es una foto de perfil la cuardo con el nombre del usuario
-            cb(null,user.toLocaleLowerCase()+"."+file.originalname.split(".").pop().toLocaleLowerCase());
-        }
+        cb(null,new Date().getTime()+path.extname(file.originalname).toLowerCase());
     }
 });
 app.use(multer({
     storage: almacenar,
     limits:{fileSize:5000000,},
-    fileFilter: (req,file,cb)=>{
+   /*  fileFilter: (req,file,cb)=>{
         const filetypes = /jpg/;
         const mimetype = filetypes.test(file.mimetype); 
         const extname = filetypes.test(path.extname(file.originalname)); 
         if(mimetype && extname){
             return cb(null, true);
         }
-        cb("Error: Archivo debe ser *.jpg");
-    }
+        return cb("Error: Archivo debe ser *.jpg");
+    } */
   }).single('imagen'));
 
 //Variables globales

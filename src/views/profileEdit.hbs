@@ -6,11 +6,11 @@
 
           <h3>Bienvenid@ {{user.usuario}} </h3>
           <img
-            src="/img/profiles/{{user.usuario}}.jpg"
+            src="/img/profiles/{{user.pictureURL}}"
             class="avatar avatar-l m-2"
             alt="avatar"
           />
-          <input type="hidden" name="oldusuario" value="{{user.usuario}}" />
+          <input type="hidden" name="id" value="{{user.id}}" />
 
           <form
             action="/profile/edit/"
@@ -21,7 +21,7 @@
 
 
             <div class="form-group">
-                      <input type="hidden" name="oldusuario" value="{{user.usuario}}" />
+              <input type="hidden" name="id" value="{{user.id}}" />
               <label for="full_name">Nombre completo
                 <input type="text" value="{{user.full_name}}" name="full_name"  class="form-control"/>
               </label>
@@ -58,6 +58,7 @@
                 name="oldcontrasena"  class="form-control"
               /></label>
             </div>
+            <a href="/profile/borrarfoto/{{user.id}}/{{user.pictureURL}}" class="btn btn-primary">Eliminar foto perfil</a>
             <button id="enviarCambios" class="btn btn-primary m-4 d-none">
               Guardar cambios form
             </button>

@@ -3,22 +3,15 @@
         <div class="col-md-5 mx-auto">
             <div class="card text-center">
                 <div class="card-body">
-
-                    <h3>Bienvenid@ {{user.usuario}}</h3>
-                    {{! //TODO: Lo unico malo que la extensión no sé de donde sacarla para hacerla dinamica. sin
-                    complicarlo tanto }}
-                    {{#if tieneFoto}}
-                    <img src="/img/profiles/{{user.usuario}}.jpg" class="avatar avatar-l m-2" alt="avatar" />
+                    <h3>Hola {{user.usuario}}</h3>
+                    {{#if user.pictureURL}}
+                        <img src="/img/profiles/{{user.pictureURL}}" class="avatar avatar-l m-2" alt="avatar '{{user.pictureURL}}'" />
                     {{else}}
-                    <img src="/img/profiles/default.jpg" class="avatar avatar-l m-2" alt="avatar" />
+                        <img src="/img/profiles/default.jpg" class="avatar avatar-l m-2" alt="avatar" />
                     {{/if}}
 
-                    <form action="/upload/{{user.usuario}}" method="POST" enctype="multipart/form-data">
+                    <form action="/upload/{{user.id}}" method="POST" enctype="multipart/form-data">
                         <input type="hidden" name="user" value="{{user.usuario}}" />
-
-                        {{! <input type="file" name="imagen">
-                        <button type="submit">Upload</button> }}
-
                         <div class="input-group mb-3">
                             <div class="custom-file">
                                 <input type="file" name="imagen" class="custom-file-input" id="inputGroupFile02" />
@@ -35,9 +28,10 @@
                     <p>Usuario: {{user.usuario}} </p>
                     <p>Correo: {{user.email}} </p>
                     <p>Privilegio: {{user.privilegio}} </p>
+                    <p>Imagen perfil: {{user.pictureURL}} </p>
                     <div>
                     <a href="/profile/edit" class="btn btn-warning m-1">Editar el Perfil</a></div>
-                           <div><a href="/profile/delete/{{user.usuario}}" class="btn btn-danger  m-1">Eliminar Perfil</a></div>
+                           <div><a href="/profile/delete/{{user.id}}" class="btn btn-danger m-1">Eliminar Perfil</a></div>
                            <div><a href="/balizas/list" class="btn btn-primary  m-4">Mira el balizamiento</a></div>
                 </div>
             </div>
