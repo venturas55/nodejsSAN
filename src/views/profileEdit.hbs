@@ -5,11 +5,7 @@
         <div class="card-body">
 
           <h3>Bienvenid@ {{user.usuario}} </h3>
-          <img
-            src="/img/profiles/{{user.pictureURL}}"
-            class="avatar avatar-l m-2"
-            alt="avatar"
-          />
+            {{>avatar}}
           <input type="hidden" name="id" value="{{user.id}}" />
 
           <form

@@ -4,11 +4,7 @@
             <div class="card text-center">
                 <div class="card-body">
                     <h3>Hola {{user.usuario}}</h3>
-                    {{#if user.pictureURL}}
-                        <img src="/img/profiles/{{user.pictureURL}}" class="avatar avatar-l m-2" alt="avatar '{{user.pictureURL}}'" />
-                    {{else}}
-                        <img src="/img/profiles/default.jpg" class="avatar avatar-l m-2" alt="avatar" />
-                    {{/if}}
+               {{>avatar}}
 
                     <form action="/upload/{{user.id}}" method="POST" enctype="multipart/form-data">
                         <input type="hidden" name="user" value="{{user.usuario}}" />
