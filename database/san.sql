@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 28-07-2022 a las 17:55:40
+-- Tiempo de generación: 28-07-2022 a las 20:54:03
 -- Versión del servidor: 10.4.25-MariaDB
 -- Versión de PHP: 8.0.21
 
@@ -186,6 +186,18 @@ INSERT INTO `cochecito` (`usuario`, `fecha`, `horaE`, `horaS`, `motivo`) VALUES
 ('adrian', '2019-06-10', '08:20', '14:30', 'Revision Balizamiento'),
 ('adrian', '2019-06-11', '08:15', '14:25', 'Desplazamiento al Faro de Cullera'),
 ('adrian', '2019-06-12', '08:15', '13:30', 'Revision Boyas Valencia');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `documentos`
+--
+
+CREATE TABLE `documentos` (
+  `id_archivo` varchar(100) NOT NULL,
+  `nombre` varchar(100) DEFAULT NULL,
+  `descripcion` varchar(250) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='tabla de documentos';
 
 -- --------------------------------------------------------
 
@@ -1342,7 +1354,7 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`session_id`, `expires`, `data`) VALUES
-('9IqML7z5jE82NCbKsV9VXecXKa_2lFbQ', 1659117285, '{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"flash\":{},\"passport\":{\"user\":1}}');
+('9IqML7z5jE82NCbKsV9VXecXKa_2lFbQ', 1659127607, '{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"flash\":{},\"passport\":{\"user\":1}}');
 
 -- --------------------------------------------------------
 
@@ -1365,7 +1377,7 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id`, `usuario`, `contrasena`, `email`, `full_name`, `privilegio`, `pictureURL`) VALUES
-(1, 'user1', '$2a$10$FEnVNECHkhfiJYhsgRCdh.dAsJE4tp3NmQzqEJmNpzEgnlcN5h8km', 'user1@user1.com', 'user1 completo', 'san', '1659021033725.bmp');
+(1, 'user1', '$2a$10$FEnVNECHkhfiJYhsgRCdh.dAsJE4tp3NmQzqEJmNpzEgnlcN5h8km', 'user1@user1.com', 'user1 completo', 'san', '1659038902441.jpg');
 
 --
 -- Índices para tablas volcadas

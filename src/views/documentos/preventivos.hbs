@@ -1,29 +1,15 @@
 <!-- CUERPO -->
 <div class="container-fluid">
     <!-- id="cuerpo" -->
-    <h1 class="col-2 mx-auto">PREVENTIVOS</h1>
+    <a href="/preventivoUpload" class="btn btn-primary">AÑADIR DOCUMENTO</a>
+    <h1 class="col-10 mx-auto text-center">LISTADO DOCUMENTOS</h1>
     <div class="row">
         <div class="col-10 mx-auto">
             <div class="table-responsive">
-                <div>
-                    <h3>Subir nuevo documento</h3>
-                    <form action="/preventivos" method="POST" enctype="multipart/form-data">
-                        <div class="input-group mb-3">
-                            <div class="custom-file">
-                                <input type="file" name="documento" class="custom-file-input" id="inputGroupFile02">
-                                <label class="custom-file-label" for="inputGroupFile02">Choose file</label>
-                            </div>
-                            <div class="input-group-append">
-                                <button type="submit" class="input-group-text">Upload</button>
-                            </div>
-                        </div>
-
-                    </form>
-                </div>
-
-                <h3>listado</h3>
                 {{#each docs}}
+                <p>
                     <a href="/informes/{{this}}" target="_blank"> {{this}}</a>
+                </p>
                 {{/each}}
             </div>
         </div>
