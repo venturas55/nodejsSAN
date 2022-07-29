@@ -13,16 +13,17 @@
              <th>MOD</th>--}}
         </tr>
         {{#each balizas}}
-          <tr>
-            <td><a href="/balizas/plantilla/{{nif}}">{{nif}}</a></td>
-            <td>{{puerto}}</td>
-            <td>{{tipo}} </td>
-            <td>{{apariencia}}</td>
-            <td>{{periodo}} </td>
-            {{!--  <td><a href="/balizas/delete/{{nif}}"><button class="btn btn-danger">BORRAR</button></a></td>
-           <td><a href="/balizas/edit/{{nif}}"><button class="btn btn-secondary">MOD</button></a></td> --}}
-          </tr>
-  
+       
+          <tr onclick="location.href='/balizas/plantilla/{{nif}}';">
+              <td>{{nif}}</td>
+              <td>{{puerto}}</td>
+              <td>{{tipo}} </td>
+              <td>{{apariencia}}</td>
+              <td>{{periodo}} </td>
+              {{!--  <td><a href="/balizas/delete/{{nif}}"><button class="btn btn-danger">BORRAR</button></a></td>
+            <td><a href="/balizas/edit/{{nif}}"><button class="btn btn-secondary">MOD</button></a></td> --}}
+            </tr>
+        
         {{/each}}
       </table>
         {{else}}

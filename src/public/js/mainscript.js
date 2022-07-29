@@ -52,7 +52,7 @@ function cierraModal() {
 window.onclick = function (event) {
   console.log("cierra modal");
   //TODO: (event.target == modal) LOS 3 MODALES
-  if (event.target == modal) {
+  if (event.target == modal1) {
     modal1.style.display = "none";
     modal2.style.display = "none";
     modal3.style.display = "none";
