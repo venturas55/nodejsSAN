@@ -1,8 +1,25 @@
 Usando el tutorial de https://www.youtube.com/watch?v=qJ5R9WTW0_E
 
-git clone https://github.com/venturas55/mysqlNODEjsSAN nodeSANfolder
+git clone https://github.com/venturas55/nodejsSAN san
+cd san
+npm i
+
 
 La base de datos creada y poblada con ciertos datos se encuentra en ./database
+
+sudo apt install mariadb-server
+mysql -u root -p
+
+sudo mysql
+-- for MySQL
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';
+-- for MariaDB
+ALTER USER 'root'@'localhost' IDENTIFIED VIA mysql_native_password USING PASSWORD('newpass');
+create database san;
+
+mysql -u root -p san < san.sql
+
+
 
 Para correr en modo desarrollo ejecutar:    npm run dev
 
