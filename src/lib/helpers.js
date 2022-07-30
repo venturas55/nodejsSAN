@@ -61,7 +61,7 @@ helpers.listadoFotos = (req,res,next)=>{
     return fotitos;
 }
 
-helpers.listadoDocumentos = (req,res,next)=>{
+/* helpers.listadoDocumentos = (req,res,next)=>{
     var documentos = [];
     var directorio = path.join(__dirname, "../public/informes");
     fs.readdir(directorio, (err, files) => {
@@ -72,7 +72,7 @@ helpers.listadoDocumentos = (req,res,next)=>{
       }
     });
     return documentos;
-}
+} */
 
 helpers.ifCond= (v1, v2, options)=> {
     if(v1 === v2) {

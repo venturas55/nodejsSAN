@@ -29,19 +29,47 @@ const uploadDocument = multer({
 
 //CRUD read
 router.get("/preventivos", async (req, res) => {
-  var docs = helpers.listadoDocumentos();
-  const docus = db.query("select * from documentos")
-  res.render("documentos/preventivos", { docs });
+  const docus = await db.query("select * from documentos")
+  console.log(docus);
+  res.render("documentos/preventivos", { docus });
 });
 router.get("/preventivoUpload", (req, res) => {
   res.render("documentos/preventivoUpload");
 });
 router.post("/preventivos", uploadDocument, async (req, res) => {
   console.log(req.body);
-  console.log(file);
+  console.log(req.file);
   const { nombre, descripcion } = req.body;
-  const archivo = file.filename;
-  //await db.query("insert into documentos set ?",[newDoc])
+  const archivo = req.file.filename;
+  const newDoc={'id_archivo':archivo,nombre,descripcion,}
+  await db.query("insert into documentos set ?",[newDoc])
+
+  res.redirect("/preventivos");
+});
+router.get("/preventivoDelete/:id", async (req, res) => {
+  const id_archivo = req.params.id;
+  const filePath = path.resolve('src/public/informes/' + id_archivo);
+  await unlink(filePath);
+  await db.query("delete from documentos where id_archivo = ?",[id_archivo]);
+  res.render("documentos/preventivos");
+});
+router.get("/preventivoEdit/:id", async (req, res) => {
+  const id_archivo = req.params.id;
+  //console.log(">"+id_archivo);
+  const doc= await db.query("select * from documentos where id_archivo=?",[id_archivo]);
+  res.render("documentos/preventivoEdit",{documento: doc[0]});
+});
+
+router.post("/preventivoEdit/:id", async (req, res) => {
+  //console.log(req.body);
+  const id_archivo = req.params.id;
+  const nombre = req.body.nombre;
+  const descripcion= req.body.descripcion;
+  const newDoc={id_archivo,nombre,descripcion};
+  console.log(">"+id_archivo);
+  console.log(">>"+nombre);
+  console.log(">>>"+descripcion);
+  await db.query("update documentos set ? where id_archivo=?",[newDoc,id_archivo]);
 
   res.redirect("/preventivos");
 });

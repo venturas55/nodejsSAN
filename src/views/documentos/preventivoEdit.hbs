@@ -1,0 +1,25 @@
+<!-- CUERPO -->
+<div class="container-fluid">
+    <!-- id="cuerpo" -->
+    <h1 class="col-2 mx-auto">PREVENTIVOS</h1>
+    <div class="row">
+        <div class="col-5 mx-auto">
+            <div class="table-responsive">
+                <div>
+                    <h3>Editar documento</h3>
+                        <p>{{documento.id_archivo}}</p> 
+                    <form action="/preventivoEdit/{{documento.id_archivo}}" method="POST">
+                        <div class="form-group"><label for="altura">Nombre Documento</label>
+                            <input class="form-control" type="text" name="nombre" placeholder="nombre" autofocus value="{{documento.nombre}}"/>
+                        </div>
+                        <div class="form-group"><label for="altura">Descripcion Documento</label>
+                            <input class="form-control" type="text" name="descripcion" placeholder="descripcion" value="{{documento.descripcion}}" />
+                        </div>
+                        <button class="btn-primary btn-sm btn" type="submit"> GUARDAR</button>
+                    </form>
+                        <a href="/preventivos" class="btn-danger btn-sm btn" type="submit"> CANCELAR</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

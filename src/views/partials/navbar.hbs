@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark justify-content-between">
-{{>avatarS}}
+  {{>avatarS}}
   {{!-- <div class="container"> --}}
     <a class="navbar-brand" href="/balizas/list">BBDD SAN</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -55,6 +55,8 @@
             <a class="dropdown-item" href="/balizas/add ">Baliza Nueva</a>
             <a class="dropdown-item" onclick="abreModal2()">Forzar un borrado</a>
             <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/preventivos">Informes Preventivos</a>
+            <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="/profile">Ver Perfil</a>
             <a class="dropdown-item" href="/logout">Logout</a>
           </div>
@@ -73,14 +75,14 @@
             <a class="dropdown-item" href="/calculos">Calculos</a>
             <a class="dropdown-item" href="/inventario">Inventario</a>
             <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="/preventivos">Informes Preventivos</a>
-                 <a class="dropdown-item" href="/prueba">Prueba</a>
+
+            <a class="dropdown-item" href="/prueba">Prueba</a>
           </div>
         </li>
 
 
         {{#if user}}
-         <li class="nav-item">
+        <li class="nav-item">
           <a class="nav-link" href="/logout" tabindex="-1" aria-disabled="true">Logout</a>
         </li>
         {{else}}
@@ -93,11 +95,13 @@
         {{/if}}
 
         <li class="nav-item">
-          <a class="nav-link" href="javascript:void(0)" onclick="history.back();" tabindex="-1" aria-disabled="true">Atras</a>
+          <a class="nav-link" href="javascript:void(0)" onclick="history.back();" tabindex="-1"
+            aria-disabled="true">Atras</a>
         </li>
       </ul>
       <form id="formularioBusqueda" class="form-inline my-2 my-lg-0">
-        <input size="5" id="inputBuscar" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
+        <input size="5" id="inputBuscar" class="form-control mr-sm-2" type="search" placeholder="Search"
+          aria-label="Search" />
         <select name="opcionBuscar" id="opcionBuscar">
           <option value="nif">nif</option>
           <option value="puerto">puerto</option>
