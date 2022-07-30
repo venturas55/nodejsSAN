@@ -1,6 +1,5 @@
 const express = require('express');
 const morgan = require('morgan');
-const fs = require('fs');
 const exphbs = require('express-handlebars'); //Para usar plantillas
 const path = require('path');               //Para manejar directorios, basicamente unirlos 
 const flash = require('connect-flash');  //Para mostar mensajes
@@ -23,7 +22,7 @@ app.engine('.hbs', exphbs.engine({  //con esto se configura el app.engine
     extname: '.hbs',
     helpers: require('./lib/handlebars') //no hay nada aun
 }));
-app.set('view engine','.hbs'); //PAra utilizar el app.engine
+app.set('view engine','.hbs'); //Para utilizar el app.engine
 
 
 //Middleware
@@ -46,6 +45,7 @@ app.use((req,res,next) =>{
     app.locals.success = req.flash('success');
     app.locals.message = req.flash('message');
     app.locals.user = req.user;
+    req.masterPass='$2a$10$.6weXYERL6XMB7nb0xcMTus/Qbi4aotItCWLs3QyBDk7cup4oCOo.';
     next();
 });
 

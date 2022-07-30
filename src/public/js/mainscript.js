@@ -11,8 +11,8 @@ function aBuscar(e) {
 //======================================
 var modal1 = document.getElementById("myModal1");
 var modal2 = document.getElementById("myModal2");
-var modal3 = document.getElementById("myModal3");
-
+var modalAdmin = document.getElementById("modalAdmin");
+//document.getElementById("myModal3").style.display = "block";
 function abreModal1() {
   modal1.style.display = "block";
 }
@@ -20,8 +20,8 @@ function abreModal2() {
   modal2.style.display = "block";
 }
 
-function abreModal3() {
-  modal3.style.display = "block";
+function showModalAdmin() {
+  modalAdmin.style.display = "block";
 }
 
 function borrarNIF() {
@@ -44,12 +44,12 @@ passcheck="";
 function cierraModal() {
   modal1.style.display = "none";
   modal2.style.display = "none";
-  modal3.style.display = "none";
+  modalAdmin.style.display = "none";
   passcheck="";
 }
 
 
-window.onclick = function (event) {
+ window.onclick = function (event) {
   console.log("cierra modal");
   //TODO: (event.target == modal) LOS 3 MODALES
   if (event.target == modal1) {
@@ -57,4 +57,4 @@ window.onclick = function (event) {
     modal2.style.display = "none";
     modal3.style.display = "none";
   }
-};
+}; 

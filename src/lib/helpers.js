@@ -1,7 +1,6 @@
 const bcrypt=require('bcryptjs');
 const path=require('path');
 const fs = require('fs');
-//const res = require('express/lib/response');
 const helpers = {};
 
 helpers.encryptPass = async (password) =>{
@@ -47,7 +46,6 @@ helpers.isNotAdmin = (req,res,next)=>{
 }
 
 
-
 helpers.listadoFotos = (req,res,next)=>{
     const nif=req;
     console.log(nif);
@@ -76,10 +74,11 @@ helpers.listadoDocumentos = (req,res,next)=>{
     return documentos;
 }
 
-/* helpers.existeFotoPerfil = (req,res,next)=>{
-    var ruta = path.join(__dirname, "../public/img/profiles/",req.pictureURL); 
-    var flag=fs.existsSync(ruta);
-    return flag;
-} */
+helpers.ifCond= (v1, v2, options)=> {
+    if(v1 === v2) {
+      return options.fn(this);
+    }
+    return options.inverse(this);
+  };
 
 module.exports = helpers;

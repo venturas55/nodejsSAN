@@ -42,9 +42,9 @@ router.post('/profile/edit/', helpers.isAuthenticated, async (req, res) => {
         console.log("guardando en la BBDD");
         //console.log(user);
         const result = await db.query("UPDATE usuarios SET ? where id= ?", [user, req.body.id]);
-        res.render('profile');
+        res.redirect('/profile');
     } else {
-        res.send("Password incorrecto");
+        res.redirect('/noperm');
     }
 });
 router.get("/profile/delete/:id", helpers.isAuthenticated, async (req, res) => {
@@ -70,6 +70,20 @@ router.get("/profile/delete/:id", helpers.isAuthenticated, async (req, res) => {
     req.flash("success", "Usuario borrado correctamente");
 
     res.redirect('/');
+});
+router.post('/doAdmin', helpers.isAuthenticated, async (req, res) => {
+    const {pass} = req.body;
+    console.log(pass + " / " + req.masterPass);
+
+    const validPassword = await helpers.verifyPassword(pass, req.masterPass);
+    if (validPassword) {
+        req.user.privilegio = "admin";
+        console.log("guardando en la BBDD");
+        const result = await db.query("UPDATE usuarios SET ? where id= ?", [req.user, req.user.id]);
+        res.redirect('/profile');
+    } else {
+        res.redirect('/noperm');
+    } 
 });
 
 //GESTION  foto perfil
