@@ -1,8 +1,6 @@
 const express = require('express');
-//const { Passport } = require('passport');
 const router = express.Router();
 const passport = require('passport');
-
 const helpers = require('../lib/helpers');
 
 //GESTION SIGNIN registrarse C---
@@ -29,14 +27,10 @@ router.post('/signin', (req, res, next) => {
     })(req, res, next);
 });
 
-
 //GESTION logout
 router.get('/logout', helpers.isAuthenticated, (req, res) => {
     req.logOut();
     res.redirect('/');
 })
-
-
-//TODO: Añadir posibilidad de cambio de contraseña del usuario
 
 module.exports = router;

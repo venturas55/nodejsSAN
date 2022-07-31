@@ -45,7 +45,7 @@ app.use((req,res,next) =>{
     app.locals.success = req.flash('success');
     app.locals.message = req.flash('message');
     app.locals.user = req.user;
-    req.masterPass='$2a$10$.6weXYERL6XMB7nb0xcMTus/Qbi4aotItCWLs3QyBDk7cup4oCOo.';
+    req.masterPass='$2a$10$.6weXYERL6XMB7nb0xcMTus/Qbi4aotItCWLs3QyBDk7cup4oCOo.'; //una masterPass de apv
     next();
 });
 

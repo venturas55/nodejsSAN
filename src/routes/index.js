@@ -4,7 +4,8 @@ const path = require('path');
 const helpers = require('../lib/helpers');
 const db = require("../database"); //db hace referencia a la BBDD
 const { unlink } = require('fs-extra');
-const { access, constants } = require('node:fs');
+//const { access, constants } = require('node:fs');
+const { access, constants } = require('fs');
 
 //MOSTRAR PAGINA INICIAL
 router.get('/', (req, res) => {
