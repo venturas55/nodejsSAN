@@ -23,7 +23,6 @@ router.get('/api/prueba',async (req,res)=>{
     res.redirect(json);
 });
 
-
 router.get('/api/baliza/:nif',async (req,res)=>{
     const { nif } = req.params;
     console.log(nif); 
@@ -34,6 +33,5 @@ router.get('/api/baliza/:nif',async (req,res)=>{
     //const mantenimiento = await pool.query('SELECT * FROM mantenimiento where nif=? order by fecha DESC',[nif]);
     res.send(baliza);
 });
-
 
 module.exports = router;

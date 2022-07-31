@@ -408,6 +408,4 @@ router.get("/mapaGeneral/:valor", (req, res) => {
   }
 });
 
-
-
 module.exports = router;

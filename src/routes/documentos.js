@@ -43,7 +43,7 @@ router.post("/preventivos", uploadDocument, async (req, res) => {
   const archivo = req.file.filename;
   const newDoc={'id_archivo':archivo,nombre,descripcion,}
   await db.query("insert into documentos set ?",[newDoc])
-
+  req.flash("success", "Documento subido correctamente");
   res.redirect("/preventivos");
 });
 router.get("/preventivoDelete/:id", async (req, res) => {
@@ -51,6 +51,7 @@ router.get("/preventivoDelete/:id", async (req, res) => {
   const filePath = path.resolve('src/public/informes/' + id_archivo);
   await unlink(filePath);
   await db.query("delete from documentos where id_archivo = ?",[id_archivo]);
+  req.flash("success", "Documento borrado correctamente");
   res.render("documentos/preventivos");
 });
 router.get("/preventivoEdit/:id", async (req, res) => {
@@ -59,7 +60,6 @@ router.get("/preventivoEdit/:id", async (req, res) => {
   const doc= await db.query("select * from documentos where id_archivo=?",[id_archivo]);
   res.render("documentos/preventivoEdit",{documento: doc[0]});
 });
-
 router.post("/preventivoEdit/:id", async (req, res) => {
   //console.log(req.body);
   const id_archivo = req.params.id;
@@ -70,11 +70,12 @@ router.post("/preventivoEdit/:id", async (req, res) => {
   console.log(">>"+nombre);
   console.log(">>>"+descripcion);
   await db.query("update documentos set ? where id_archivo=?",[newDoc,id_archivo]);
-
+  req.flash("success", "Documento editado correctamente");
   res.redirect("/preventivos");
 });
 
 router.get("/prueba", (req, res) => {
+  req.flash("success", "Prueba ejecutada correctamente");
   res.render("documentos/prueba");
 });
 router.post("/pruebaPost", async (req, res) => {
@@ -82,10 +83,14 @@ router.post("/pruebaPost", async (req, res) => {
   userpass = req.body.pass;
   console.log("==>"+req.masterPass);
   const validPassword = await helpers.verifyPassword(userpass,password);
-  if (validPassword)
+  if (validPassword){
+    req.flash("success", "Prueba ejecutada correctamente");
     res.redirect("/balizas/list");
-  else
+  }
+  else{
+    req.flash("warning", "Sucedió algun error!");
     res.redirect("/error");
+  }
 
 });
 

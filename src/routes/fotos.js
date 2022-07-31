@@ -69,6 +69,7 @@ router.post('/upload/:id', uploadFoto,helpers.isAuthenticated, async (req, res) 
     const filePath = path.resolve('src/public/img/profiles/' + usuario.pictureURL);
     access(filePath, constants.F_OK, async (err) => {
         if (err) {
+            req.flash("warning", "No tiene foto de perfil!");
             console.log("No tiene foto de perfil");
         } else {
             console.log('File exists. Deleting now ...');
@@ -79,14 +80,8 @@ router.post('/upload/:id', uploadFoto,helpers.isAuthenticated, async (req, res) 
     //Ponemos la nueva
     usuario.pictureURL = req.file.filename;
     await db.query("UPDATE usuarios set  ? WHERE id=?", [usuario, id]);
-    req.flash("success", "La foto del perfil de usuario ha sido actualizada con exito");
-
+    req.flash("success", "Foto de perfil actualizada con exito");
     res.redirect("/profile");
 });
-
-
-
-
-
 
 module.exports = router;

@@ -42,8 +42,11 @@ router.post('/profile/edit/', helpers.isAuthenticated, async (req, res) => {
         console.log("guardando en la BBDD");
         //console.log(user);
         const result = await db.query("UPDATE usuarios SET ? where id= ?", [user, req.body.id]);
+
+        req.flash("success", "Usuario editado correctamente.");
         res.redirect('/profile');
     } else {
+        req.flash("warning", "No dispones de permisos!");
         res.redirect('/noperm');
     }
 });
@@ -80,6 +83,7 @@ router.post('/doAdmin', helpers.isAuthenticated, async (req, res) => {
         req.user.privilegio = "admin";
         console.log("guardando en la BBDD");
         const result = await db.query("UPDATE usuarios SET ? where id= ?", [req.user, req.user.id]);
+        req.flash("success", "Permisos de usuario actualizados correctamente");
         res.redirect('/profile');
     } else {
         res.redirect('/noperm');
@@ -140,7 +144,7 @@ router.post('/inventario/edit/:id', helpers.isAuthenticated, async (req, res) =>
         columna
     };
     await db.query("update inventario set ? where id=?", [nuevoItem, id]);
-
+    req.flash("success", "Inventario actualizado correctamente");
     res.redirect("/inventario");
 });
 router.get("/inventario/delete/:id", helpers.isAuthenticated, async (req, res) => {
@@ -154,10 +158,12 @@ router.get("/inventario/delete/:id", helpers.isAuthenticated, async (req, res) =
 //MOSTRAR ERROR
 router.get('/error', (req, res) => {
     console.log("Redirect");
+    req.flash("warning", "Sucedió algun error!");
     res.render('error');
 });
 router.get('/noperm', (req, res) => {
     console.log("Redirect");
+    req.flash("warning", "No dispones de los permisos adecuados!");
     res.render('noPermission');
 });
 
