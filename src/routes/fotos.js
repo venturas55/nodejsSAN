@@ -8,6 +8,7 @@ const db = require("../database"); //db hace referencia a la BBDD
 const multer = require('multer');
 //const { access, constants } = require('node:fs');
 const { access, constants } = require('fs');
+const funciones = require("../lib/funciones.js");
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -55,12 +56,13 @@ router.post("/balizas/upload/:nif", uploadFoto, async (req, res) => {
     const { nif } = req.params;
     console.log(req.params);
     console.log(req.body);
+    funciones.insertarLog(req.user.usuario,"INSERT foto",nif );
     req.flash("success", "Foto de la baliza " + nif + " subida correctamente!");
     res.redirect("/balizas/plantilla/" + nif);
 });
 
 //GESTION  foto perfil
-router.post('/upload/:id', uploadFoto,helpers.isAuthenticated, async (req, res) => {
+router.post('/upload/:id', helpers.isAuthenticated,uploadFoto, async (req, res) => {
     const { id } = req.params;
     console.log(req.file);
     var usuario = await db.query("select * from usuarios where id = ?", id);
@@ -81,6 +83,7 @@ router.post('/upload/:id', uploadFoto,helpers.isAuthenticated, async (req, res) 
     //Ponemos la nueva
     usuario.pictureURL = req.file.filename;
     await db.query("UPDATE usuarios set  ? WHERE id=?", [usuario, id]);
+    funciones.insertarLog(req.user.usuario,"UPDATE profile",usuario.usuario+" actualizó su foto" );
     req.flash("success", "Foto de perfil actualizada con exito");
     res.redirect("/profile");
 });

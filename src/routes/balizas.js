@@ -4,6 +4,7 @@ const { unlink } = require('fs-extra');
 const path = require('path');
 const helpers = require("../lib/helpers");
 const db = require("../database"); //db hace referencia a la BBDD
+const funciones = require("../lib/funciones.js");
 
 //CRUD create
 router.get("/add", helpers.isAuthenticated, (req, res) => {
@@ -62,6 +63,7 @@ router.post("/add", helpers.isAuthenticated, async (req, res) => {
   await db.query("INSERT INTO balizamiento set ?", [newBalizamiento]);
   await db.query("INSERT INTO localizacion set ?", [newBalizamientoLocalizacion]);
   await db.query("INSERT INTO lampara set ?", [newBalizamientoLampara]);
+  funciones.insertarLog(req.user.usuario,"INSERT balizamiento",newBalizamiento.nif);
   req.flash("success", "Baliza insertada correctamente");
   res.redirect("/balizas/list"); //te redirige una vez insertado el item
 });
@@ -185,6 +187,7 @@ router.post("/editCaracteristicas/:nif", helpers.isAuthenticated, async (req, re
     newBaliza,
     nifviejo,
   ]);
+  funciones.insertarLog(req.user.usuario,"UPDATE balizamiento",newBaliza.nif +" "+newBaliza.num_internacional+" "+newBaliza.tipo+" "+newBaliza.telecontrol +newBaliza.apariencia+" "+ newBaliza.periodo+" "+newBaliza.caracteristica );
   req.flash("success", "Baliza modificada correctamente");
   res.redirect("/balizas/plantilla/" + nifviejo);
 });
@@ -210,6 +213,7 @@ router.post("/editLocalizacion/:nif", helpers.isAuthenticated, async (req, res) 
     newBaliza,
     nifviejo,
   ]);
+  funciones.insertarLog(req.user.usuario,"UPDATE localizacion",newBaliza.nif +" "+newBaliza.puerto+" "+newBaliza.num_local+" "+newBaliza.localizacion+" "+newBaliza.latitud+" "+newBaliza.longitud );
   req.flash("success", "Localizacion de baliza modificada correctamente");
   res.redirect("/balizas/plantilla/" + nifviejo);
 });
@@ -240,6 +244,7 @@ router.post("/editLampara/:nif", helpers.isAuthenticated, async (req, res) => {
     newBaliza,
     nifviejo,
   ]);
+  funciones.insertarLog(req.user.usuario,"UPDATE localizacion",newBaliza.nif +" "+newBaliza.altura+" "+newBaliza.elevacion+" "+newBaliza.alcanceNom+" " +newBaliza.linterna+" "+newBaliza.candelasCalc+" "+newBaliza.alcanceLum+" "+newBaliza.candelasInst );
   req.flash("success", "Lampara del aton modificada correctamente");
   res.redirect("/balizas/plantilla/" + nifviejo);
 });
@@ -255,6 +260,7 @@ router.get("/delete/:nif", helpers.isAdmin , async (req, res) => {
   await db.query("DELETE FROM lampara WHERE nif=?", [nif]);
   await db.query("DELETE FROM balizamiento WHERE nif=?", [nif]);
   //TODO: faltaria borrar la carpeta con las fotos
+  funciones.insertarLog(req.user.usuario,"DELETE baliza",req.params.nif );
   req.flash("success", "Baliza borrada correctamente");
   res.redirect("/balizas/list");
 });
@@ -272,7 +278,7 @@ router.post("/observaciones/add", helpers.isAuthenticated, async (req, res) => {
   console.log(observa);
   await db.query("INSERT INTO observaciones set ?", [observa]);
   req.flash("success", "Observacion insertada correctamente");
-  //res.render("/balizas/plantilla/"+nif);
+  funciones.insertarLog(req.user.usuario,"INSERT observaciones",observa.nif + " " + observa.observaciones );
   res.redirect("/balizas/plantilla/" + nif);
 });
 router.get("/observaciones/delete/:idObs", helpers.isAuthenticated, async (req, res) => {
@@ -309,6 +315,7 @@ router.post("/observaciones/edit/:idObs", helpers.isAuthenticated, async (req, r
     newObservacion,
     id_observacion,
   ]);
+  funciones.insertarLog(req.user.usuario,"UPDATE observaciones",newObservacion.nif + " "+ newObservacion.observaciones );
   req.flash("success", "Observacion modificada correctamente en la baliza " + nif);
   res.redirect("/balizas/plantilla/" + nif);
 });
@@ -326,6 +333,7 @@ router.post("/mantenimiento/add", helpers.isAuthenticated, async (req, res) => {
   };
   console.log(mant);
   await db.query("INSERT INTO mantenimiento set ?", [mant]);
+  funciones.insertarLog(req.user.usuario,"INSERT mantenimiento",mant.nif + " "+mant.fecha + " "+ mant.mantenimiento );
   req.flash("success", "Mantenimiento en baliza insertado correctamente");
   res.redirect("/balizas/plantilla/" + nif);
 });
@@ -368,6 +376,7 @@ router.post("/mantenimiento/edit/:idMan", helpers.isAuthenticated, async (req, r
     newObservacion,
     id_mantenimiento,
   ]);
+  funciones.insertarLog(req.user.usuario,"UPDATE mantenimiento",newObservacion.nif+" "+ newObservacion.fecha+" "+newObservacion.mantenimiento );
   req.flash("success", "Mantenimiento modificado correctamente en la baliza " + nif);
   res.redirect("/balizas/plantilla/" + nif);
 });
@@ -382,6 +391,7 @@ router.get("/fotos/:nif/:src/delete", async (req, res) => {
     const nif = req.params.nif;
     const src = req.params.src;
     await unlink(path.resolve('src/public/img/imagenes/' + nif + "/" + src));
+    funciones.insertarLog(req.user.usuario,"DELETE foto",nif+" "+src );
     req.flash("success", "Foto de baliza " + nif + " borrada correctamente.");
     res.redirect("/balizas/fotos/" + nif);
   });

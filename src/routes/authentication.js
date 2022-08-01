@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 const helpers = require('../lib/helpers');
+const funciones = require("../lib/funciones.js");
 
 //GESTION SIGNIN registrarse C---
 router.get('/signup', helpers.isNotAuthenticated, (req, res) => {
@@ -29,6 +30,7 @@ router.post('/signin', (req, res, next) => {
 
 //GESTION logout
 router.get('/logout', helpers.isAuthenticated, (req, res) => {
+    funciones.insertarLog(req.user.usuario,"LOGOUT usuario", req.user.id +" "+ req.user.usuario);
     req.logOut();
     res.redirect('/');
 })

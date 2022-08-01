@@ -6,6 +6,7 @@ const db = require("../database"); //db hace referencia a la BBDD
 const { unlink } = require('fs-extra');
 //const { access, constants } = require('node:fs');
 const { access, constants } = require('fs');
+const funciones = require("../lib/funciones.js");
 
 //MOSTRAR PAGINA INICIAL
 router.get('/', (req, res) => {
@@ -14,16 +15,18 @@ router.get('/', (req, res) => {
 
 //MOSTRAR CALCULOS
 router.get('/calculos', (req, res) => {
-    res.render('calculos', { layout: 'layoutCalculos' });
+      res.render('calculos', { layout: 'layoutCalculos' });
 });
 
 //MOSTRAR PLAN
 router.get('/plan', (req, res) => {
+    helpers.alerta();
     res.render('plan', { layout: 'layoutSimple' });
 });
 
 //MOSTRAR PERFIL  -RUD  
 router.get('/profile', helpers.isAuthenticated, (req, res) => {
+    console.log(req.user.usuario);
     res.render('profile');
 });
 router.get('/profile/edit', helpers.isAuthenticated, (req, res) => {
@@ -43,7 +46,7 @@ router.post('/profile/edit/', helpers.isAuthenticated, async (req, res) => {
         console.log("guardando en la BBDD");
         //console.log(user);
         const result = await db.query("UPDATE usuarios SET ? where id= ?", [user, req.body.id]);
-
+        funciones.insertarLog(req.user.usuario,"UPDATE usuarios","");
         req.flash("success", "Usuario editado correctamente.");
         res.redirect('/profile');
     } else {
@@ -85,6 +88,7 @@ router.post('/doAdmin', helpers.isAuthenticated, async (req, res) => {
         console.log("guardando en la BBDD");
         const result = await db.query("UPDATE usuarios SET ? where id= ?", [req.user, req.user.id]);
         req.flash("success", "Permisos de usuario actualizados correctamente");
+        funciones.insertarLog(req.user.usuario,"UPDATE usuarios","Se le añade permisos de admin");
         res.redirect('/profile');
     } else {
         res.redirect('/noperm');
@@ -145,6 +149,7 @@ router.post('/inventario/edit/:id', helpers.isAuthenticated, async (req, res) =>
         columna
     };
     await db.query("update inventario set ? where id=?", [nuevoItem, id]);
+    funciones.insertarLog(req.user.usuario,"UPDATE inventario","Info actualizada "+nuevoItem.item + " "+ nuevoItem.cantidad);
     req.flash("success", "Inventario actualizado correctamente");
     res.redirect("/inventario");
 });
@@ -167,6 +172,12 @@ router.get('/noperm', (req, res) => {
     req.flash("warning", "No dispones de los permisos adecuados!");
     res.render('noPermission');
 });
+
+//MOSTRAR PRUEBA
+router.get("/prueba", (req, res) => {
+    req.flash("success", "Prueba ejecutada correctamente");
+    res.render("documentos/prueba");
+  });
 
 
 module.exports = router;

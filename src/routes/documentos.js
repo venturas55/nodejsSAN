@@ -7,6 +7,7 @@ const db = require("../database"); //db hace referencia a la BBDD
 const multer = require('multer');
 const fs = require('fs');
 const { v4: uuidv4 } = require('uuid');
+const funciones = require("../lib/funciones.js");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -42,7 +43,8 @@ router.post("/preventivos", uploadDocument, async (req, res) => {
   const { nombre, descripcion } = req.body;
   const archivo = req.file.filename;
   const newDoc={'id_archivo':archivo,nombre,descripcion,}
-  await db.query("insert into documentos set ?",[newDoc])
+  await db.query("insert into documentos set ?",[newDoc]);
+  funciones.insertarLog(req.user.usuario,"INSERT documento",archivo);
   req.flash("success", "Documento subido correctamente");
   res.redirect("/preventivos");
 });
@@ -51,6 +53,7 @@ router.get("/preventivoDelete/:id", async (req, res) => {
   const filePath = path.resolve('src/public/informes/' + id_archivo);
   await unlink(filePath);
   await db.query("delete from documentos where id_archivo = ?",[id_archivo]);
+  funciones.insertarLog(req.user.usuario,"DELETE documento",id_archivo);
   req.flash("success", "Documento borrado correctamente");
   res.render("documentos/preventivos");
 });
@@ -70,14 +73,12 @@ router.post("/preventivoEdit/:id", async (req, res) => {
   console.log(">>"+nombre);
   console.log(">>>"+descripcion);
   await db.query("update documentos set ? where id_archivo=?",[newDoc,id_archivo]);
+  funciones.insertarLog(req.user.usuario,"UPDATE documento",nombre + " " + descripcion);
   req.flash("success", "Documento editado correctamente");
   res.redirect("/preventivos");
 });
 
-router.get("/prueba", (req, res) => {
-  req.flash("success", "Prueba ejecutada correctamente");
-  res.render("documentos/prueba");
-});
+
 router.post("/pruebaPost", async (req, res) => {
   var password=req.masterPass;
   userpass = req.body.pass;

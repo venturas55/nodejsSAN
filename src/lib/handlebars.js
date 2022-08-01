@@ -11,7 +11,6 @@ helpers.formatearSp = (timestamp) =>{
   return [day , mnth,timestamp.getFullYear() ].join("/");
 }
 
-
 //Este es el formateo necesario para encajar una fecha en un input de type="date"
 helpers.formatearEn = (timestamp) =>{
     mnth = ("0" + (timestamp.getMonth() + 1)).slice(-2),
@@ -33,6 +32,5 @@ helpers.suma = (balizas)=>{
     });
     return total;
 }
-
 
 module.exports=helpers;
