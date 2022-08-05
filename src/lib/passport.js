@@ -22,7 +22,7 @@ passport.use(
                 console.log(user);
                 const validPassword = await helpers.verifyPassword(password,user.contrasena);
                 if (validPassword){
-                    funciones.insertarLog(req.user.usuario,"LOGIN usuario", user.id +" "+ user.usuario + " "+ user.email);
+                    funciones.insertarLog(user.usuario,"LOGIN usuario", user.id +" "+ user.usuario + " "+ user.email);
                     done(null, user, req.flash('success', "Welcome " + user.usuario));
                 }
                 else
