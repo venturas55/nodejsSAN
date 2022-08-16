@@ -67,7 +67,7 @@ helpers.listadoFotos = (req, res, next) => {
 
 helpers.listadoBackups = (req, res, next) => {
     var documentos = [];
-    var directorio = path.join(__dirname, "../dumpSQL");
+    var directorio = path.join(__dirname, "../public/dumpSQL");
     fs.readdir(directorio, (err, files) => {
         if (files) {
             files.forEach(file => {

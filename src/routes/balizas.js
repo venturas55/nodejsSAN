@@ -400,20 +400,20 @@ router.get("/fotos/:nif/:src/delete", async (req, res) => {
 router.get("/mapa/:nif", async (req, res) => {
   const { nif } = req.params;
   const baliza = await db.query('SELECT * FROM balizamiento b  LEFT JOIN localizacion lo ON lo.nif=b.nif  LEFT JOIN lampara la ON la.nif=b.nif where b.nif=?', [nif]);
-  res.render("mapa", { layout: 'layoutMapa', baliza: baliza[0], });
+  res.render("mapas/mapa", { layout: 'layoutMapa', baliza: baliza[0], });
 });
 router.get("/mapaGeneral/:valor", (req, res) => {
   const { valor } = req.params;
   console.log("Mapa " + valor);
   switch (valor) {
     case "1":
-      res.render("mapaValencia", { layout: 'layoutMapa' });
+      res.render("mapas/mapaValencia", { layout: 'layoutMapa' });
       break;
     case '2':
-      res.render("mapaSagunto", { layout: 'layoutMapa' });
+      res.render("mapas/mapaSagunto", { layout: 'layoutMapa' });
       break;
     case "3":
-      res.render("mapaGandia", { layout: 'layoutMapa' });
+      res.render("mapas/mapaGandia", { layout: 'layoutMapa' });
       break;
   }
 });

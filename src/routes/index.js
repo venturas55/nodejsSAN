@@ -18,7 +18,7 @@ function consulta() {
             password: 'weR65hS',
             database: 'san',
         },
-        dumpToFile: './src/dumpSQL/dumpSAN'+Date.now()+'.sql',
+        dumpToFile: './src/public/dumpSQL/dumpSAN'+Date.now()+'.sql',
     });
 
     /* 
