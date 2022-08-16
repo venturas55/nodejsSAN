@@ -78,21 +78,4 @@ router.post("/preventivoEdit/:id", async (req, res) => {
   res.redirect("/preventivos");
 });
 
-
-router.post("/pruebaPost", async (req, res) => {
-  var password=req.masterPass;
-  userpass = req.body.pass;
-  console.log("==>"+req.masterPass);
-  const validPassword = await helpers.verifyPassword(userpass,password);
-  if (validPassword){
-    req.flash("success", "Prueba ejecutada correctamente");
-    res.redirect("/balizas/list");
-  }
-  else{
-    req.flash("warning", "Sucedió algun error!");
-    res.redirect("/error");
-  }
-
-});
-
 module.exports = router;

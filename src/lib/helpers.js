@@ -3,6 +3,11 @@ const path = require('path');
 const fs = require('fs');
 const helpers = {};
 
+function createdDate(file) {
+    const { birthtime } = fs.statSync(file)
+    return birthtime
+}
+
 helpers.encryptPass = async (password) => {
     const sal = await bcrypt.genSalt(10);
     password = await bcrypt.hash(password, sal);
@@ -60,18 +65,26 @@ helpers.listadoFotos = (req, res, next) => {
     return fotitos;
 }
 
-/* helpers.listadoDocumentos = (req,res,next)=>{
+helpers.listadoBackups = (req, res, next) => {
     var documentos = [];
-    var directorio = path.join(__dirname, "../public/informes");
+    var directorio = path.join(__dirname, "../dumpSQL");
     fs.readdir(directorio, (err, files) => {
-      if (files) {
-        files.forEach(file => {
-            documentos.push(file);
-        });
-      }
+        if (files) {
+            files.forEach(file => {
+                var item = {
+                    'name': file,
+                    'created_at': createdDate(directorio+"/"+file)
+                }
+                documentos.push(item);
+            });
+        }
+        else {
+            console.log("No hay files");
+        }
     });
+    console.log(">" + documentos);
     return documentos;
-} */
+}
 
 helpers.ifCond = (v1, v2, options) => {
     if (v1 === v2) {

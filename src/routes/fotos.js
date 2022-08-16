@@ -49,7 +49,6 @@ const uploadFoto = multer({
      }
 }).single('imagen');
 
-
 //GESTION FOTOS DE BALIZAS
 router.post("/balizas/upload/:nif", uploadFoto, async (req, res) => {
     console.log("Subiendo foto baliza");

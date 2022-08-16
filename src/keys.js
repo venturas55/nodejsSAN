@@ -1,9 +1,9 @@
 module.exports ={
     database:{
-        host:'localhost',
+        host:'152.228.133.198',
        // user:'venturas2',
        // password:'Valen&cia1',
-        user:'root',
+        user:'venturas',
         password:'weR65hS',
         database:'san',
         masterPass:'2a$10$.6weXYERL6XMB7nb0xcMTus/Qbi4aotItCWLs3QyBDk7cup4oCOo.'

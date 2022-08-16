@@ -7,6 +7,33 @@ const { unlink } = require('fs-extra');
 //const { access, constants } = require('node:fs');
 const { access, constants } = require('fs');
 const funciones = require("../lib/funciones.js");
+const mysqldump = require('mysqldump');
+
+function consulta() {
+    // dump the result straight to a file
+    mysqldump({
+        connection: {
+            host: '152.228.133.198',
+            user: 'venturas',
+            password: 'weR65hS',
+            database: 'san',
+        },
+        dumpToFile: './src/dumpSQL/dumpSAN'+Date.now()+'.sql',
+    });
+
+    /* 
+        exec("dir", (error, stdout, stderr) => {
+            if (error) {
+                console.log(`error: ${error.message}`);
+                return;
+            }
+            if (stderr) {
+                console.log(`stderr: ${stderr}`);
+                return;
+            }
+            console.log(`stdout: ${stdout}`);
+          }); */
+}
 
 //MOSTRAR PAGINA INICIAL
 router.get('/', (req, res) => {
@@ -15,7 +42,7 @@ router.get('/', (req, res) => {
 
 //MOSTRAR CALCULOS
 router.get('/calculos', (req, res) => {
-      res.render('calculos', { layout: 'layoutCalculos' });
+    res.render('calculos', { layout: 'layoutCalculos' });
 });
 
 //MOSTRAR PLAN
@@ -46,7 +73,7 @@ router.post('/profile/edit/', helpers.isAuthenticated, async (req, res) => {
         console.log("guardando en la BBDD");
         //console.log(user);
         const result = await db.query("UPDATE usuarios SET ? where id= ?", [user, req.body.id]);
-        funciones.insertarLog(req.user.usuario,"UPDATE usuarios","");
+        funciones.insertarLog(req.user.usuario, "UPDATE usuarios", "");
         req.flash("success", "Usuario editado correctamente.");
         res.redirect('/profile');
     } else {
@@ -79,7 +106,7 @@ router.get("/profile/delete/:id", helpers.isAuthenticated, async (req, res) => {
     res.redirect('/');
 });
 router.post('/doAdmin', helpers.isAuthenticated, async (req, res) => {
-    const {pass} = req.body;
+    const { pass } = req.body;
     console.log(pass + " / " + req.masterPass);
 
     const validPassword = await helpers.verifyPassword(pass, req.masterPass);
@@ -88,11 +115,11 @@ router.post('/doAdmin', helpers.isAuthenticated, async (req, res) => {
         console.log("guardando en la BBDD");
         const result = await db.query("UPDATE usuarios SET ? where id= ?", [req.user, req.user.id]);
         req.flash("success", "Permisos de usuario actualizados correctamente");
-        funciones.insertarLog(req.user.usuario,"UPDATE usuarios","Se le añade permisos de admin");
+        funciones.insertarLog(req.user.usuario, "UPDATE usuarios", "Se le añade permisos de admin");
         res.redirect('/profile');
     } else {
         res.redirect('/noperm');
-    } 
+    }
 });
 
 //GESTION  foto perfil
@@ -149,7 +176,7 @@ router.post('/inventario/edit/:id', helpers.isAuthenticated, async (req, res) =>
         columna
     };
     await db.query("update inventario set ? where id=?", [nuevoItem, id]);
-    funciones.insertarLog(req.user.usuario,"UPDATE inventario","Info actualizada "+nuevoItem.item + " "+ nuevoItem.cantidad);
+    funciones.insertarLog(req.user.usuario, "UPDATE inventario", "Info actualizada " + nuevoItem.item + " " + nuevoItem.cantidad);
     req.flash("success", "Inventario actualizado correctamente");
     res.redirect("/inventario");
 });
@@ -175,9 +202,39 @@ router.get('/noperm', (req, res) => {
 
 //MOSTRAR PRUEBA
 router.get("/prueba", (req, res) => {
-    req.flash("success", "Prueba ejecutada correctamente");
-    res.render("documentos/prueba");
-  });
+    req.flash("success", "Prueba ejecutada correctamente en index");
+    res.render("prueba");
+});
+
+router.post("/pruebaPost", async (req, res) => {
+    var password = req.masterPass;
+    userpass = req.body.pass;
+    console.log("==>" + req.masterPass);
+    const validPassword = await helpers.verifyPassword(userpass, password);
+    if (validPassword) {
+        consulta();
+
+        req.flash("success", "Prueba ejecutada correctamente doc");
+        res.redirect("/");
+    }
+    else {
+        req.flash("warning", "Sucedió algun error!");
+        res.redirect("/error");
+    }
+
+});
+
+//GESTION BACKUPS BBDD
+router.get("/backups", async (req, res) => {
+    var backups = helpers.listadoBackups();
+    res.render("listadoBackups", { backups });
+});
+
+router.get("/dumpSQL", async (req, res) => {
+    consulta();
+    req.flash("success", "Backup de la BBDD realizado correctamente");
+    res.redirect("/backups");
+});
 
 
 module.exports = router;
