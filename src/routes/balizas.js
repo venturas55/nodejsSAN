@@ -6,7 +6,7 @@ const helpers = require("../lib/helpers");
 const db = require("../database"); //db hace referencia a la BBDD
 const funciones = require("../lib/funciones.js");
 const fs = require('fs').promises
-
+const queryListadoAton = "SELECT b.nif,b.num_internacional,b.tipo,b.apariencia,b.periodo,b.caracteristica,lo.puerto,lo.num_local,lo.localizacion,lo.latitud,lo.longitud,la.altura,la.elevacion,la.alcanceNom,la.linterna,la.candelasCalc,la.alcanceLum,la.candelasInst FROM balizamiento b  LEFT JOIN localizacion lo ON lo.nif=b.nif  LEFT JOIN lampara la ON la.nif=b.nif";
 
 //CRUD create
 router.get("/add", helpers.isAuthenticated, (req, res) => {
@@ -73,7 +73,7 @@ router.post("/add", helpers.isAuthenticated, async (req, res) => {
 //CRUD read
 router.get("/list", async (req, res) => {
   const balizas = await db.query(
-    "SELECT * FROM balizamiento b left join localizacion l on b.nif=l.nif"
+    queryListadoAton
   );
   res.render("balizas/list", { balizas });
   //res.render("balizas/list", { balizas: balizas });
@@ -84,11 +84,11 @@ router.get("/list/:busqueda", async (req, res) => {
   var balizas;
   if (busqueda === 'Ext') {
     console.log("Externas");
-    balizas = await db.query("SELECT * FROM balizamiento b, localizacion l where b.nif=l.nif AND l.puerto not like '%valencia%' and l.puerto not like '%sagunto%' and l.puerto not like '%gandia%' order by l.nif");
+    balizas = await db.query(queryListadoAton+" where b.nif=lo.nif AND lo.puerto not like '%valencia%' and lo.puerto not like '%sagunto%' and lo.puerto not like '%gandia%' order by lo.nif");
   }
   else {
     busqueda = "%" + busqueda + "%";
-    balizas = await db.query("SELECT * FROM balizamiento b, localizacion l where b.nif=l.nif AND l.puerto like ? order by l.nif", busqueda);
+    balizas = await db.query(queryListadoAton+" where b.nif=lo.nif AND lo.puerto like ? order by lo.nif", busqueda);
     //like is case insensitive por defecto. En caso de quererlo sensitivo hay que añadir solo "like binary"
   }
   res.render("balizas/list", { balizas });
@@ -102,19 +102,19 @@ router.get("/list/:filtro/:valor", async (req, res) => {
   console.log(obj);
   switch (obj.filtro) {
     case 'nif':
-      balizas = await db.query("SELECT * FROM balizamiento b, localizacion l where b.nif=l.nif AND l.nif like ? order by l.nif", obj.valor);
+      balizas = await db.query(queryListadoAton+" where b.nif=lo.nif AND lo.nif like ? order by lo.nif", obj.valor);
       break;
     case 'puerto':
-      balizas = await db.query("SELECT * FROM balizamiento b, localizacion l where b.nif=l.nif AND l.puerto like ? order by l.nif", obj.valor);
+      balizas = await db.query(queryListadoAton+" where b.nif=lo.nif AND lo.puerto like ? order by lo.nif", obj.valor);
       break;
     case 'localizacion':
-      balizas = await db.query("SELECT * FROM balizamiento b, localizacion l where b.nif=l.nif AND l.localizacion like ? order by l.nif", obj.valor);
+      balizas = await db.query(queryListadoAton+" where b.nif=lo.nif AND lo.localizacion like ? order by lo.nif", obj.valor);
       break;
     case 'tipo':
-      balizas = await db.query("SELECT * FROM balizamiento b, localizacion l where b.nif=l.nif AND b.tipo like ? order by l.nif", obj.valor);
+      balizas = await db.query(queryListadoAton+" where b.nif=lo.nif AND b.tipo like ? order by lo.nif", obj.valor);
       break;
     case 'apariencia':
-      balizas = await db.query("SELECT * FROM balizamiento b, localizacion l where b.nif=l.nif AND b.apariencia like ? order by l.nif", obj.valor);
+      balizas = await db.query(queryListadoAton+" where b.nif=lo.nif AND b.apariencia like ? order by lo.nif", obj.valor);
       break;
   }
   //like is case insensitive por defecto. En caso de quererlo sensitivo hay que añadir solo "like binary"
@@ -124,7 +124,7 @@ router.get("/list/:filtro/:valor", async (req, res) => {
 router.get("/plantilla/:nif", async (req, res) => {
   const { nif } = req.params;
   //const baliza = await db.query('SELECT * FROM balizamiento b  LEFT JOIN localizacion lo ON lo.nif=b.nif  LEFT JOIN lampara la ON la.nif=b.nif where b.nif=?', [nif]);  CON ESTA CONSULTA EL LEFT JOIN NO FUNCIONA BIEN PARA EL HIPOTETICO CASO EN EL QUE EXISTE UN ATON QUE NO ESTA EN ALGUNA DE LAS TRES TABLAS
-  const baliza = await db.query('SELECT b.nif,b.num_internacional,b.tipo,b.apariencia,b.periodo,b.caracteristica,lo.puerto,lo.num_local,lo.localizacion,lo.latitud,lo.longitud,la.altura,la.elevacion,la.alcanceNom,la.linterna,la.candelasCalc,la.alcanceLum,la.candelasInst FROM balizamiento b  LEFT JOIN localizacion lo ON lo.nif=b.nif  LEFT JOIN lampara la ON la.nif=b.nif where b.nif=?', [nif]);
+  const baliza = await db.query(queryListadoAton+' where b.nif=?', [nif]);
   console.log(">");
   console.log(baliza[0]);
   const observaciones = await db.query('SELECT * FROM observaciones where nif=?', [nif]);
@@ -411,7 +411,7 @@ router.get("/fotos/:nif/:src/delete", async (req, res) => {
 //GESTION mapa
 router.get("/mapa/:nif", async (req, res) => {
   const { nif } = req.params;
-  const baliza = await db.query('SELECT * FROM balizamiento b  LEFT JOIN localizacion lo ON lo.nif=b.nif  LEFT JOIN lampara la ON la.nif=b.nif where b.nif=?', [nif]);
+  const baliza = await db.query(queryListadoAton+' where b.nif=?', [nif]);
   res.render("mapas/mapa", { layout: 'layoutMapa', baliza: baliza[0], });
 });
 router.get("/mapaGeneral/:valor", (req, res) => {
