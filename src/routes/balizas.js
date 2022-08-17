@@ -5,6 +5,8 @@ const path = require('path');
 const helpers = require("../lib/helpers");
 const db = require("../database"); //db hace referencia a la BBDD
 const funciones = require("../lib/funciones.js");
+const fs = require('fs').promises
+
 
 //CRUD create
 router.get("/add", helpers.isAuthenticated, (req, res) => {
@@ -121,13 +123,10 @@ router.get("/list/:filtro/:valor", async (req, res) => {
 });
 router.get("/plantilla/:nif", async (req, res) => {
   const { nif } = req.params;
-
   const baliza = await db.query('SELECT * FROM balizamiento b  LEFT JOIN localizacion lo ON lo.nif=b.nif  LEFT JOIN lampara la ON la.nif=b.nif where b.nif=?', [nif]);
   const observaciones = await db.query('SELECT * FROM observaciones where nif=?', [nif]);
   const mantenimiento = await db.query('SELECT * FROM mantenimiento where nif=? order by fecha DESC', [nif]);
-
   var fotitos = helpers.listadoFotos(nif);
-
   res.render("balizas/plantilla", { layout: 'layoutPlantilla', baliza: baliza[0], obs: observaciones, mant: mantenimiento, imagen: fotitos });
   // NO FUNCIONA CON LA BARRA DELANTE res.render('/links/list');
 });
@@ -244,22 +243,24 @@ router.post("/editLampara/:nif", helpers.isAuthenticated, async (req, res) => {
     newBaliza,
     nifviejo,
   ]);
-  funciones.insertarLog(req.user.usuario,"UPDATE localizacion",newBaliza.nif +" "+newBaliza.altura+" "+newBaliza.elevacion+" "+newBaliza.alcanceNom+" " +newBaliza.linterna+" "+newBaliza.candelasCalc+" "+newBaliza.alcanceLum+" "+newBaliza.candelasInst );
+  funciones.insertarLog(req.user.usuario,"UPDATE lampara",newBaliza.nif +" "+newBaliza.altura+" "+newBaliza.elevacion+" "+newBaliza.alcanceNom+" " +newBaliza.linterna+" "+newBaliza.candelasCalc+" "+newBaliza.alcanceLum+" "+newBaliza.candelasInst );
   req.flash("success", "Lampara del aton modificada correctamente");
   res.redirect("/balizas/plantilla/" + nifviejo);
 });
 
 //CRUD delete
 router.get("/delete/:nif", helpers.isAdmin , async (req, res) => {
-  console.log("VOY A BORRAR LA PUTA BALIZA");
-  console.log(req.params.nif);
+  console.log("Borrando aton "+req.params.nif +"...");
   const { nif } = req.params;
+
+  FOLDER_TO_REMOVE= path.join(__dirname,'../public/img/imagenes/' + nif);
+  fs.rm(FOLDER_TO_REMOVE, { recursive: true, force: true });
+
   await db.query("DELETE FROM mantenimiento WHERE nif=?", [nif]);
   await db.query("DELETE FROM observaciones WHERE nif=?", [nif]);
   await db.query("DELETE FROM localizacion WHERE nif=?", [nif]);
   await db.query("DELETE FROM lampara WHERE nif=?", [nif]);
   await db.query("DELETE FROM balizamiento WHERE nif=?", [nif]);
-  //TODO: faltaria borrar la carpeta con las fotos
   funciones.insertarLog(req.user.usuario,"DELETE baliza",req.params.nif );
   req.flash("success", "Baliza borrada correctamente");
   res.redirect("/balizas/list");
@@ -287,6 +288,7 @@ router.get("/observaciones/delete/:idObs", helpers.isAuthenticated, async (req, 
   const resp = await db.query("select nif from observaciones where id_observacion=?", [idObs]);
   const nif = resp[0].nif;
   await db.query("delete from observaciones where id_observacion=?", [idObs]);
+  funciones.insertarLog(req.user.usuario,"DELETE observaciones del aton ",nif );
   req.flash("success", "Observacion de baliza " + nif + " borrada correctamente.");
   res.redirect("/balizas/plantilla/" + nif);
 });
@@ -342,6 +344,7 @@ router.get("/mantenimiento/delete/:idMan", helpers.isAuthenticated, async (req, 
   const { idMan } = req.params;
   const resp = await db.query("select nif from mantenimiento where id_mantenimiento=?", [idMan]);
   const nif = resp[0].nif;
+  funciones.insertarLog(req.user.usuario,"DELETE mantenimientos del aton",nif );
   await db.query("delete from mantenimiento where id_mantenimiento=?", [idMan]);
   req.flash("success", "mantenimiento de baliza " + nif + " borrado correctamente ");
   res.redirect("/balizas/plantilla/" + nif);
@@ -362,10 +365,6 @@ router.post("/mantenimiento/edit/:idMan", helpers.isAuthenticated, async (req, r
     fechaNueva,
     mantenimientoNuevo
   } = req.body;
-  console.log("1: " + id_mantenimiento);
-  console.log("2: " + nif);
-  console.log("3: " + fechaNueva);
-  console.log("4: " + mantenimientoNuevo);
   const newObservacion = {
     id_mantenimiento,
     nif,
