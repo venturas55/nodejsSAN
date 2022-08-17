@@ -261,7 +261,7 @@ router.get("/delete/:nif", helpers.isAdmin , async (req, res) => {
   await db.query("DELETE FROM localizacion WHERE nif=?", [nif]);
   await db.query("DELETE FROM lampara WHERE nif=?", [nif]);
   await db.query("DELETE FROM balizamiento WHERE nif=?", [nif]);
-  funciones.insertarLog(req.user.usuario,"DELETE baliza",req.params.nif );
+  funciones.insertarLog(req.user.usuario,"DELETE aton ",req.params.nif );
   req.flash("success", "Baliza borrada correctamente");
   res.redirect("/balizas/list");
 });

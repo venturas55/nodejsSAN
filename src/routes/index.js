@@ -7,33 +7,7 @@ const { unlink } = require('fs-extra');
 //const { access, constants } = require('node:fs');
 const { access, constants } = require('fs');
 const funciones = require("../lib/funciones.js");
-const mysqldump = require('mysqldump');
 
-function consulta() {
-    // dump the result straight to a file
-    mysqldump({
-        connection: {
-            host: '152.228.133.198',
-            user: 'venturas',
-            password: 'weR65hS',
-            database: 'san',
-        },
-        dumpToFile: './src/public/dumpSQL/dumpSAN'+Date.now()+'.sql',
-    });
-
-    /* 
-        exec("dir", (error, stdout, stderr) => {
-            if (error) {
-                console.log(`error: ${error.message}`);
-                return;
-            }
-            if (stderr) {
-                console.log(`stderr: ${stderr}`);
-                return;
-            }
-            console.log(`stdout: ${stdout}`);
-          }); */
-}
 
 //MOSTRAR PAGINA INICIAL
 router.get('/', (req, res) => {
@@ -231,7 +205,7 @@ router.get("/backups", async (req, res) => {
 });
 
 router.get("/dumpSQL", async (req, res) => {
-    consulta();
+    funciones.consulta();
     req.flash("success", "Backup de la BBDD realizado correctamente");
     res.redirect("/backups");
 });
