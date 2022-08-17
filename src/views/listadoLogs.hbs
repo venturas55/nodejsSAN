@@ -1,11 +1,10 @@
 <!-- CUERPO -->
 <div class="container-fluid">
     <!-- id="cuerpo" -->
-    <h1 class="col-10 mx-auto text-center">LISTADO LOGS</h1>
-    <div class="row">
-        <div class="col-10 mx-auto">
-
-            <table class="table table-bordered table-dark table-hover">
+    <h1 class="text-center">LISTADO LOGS</h1>
+    <div class="col-11 mx-auto">
+        <div class="row  my-4">
+            <table class="table table-bordered table-dark table-hover my-4">
                 <tr>
                     <th>fecha</th>
                     <th>Usuario</th>
@@ -13,25 +12,14 @@
                     <th>Detalles</th>
                 </tr>
                 {{#if logs}}
-                {{#each logs}}
-                <tr>
-                    <td>
-                         {{timeago this.fecha}} 
-                    </td>
-                        <td>
-                         {{this.usuario}} 
-                    </td>
-                        <td>
-                         {{this.accion}} 
-                    </td>
-                        <td>
-                         {{this.observacion}} 
-                    </td>
-
-               
-               
-                </tr>
-                {{/each}}
+                    {{#each logs}}
+                    <tr>
+                        <td> {{timeago this.fecha}} </td>
+                        <td>  {{this.usuario}}  </td>
+                        <td>  {{this.accion}}  </td>
+                        <td>   {{this.observacion}}  </td>
+                    </tr>
+                    {{/each}}
                 {{else}}
                 <tr>No hay ningún log generado!! </tr>
                 {{/if}}

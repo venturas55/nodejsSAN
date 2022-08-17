@@ -33,14 +33,14 @@
             Externo
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="/balizas/list/Perello">CN Perello</a>
-            <a class="dropdown-item" href="/balizas/list/Cullera">Puerto Cullera</a>
-            <a class="dropdown-item" href="/balizas/list/Oliva">CN Oliva</a>
+            <a class="dropdown-item" href="/balizas/list/Canet">CN Canet</a>
+            <a class="dropdown-item" href="/balizas/list/Sapla">CN Port Saplaya</a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="/balizas/list/Marina">Marina JCI</a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="/balizas/list/Canet">CN Canet</a>
-            <a class="dropdown-item" href="/balizas/list/Sapla">CN Port Saplaya</a>
+            <a class="dropdown-item" href="/balizas/list/Perello">CN Perello</a>
+            <a class="dropdown-item" href="/balizas/list/Cullera">Puerto Cullera</a>
+            <a class="dropdown-item" href="/balizas/list/Oliva">CN Oliva</a>
           </div>
         </li>
 
@@ -59,7 +59,7 @@
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="/profile">Ver Perfil</a>
             <a class="dropdown-item" href="/backups">Backups BBDD</a>
-             <a class="dropdown-item" href="/logs">Ver logs</a>
+            <a class="dropdown-item" href="/logs">Ver logs</a>
             <a class="dropdown-item" href="/logout">Logout</a>
           </div>
         </li>
@@ -102,8 +102,7 @@
         </li>
       </ul>
       <form id="formularioBusqueda" class="form-inline my-2 my-lg-0">
-        <input size="5" id="inputBuscar" class="form-control mr-sm-2" type="search" placeholder="Search"
-          aria-label="Search" />
+
         <select name="opcionBuscar" id="opcionBuscar">
           <option value="nif">nif</option>
           <option value="puerto">puerto</option>
@@ -111,6 +110,8 @@
           <option value="tipo">tipo</option>
           <option value="apariencia">apariencia</option>
         </select>
+        <input size="5" id="inputBuscar" class="form-control mr-sm-2" type="search" placeholder="Search"
+          aria-label="Search" />
         <button id="botonBuscar" class="btn btn-outline-success my-2 btn-sm my-sm-0" type="submit">Search</button>
       </form>
       {{!--
