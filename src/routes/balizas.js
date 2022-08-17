@@ -123,11 +123,16 @@ router.get("/list/:filtro/:valor", async (req, res) => {
 });
 router.get("/plantilla/:nif", async (req, res) => {
   const { nif } = req.params;
-  const baliza = await db.query('SELECT * FROM balizamiento b  LEFT JOIN localizacion lo ON lo.nif=b.nif  LEFT JOIN lampara la ON la.nif=b.nif where b.nif=?', [nif]);
+  //const baliza = await db.query('SELECT * FROM balizamiento b  LEFT JOIN localizacion lo ON lo.nif=b.nif  LEFT JOIN lampara la ON la.nif=b.nif where b.nif=?', [nif]);  CON ESTA CONSULTA EL LEFT JOIN NO FUNCIONA BIEN PARA EL HIPOTETICO CASO EN EL QUE EXISTE UN ATON QUE NO ESTA EN ALGUNA DE LAS TRES TABLAS
+  const baliza = await db.query('SELECT b.nif,b.num_internacional,b.tipo,b.apariencia,b.periodo,b.caracteristica,lo.puerto,lo.num_local,lo.localizacion,lo.latitud,lo.longitud,la.altura,la.elevacion,la.alcanceNom,la.linterna,la.candelasCalc,la.alcanceLum,la.candelasInst FROM balizamiento b  LEFT JOIN localizacion lo ON lo.nif=b.nif  LEFT JOIN lampara la ON la.nif=b.nif where b.nif=?', [nif]);
+  console.log(">");
+  console.log(baliza[0]);
   const observaciones = await db.query('SELECT * FROM observaciones where nif=?', [nif]);
   const mantenimiento = await db.query('SELECT * FROM mantenimiento where nif=? order by fecha DESC', [nif]);
-  var fotitos = helpers.listadoFotos(nif);
-  res.render("balizas/plantilla", { layout: 'layoutPlantilla', baliza: baliza[0], obs: observaciones, mant: mantenimiento, imagen: fotitos });
+  var fotos = helpers.listadoFotos(nif);
+  console.log(">>");
+  console.log(fotos);
+  res.render("balizas/plantilla", { layout: 'layoutPlantilla', baliza: baliza[0], obs: observaciones, mant: mantenimiento, fotos });
   // NO FUNCIONA CON LA BARRA DELANTE res.render('/links/list');
 });
 

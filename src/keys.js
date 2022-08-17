@@ -1,6 +1,7 @@
 module.exports ={
     database:{
-        host:'152.228.133.198',
+        //host:'152.228.133.198',
+        host:'localhost',
        // user:'venturas2',
        // password:'Valen&cia1',
         user:'venturas',

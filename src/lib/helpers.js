@@ -52,7 +52,6 @@ helpers.isNotAdmin = (req, res, next) => {
 
 helpers.listadoFotos = (req, res, next) => {
     const nif = req;
-    console.log(nif);
     var fotitos = [];
     var directorio = path.join(__dirname, "../public/img/imagenes", nif);
     fs.readdir(directorio, (err, files) => {
