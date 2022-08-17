@@ -16,11 +16,11 @@
                 {{#each backups}}
                 <tr>
                     <td>
-                        <a href="/{{this.name}}" target="_blank"> {{this.name}} </a>
+                        <a href="/dumpSQL/{{this.name}}" target="_blank"> {{this.name}} </a>
                     </td>
                
-                    <td>{{ this.created_at}}</td>
-                    <td> <a type="submit" href="/{{this.name}}" class="text-primary"><i
+                    <td>{{ timeago this.created_at}}</td>
+                    <td> <a type="submit" href="/backups/del/{{this.name}}" class="text-primary"><i
                                 class="fa-solid fa-trash"></i>Del</a>
                     </td>
                 </tr>

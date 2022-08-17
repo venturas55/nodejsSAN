@@ -82,7 +82,6 @@ helpers.listadoBackups = (req, res, next) => {
             console.log("No hay files");
         }
     });
-    console.log(">" + documentos);
     return documentos;
 }
 

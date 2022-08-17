@@ -6,6 +6,7 @@ const db = require("../database"); //db hace referencia a la BBDD
 const { unlink } = require('fs-extra');
 //const { access, constants } = require('node:fs');
 const { access, constants } = require('fs');
+const fs = require('fs');
 const funciones = require("../lib/funciones.js");
 
 
@@ -202,6 +203,14 @@ router.post("/pruebaPost", async (req, res) => {
 router.get("/backups", async (req, res) => {
     var backups = helpers.listadoBackups();
     res.render("listadoBackups", { backups });
+});
+
+router.get("/backups/del/:nombre", async (req, res) => {
+    var {nombre} = req.params;
+    var file =path.resolve('src/public/dumpSQL',nombre);
+    console.log(file);
+    await fs.unlinkSync(file);
+    res.redirect('/backups');
 });
 
 router.get("/dumpSQL", async (req, res) => {
