@@ -65,7 +65,7 @@ router.post("/add", helpers.isAuthenticated, async (req, res) => {
   await db.query("INSERT INTO balizamiento set ?", [newBalizamiento]);
   await db.query("INSERT INTO localizacion set ?", [newBalizamientoLocalizacion]);
   await db.query("INSERT INTO lampara set ?", [newBalizamientoLampara]);
-  funciones.insertarLog(req.user.usuario,"INSERT balizamiento",newBalizamiento.nif);
+  funciones.insertarLog(req.user.usuario, "INSERT balizamiento", newBalizamiento.nif);
   req.flash("success", "Baliza insertada correctamente");
   res.redirect("/balizas/list"); //te redirige una vez insertado el item
 });
@@ -148,21 +148,25 @@ console.log(baliza[0]);*/
 });
 router.get("/editLocalizacion/:nif", helpers.isAuthenticated, async (req, res) => {
   const { nif } = req.params;
-  const baliza = await db.query("SELECT * FROM localizacion WHERE nif=?", [
-    nif,
-  ]);
-  /*console.log(baliza);
-console.log(baliza[0]);*/
-  res.render("balizas/editLocalizacion", { baliza: baliza[0] });
+  var baliza = await db.query("SELECT * FROM localizacion WHERE nif=?", [nif]);
+  if (baliza[0] == null || baliza[0] == undefined) {
+    baliza = {nif};
+  }
+  else {
+    baliza = baliza[0];
+  }
+  res.render("balizas/editLocalizacion", { baliza });
 });
 router.get("/editLampara/:nif", helpers.isAuthenticated, async (req, res) => {
   const { nif } = req.params;
-  const baliza = await db.query("SELECT * FROM lampara WHERE nif=?", [
-    nif,
-  ]);
-  /*console.log(baliza);
-console.log(baliza[0]);*/
-  res.render("balizas/editLampara", { baliza: baliza[0] });
+  var baliza = await db.query("SELECT * FROM lampara WHERE nif=?", [nif]);
+  if (baliza[0] == null || baliza[0] == undefined) {
+    baliza = {nif};
+  }
+  else {
+    baliza = baliza[0];
+  }
+  res.render("balizas/editLampara", { baliza });
 });
 router.post("/editCaracteristicas/:nif", helpers.isAuthenticated, async (req, res) => {
   const nifviejo = req.params.nif;
@@ -191,7 +195,7 @@ router.post("/editCaracteristicas/:nif", helpers.isAuthenticated, async (req, re
     newBaliza,
     nifviejo,
   ]);
-  funciones.insertarLog(req.user.usuario,"UPDATE balizamiento",newBaliza.nif +" "+newBaliza.num_internacional+" "+newBaliza.tipo+" "+newBaliza.telecontrol +newBaliza.apariencia+" "+ newBaliza.periodo+" "+newBaliza.caracteristica );
+  funciones.insertarLog(req.user.usuario, "UPDATE balizamiento", newBaliza.nif + " " + newBaliza.num_internacional + " " + newBaliza.tipo + " " + newBaliza.telecontrol + newBaliza.apariencia + " " + newBaliza.periodo + " " + newBaliza.caracteristica);
   req.flash("success", "Baliza modificada correctamente");
   res.redirect("/balizas/plantilla/" + nifviejo);
 });
@@ -212,12 +216,13 @@ router.post("/editLocalizacion/:nif", helpers.isAuthenticated, async (req, res) 
     latitud,
     longitud,
   };
-  console.log("req.params " + req.params.nif);
-  await db.query("UPDATE localizacion set ? WHERE nif = ?", [
-    newBaliza,
-    nifviejo,
-  ]);
-  funciones.insertarLog(req.user.usuario,"UPDATE localizacion",newBaliza.nif +" "+newBaliza.puerto+" "+newBaliza.num_local+" "+newBaliza.localizacion+" "+newBaliza.latitud+" "+newBaliza.longitud );
+  var baliza = await db.query("SELECT * FROM localizacion WHERE nif=?", [nifviejo]);
+  if (baliza[0] == null || baliza[0] == undefined) {
+      await db.query("INSERT into localizacion set ? ", [newBaliza]);
+  }else{
+      await db.query("UPDATE localizacion set ? WHERE nif = ?", [newBaliza,nifviejo]);
+  }
+  funciones.insertarLog(req.user.usuario, "UPDATE localizacion", newBaliza.nif + " " + newBaliza.puerto + " " + newBaliza.num_local + " " + newBaliza.localizacion + " " + newBaliza.latitud + " " + newBaliza.longitud);
   req.flash("success", "Localizacion de baliza modificada correctamente");
   res.redirect("/balizas/plantilla/" + nifviejo);
 });
@@ -242,23 +247,26 @@ router.post("/editLampara/:nif", helpers.isAuthenticated, async (req, res) => {
     alcanceLum,
     candelasInst,
   };
-  //console.log(newBaliza);
-  console.log("req.params " + req.params.nif);
-  await db.query("UPDATE lampara set ? WHERE nif = ?", [
-    newBaliza,
-    nifviejo,
-  ]);
-  funciones.insertarLog(req.user.usuario,"UPDATE lampara",newBaliza.nif +" "+newBaliza.altura+" "+newBaliza.elevacion+" "+newBaliza.alcanceNom+" " +newBaliza.linterna+" "+newBaliza.candelasCalc+" "+newBaliza.alcanceLum+" "+newBaliza.candelasInst );
+
+  var baliza = await db.query("SELECT * FROM lampara WHERE nif=?", [nifviejo]);
+  if (baliza[0] == null || baliza[0] == undefined) {
+      await db.query("INSERT into lampara set ? ", [newBaliza]);
+  }else{
+      await db.query("UPDATE lampara set ? WHERE nif = ?", [newBaliza,nifviejo]);
+  }
+
+
+  funciones.insertarLog(req.user.usuario, "UPDATE lampara", newBaliza.nif + " " + newBaliza.altura + " " + newBaliza.elevacion + " " + newBaliza.alcanceNom + " " + newBaliza.linterna + " " + newBaliza.candelasCalc + " " + newBaliza.alcanceLum + " " + newBaliza.candelasInst);
   req.flash("success", "Lampara del aton modificada correctamente");
   res.redirect("/balizas/plantilla/" + nifviejo);
 });
 
 //CRUD delete
-router.get("/delete/:nif", helpers.isAdmin , async (req, res) => {
-  console.log("Borrando aton "+req.params.nif +"...");
+router.get("/delete/:nif", helpers.isAdmin, async (req, res) => {
+  console.log("Borrando aton " + req.params.nif + "...");
   const { nif } = req.params;
 
-  FOLDER_TO_REMOVE= path.join(__dirname,'../public/img/imagenes/' + nif);
+  FOLDER_TO_REMOVE = path.join(__dirname, '../public/img/imagenes/' + nif);
   fs.rm(FOLDER_TO_REMOVE, { recursive: true, force: true });
 
   await db.query("DELETE FROM mantenimiento WHERE nif=?", [nif]);
@@ -266,7 +274,7 @@ router.get("/delete/:nif", helpers.isAdmin , async (req, res) => {
   await db.query("DELETE FROM localizacion WHERE nif=?", [nif]);
   await db.query("DELETE FROM lampara WHERE nif=?", [nif]);
   await db.query("DELETE FROM balizamiento WHERE nif=?", [nif]);
-  funciones.insertarLog(req.user.usuario,"DELETE aton ",req.params.nif );
+  funciones.insertarLog(req.user.usuario, "DELETE aton ", req.params.nif);
   req.flash("success", "Baliza borrada correctamente");
   res.redirect("/balizas/list");
 });
@@ -284,7 +292,7 @@ router.post("/observaciones/add", helpers.isAuthenticated, async (req, res) => {
   console.log(observa);
   await db.query("INSERT INTO observaciones set ?", [observa]);
   req.flash("success", "Observacion insertada correctamente");
-  funciones.insertarLog(req.user.usuario,"INSERT observaciones",observa.nif + " " + observa.observaciones );
+  funciones.insertarLog(req.user.usuario, "INSERT observaciones", observa.nif + " " + observa.observaciones);
   res.redirect("/balizas/plantilla/" + nif);
 });
 router.get("/observaciones/delete/:idObs", helpers.isAuthenticated, async (req, res) => {
@@ -293,7 +301,7 @@ router.get("/observaciones/delete/:idObs", helpers.isAuthenticated, async (req, 
   const resp = await db.query("select nif from observaciones where id_observacion=?", [idObs]);
   const nif = resp[0].nif;
   await db.query("delete from observaciones where id_observacion=?", [idObs]);
-  funciones.insertarLog(req.user.usuario,"DELETE observaciones del aton ",nif );
+  funciones.insertarLog(req.user.usuario, "DELETE observaciones del aton ", nif);
   req.flash("success", "Observacion de baliza " + nif + " borrada correctamente.");
   res.redirect("/balizas/plantilla/" + nif);
 });
@@ -322,7 +330,7 @@ router.post("/observaciones/edit/:idObs", helpers.isAuthenticated, async (req, r
     newObservacion,
     id_observacion,
   ]);
-  funciones.insertarLog(req.user.usuario,"UPDATE observaciones",newObservacion.nif + " "+ newObservacion.observaciones );
+  funciones.insertarLog(req.user.usuario, "UPDATE observaciones", newObservacion.nif + " " + newObservacion.observaciones);
   req.flash("success", "Observacion modificada correctamente en la baliza " + nif);
   res.redirect("/balizas/plantilla/" + nif);
 });
@@ -340,7 +348,7 @@ router.post("/mantenimiento/add", helpers.isAuthenticated, async (req, res) => {
   };
   console.log(mant);
   await db.query("INSERT INTO mantenimiento set ?", [mant]);
-  funciones.insertarLog(req.user.usuario,"INSERT mantenimiento",mant.nif + " "+mant.fecha + " "+ mant.mantenimiento );
+  funciones.insertarLog(req.user.usuario, "INSERT mantenimiento", mant.nif + " " + mant.fecha + " " + mant.mantenimiento);
   req.flash("success", "Mantenimiento en baliza insertado correctamente");
   res.redirect("/balizas/plantilla/" + nif);
 });
@@ -349,7 +357,7 @@ router.get("/mantenimiento/delete/:idMan", helpers.isAuthenticated, async (req, 
   const { idMan } = req.params;
   const resp = await db.query("select nif from mantenimiento where id_mantenimiento=?", [idMan]);
   const nif = resp[0].nif;
-  funciones.insertarLog(req.user.usuario,"DELETE mantenimientos del aton",nif );
+  funciones.insertarLog(req.user.usuario, "DELETE mantenimientos del aton", nif);
   await db.query("delete from mantenimiento where id_mantenimiento=?", [idMan]);
   req.flash("success", "mantenimiento de baliza " + nif + " borrado correctamente ");
   res.redirect("/balizas/plantilla/" + nif);
@@ -380,25 +388,25 @@ router.post("/mantenimiento/edit/:idMan", helpers.isAuthenticated, async (req, r
     newObservacion,
     id_mantenimiento,
   ]);
-  funciones.insertarLog(req.user.usuario,"UPDATE mantenimiento",newObservacion.nif+" "+ newObservacion.fecha+" "+newObservacion.mantenimiento );
+  funciones.insertarLog(req.user.usuario, "UPDATE mantenimiento", newObservacion.nif + " " + newObservacion.fecha + " " + newObservacion.mantenimiento);
   req.flash("success", "Mantenimiento modificado correctamente en la baliza " + nif);
   res.redirect("/balizas/plantilla/" + nif);
 });
 
 //GESTION FOTOS DE BALIZAS
 router.get("/fotos/:nif", async (req, res) => {
-    const nif = req.params.nif;
-    var fotos = helpers.listadoFotos(nif);
-    res.render("balizas/fotos", { fotos, nif });
-  });
+  const nif = req.params.nif;
+  var fotos = helpers.listadoFotos(nif);
+  res.render("balizas/fotos", { fotos, nif });
+});
 router.get("/fotos/:nif/:src/delete", async (req, res) => {
-    const nif = req.params.nif;
-    const src = req.params.src;
-    await unlink(path.resolve('src/public/img/imagenes/' + nif + "/" + src));
-    funciones.insertarLog(req.user.usuario,"DELETE foto",nif+" "+src );
-    req.flash("success", "Foto de baliza " + nif + " borrada correctamente.");
-    res.redirect("/balizas/fotos/" + nif);
-  });
+  const nif = req.params.nif;
+  const src = req.params.src;
+  await unlink(path.resolve('src/public/img/imagenes/' + nif + "/" + src));
+  funciones.insertarLog(req.user.usuario, "DELETE foto", nif + " " + src);
+  req.flash("success", "Foto de baliza " + nif + " borrada correctamente.");
+  res.redirect("/balizas/fotos/" + nif);
+});
 
 //GESTION mapa
 router.get("/mapa/:nif", async (req, res) => {
