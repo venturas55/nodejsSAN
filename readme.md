@@ -38,8 +38,8 @@ checkear si node esta en uso, y acabar con el:
 
 
 
-
-
+npm install pm2 -g
+pm2 start ./src/index.js
 
 
 

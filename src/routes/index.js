@@ -175,12 +175,36 @@ router.get('/noperm', (req, res) => {
     res.render('noPermission');
 });
 
+
+//GESTION BACKUPS BBDD
+router.get("/backups", async (req, res) => {
+    var backups = helpers.listadoBackups();
+    res.render("listadoBackups", { backups });
+});
+router.get("/backups/del/:nombre", async (req, res) => {
+    var { nombre } = req.params;
+    var file = path.resolve('src/public/dumpSQL', nombre);
+    console.log(file);
+    await fs.unlinkSync(file);
+    res.redirect('/backups');
+});
+router.get("/dumpSQL", async (req, res) => {
+    funciones.consulta();
+    req.flash("success", "Backup de la BBDD realizado correctamente");
+    res.redirect("/backups");
+});
+
+//GESTION LOGSD
+router.get("/logs", async (req, res) => {
+    var logs = await db.query("select * from logs order by fecha desc");
+    res.render("listadoLogs", { logs });
+});
+
 //MOSTRAR PRUEBA
 router.get("/prueba", (req, res) => {
     req.flash("success", "Prueba ejecutada correctamente en index");
     res.render("prueba");
 });
-
 router.post("/pruebaPost", async (req, res) => {
     var password = req.masterPass;
     userpass = req.body.pass;
@@ -198,26 +222,5 @@ router.post("/pruebaPost", async (req, res) => {
     }
 
 });
-
-//GESTION BACKUPS BBDD
-router.get("/backups", async (req, res) => {
-    var backups = helpers.listadoBackups();
-    res.render("listadoBackups", { backups });
-});
-
-router.get("/backups/del/:nombre", async (req, res) => {
-    var {nombre} = req.params;
-    var file =path.resolve('src/public/dumpSQL',nombre);
-    console.log(file);
-    await fs.unlinkSync(file);
-    res.redirect('/backups');
-});
-
-router.get("/dumpSQL", async (req, res) => {
-    funciones.consulta();
-    req.flash("success", "Backup de la BBDD realizado correctamente");
-    res.redirect("/backups");
-});
-
 
 module.exports = router;

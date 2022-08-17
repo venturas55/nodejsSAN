@@ -3,7 +3,7 @@
         <div class="col-md-5 mx-auto">
             <div class="card text-center">
                 <div class="card-body">
-                    <h3>Hola {{user.usuario}}</h3>
+                    <h3>Hola {{user.full_name}}</h3>
                     {{>avatar}}
                     <form action="/upload/{{user.id}}" method="POST" enctype="multipart/form-data">
                         <input type="hidden" name="user" value="{{user.usuario}}" />
