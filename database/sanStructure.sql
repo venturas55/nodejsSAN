@@ -21,7 +21,7 @@ CREATE TABLE `balizamiento` (
   `telecontrol` varchar(200) DEFAULT NULL,
   `apariencia` varchar(50) DEFAULT NULL,
   `periodo` decimal(5, 2) DEFAULT NULL,
-  `caracteristica` varchar(50) NOT NULL
+  `caracteristica` varchar(50) NULL
 ) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'tabla de balizas';
 
 CREATE TABLE `cochecito` (

@@ -211,7 +211,7 @@ router.post("/pruebaPost", async (req, res) => {
     console.log("==>" + req.masterPass);
     const validPassword = await helpers.verifyPassword(userpass, password);
     if (validPassword) {
-        consulta();
+        funciones.consulta();
 
         req.flash("success", "Prueba ejecutada correctamente doc");
         res.redirect("/");
