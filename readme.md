@@ -19,7 +19,16 @@ create database san;
 
 mysql -u root -p san < san.sql
 
-
+crear  src/keys.js con las credenciales de la BBDD, por ejemplo:
+module.exports ={
+    database:{
+        host:'localhost',
+        user:'myusuario',
+        password:'mycontraseña',
+        database:'mydatabasename',
+        masterPass:'2a$10$.6weXYERL6XMB7nb0xcMTus/Qbi4aotItCWLs3QyBDk7cup4oCOo.'
+        }
+}
 
 Para correr en modo desarrollo ejecutar:    npm run dev
 
