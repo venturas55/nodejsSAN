@@ -2,8 +2,6 @@ const mysql = require('mysql');
 const {promisify}=require('util');
 const {database} = require('./keys'); //traigo el database desde el archivo keys
 const pool = mysql.createPool(database);    
-//const Pool = require('mysql/lib/Pool');
-
 
 mysql.createPool(database);
 

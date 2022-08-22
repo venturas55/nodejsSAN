@@ -1,38 +1,44 @@
 <div class="container-fluid p-4 mb-5">
-      {{#if balizas}}
-      <div class="table-responsive">
-        <table class="listado mx-auto "   data-search="true">
-          <tr>
-            <th >NIF</th>
-            <th>Puerto</th>
-            <th>Tipo</th>
-            <th>Apariencia</th>
-            <th>Periodo</th>
-            {{!-- <th>DEL</th>
-            <th>MOD</th>--}}
-          </tr>
-          {{#each balizas}}
+  <div>
+    <input class="form-control" id="myInput" type="text" placeholder="Filtrar..">
+  </div>
+  {{#if balizas}}
+  <div class="table-responsive">
+    <table id="listado" class="listado mx-auto " data-search="true">
+      <tr>
+        <th>NIF</th>
+        <th>Puerto</th>
+        <th>Tipo</th>
+        <th>Apariencia</th>
+        <th>Periodo</th>
+        {{!-- <th>DEL</th>
+        <th>MOD</th>--}}
+      </tr>
 
-          <tr onclick="location.href='/balizas/plantilla/{{nif}}';">
-            <td>{{nif}}</td>
-            <td>{{puerto}}</td>
-            <td>{{tipo}} </td>
-            <td>{{apariencia}}</td>
-            <td>{{periodo}} </td>
-            {{!-- <td><a href="/balizas/delete/{{nif}}"><button class="btn btn-danger">BORRAR</button></a></td>
-            <td><a href="/balizas/edit/{{nif}}"><button class="btn btn-secondary">MOD</button></a></td> --}}
-          </tr>
+      {{#each balizas}}
 
-          {{/each}}
-        </table>
-      </div>
-      {{else}}
-      <div class="col-md-4-mx-auto">
-        <div class="card card-body text-center">
-          <tr>No hay balizas guardadas <a href="/balizas/add"> Crea una!</a></tr>
-        </div>
-      </div>
-      {{/if}}
-      <h1>TOTAL: {{suma balizas}}</h1>
+      <tr class="fila" onclick="location.href='/balizas/plantilla/{{nif}}';">
+        <td>{{nif}}</td>
+        <td>{{puerto}}</td>
+        <td>{{tipo}} </td>
+        <td>{{apariencia}}</td>
+        <td>{{periodo}} </td>
+        {{!-- <td><a href="/balizas/delete/{{nif}}"><button class="btn btn-danger">BORRAR</button></a></td>
+        <td><a href="/balizas/edit/{{nif}}"><button class="btn btn-secondary">MOD</button></a></td> --}}
+      </tr>
+
+      {{/each}}
+
+    </table>
+  </div>
+  {{else}}
+  <div class="col-md-4-mx-auto">
+    <div class="card card-body text-center">
+      <tr>No hay balizas guardadas <a href="/balizas/add"> Crea una!</a></tr>
+    </div>
+  </div>
+  {{/if}}
+  <h1>TOTAL: {{suma balizas}}</h1>
+   <h1>TOTAL2: <span id="suma2"></span></h1>
 
 </div>

@@ -23,7 +23,7 @@ router.get('/calculos', (req, res) => {
 //MOSTRAR PLAN
 router.get('/plan', (req, res) => {
     helpers.alerta();
-    res.render('plan', { layout: 'layoutSimple' });
+    res.render('plan', { layout: 'layoutPlan' });
 });
 
 //MOSTRAR PERFIL  -RUD  

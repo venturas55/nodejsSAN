@@ -84,14 +84,14 @@ router.get("/list/:busqueda", async (req, res) => {
   var balizas;
   if (busqueda === 'Ext') {
     console.log("Externas");
-    balizas = await db.query(queryListadoAton+" where b.nif=lo.nif AND lo.puerto not like '%valencia%' and lo.puerto not like '%sagunto%' and lo.puerto not like '%gandia%' order by lo.nif");
+    balizas = await db.query(queryListadoAton + " where b.nif=lo.nif AND lo.puerto not like '%valencia%' and lo.puerto not like '%sagunto%' and lo.puerto not like '%gandia%' order by lo.nif");
   }
   else {
     busqueda = "%" + busqueda + "%";
-    balizas = await db.query(queryListadoAton+" where b.nif=lo.nif AND lo.puerto like ? order by lo.nif", busqueda);
+    balizas = await db.query(queryListadoAton + " where b.nif=lo.nif AND lo.puerto like ? order by lo.nif", busqueda);
     //like is case insensitive por defecto. En caso de quererlo sensitivo hay que añadir solo "like binary"
   }
-  res.render("balizas/list", { balizas });
+  res.render("balizas/list", {layout: 'layoutList',balizas });
   // NO FUNCIONA CON LA BARRA DELANTE res.render('/links/list');
 });
 router.get("/list/:filtro/:valor", async (req, res) => {
@@ -99,24 +99,39 @@ router.get("/list/:filtro/:valor", async (req, res) => {
   var balizas;
   //Añadimos porcentajes para busqueda SQL que contenga 'busqueda' y lo que sea por delante y por detras
   obj.valor = "%" + obj.valor + "%";
-  console.log(obj);
-  switch (obj.filtro) {
-    case 'nif':
-      balizas = await db.query(queryListadoAton+" where b.nif=lo.nif AND lo.nif like ? order by lo.nif", obj.valor);
-      break;
-    case 'puerto':
-      balizas = await db.query(queryListadoAton+" where b.nif=lo.nif AND lo.puerto like ? order by lo.nif", obj.valor);
-      break;
-    case 'localizacion':
-      balizas = await db.query(queryListadoAton+" where b.nif=lo.nif AND lo.localizacion like ? order by lo.nif", obj.valor);
-      break;
-    case 'tipo':
-      balizas = await db.query(queryListadoAton+" where b.nif=lo.nif AND b.tipo like ? order by lo.nif", obj.valor);
-      break;
-    case 'apariencia':
-      balizas = await db.query(queryListadoAton+" where b.nif=lo.nif AND b.apariencia like ? order by lo.nif", obj.valor);
-      break;
-  }
+
+  if (obj.filtro == "tipo" || obj.filtro == "apariencia")
+    obj.filtro = "b." + obj.filtro;
+  else
+    obj.filtro = "lo." + obj.filtro;
+
+  var sqlQuery = queryListadoAton + " where b.nif=lo.nif AND " + obj.filtro + " like ? order by lo.nif";
+  balizas = await db.query(sqlQuery, obj.valor);
+  console.log(balizas);
+  //like is case insensitive por defecto. En caso de quererlo sensitivo hay que añadir solo "like binary"
+  res.render( "balizas/list", {layout: 'layoutList', balizas });
+  // NO FUNCIONA CON LA BARRA DELANTE res.render('/links/list');
+});
+router.get("/list/:filtro/:valor/:filtro2/:valor2", async (req, res) => {
+  var obj = req.params;
+  var balizas;
+  //Añadimos porcentajes para busqueda SQL que contenga 'busqueda' y lo que sea por delante y por detras
+  obj.valor = "%" + obj.valor + "%";
+  obj.valor2 = "%" + obj.valor2 + "%";
+
+  if (obj.filtro == "tipo" || obj.filtro == "apariencia")
+    obj.filtro = "b." + obj.filtro;
+  else
+    obj.filtro = "lo." + obj.filtro;
+
+  if (obj.filtro2 == "tipo" || obj.filtro2 == "apariencia")
+    obj.filtro2 = "b." + obj.filtro2;
+  else
+    obj.filtro2 = "lo." + obj.filtro2;
+
+  var sqlQuery = queryListadoAton + " where b.nif=lo.nif AND " + obj.filtro + " like ? order by lo.nif";
+  balizas = await db.query(sqlQuery, obj.valor);
+  console.log(balizas);
   //like is case insensitive por defecto. En caso de quererlo sensitivo hay que añadir solo "like binary"
   res.render("balizas/list", { balizas });
   // NO FUNCIONA CON LA BARRA DELANTE res.render('/links/list');
@@ -124,7 +139,7 @@ router.get("/list/:filtro/:valor", async (req, res) => {
 router.get("/plantilla/:nif", async (req, res) => {
   const { nif } = req.params;
   //const baliza = await db.query('SELECT * FROM balizamiento b  LEFT JOIN localizacion lo ON lo.nif=b.nif  LEFT JOIN lampara la ON la.nif=b.nif where b.nif=?', [nif]);  CON ESTA CONSULTA EL LEFT JOIN NO FUNCIONA BIEN PARA EL HIPOTETICO CASO EN EL QUE EXISTE UN ATON QUE NO ESTA EN ALGUNA DE LAS TRES TABLAS
-  const baliza = await db.query(queryListadoAton+' where b.nif=?', [nif]);
+  const baliza = await db.query(queryListadoAton + ' where b.nif=?', [nif]);
   console.log(">");
   console.log(baliza[0]);
   const observaciones = await db.query('SELECT * FROM observaciones where nif=?', [nif]);
@@ -150,7 +165,7 @@ router.get("/editLocalizacion/:nif", helpers.isAuthenticated, async (req, res) =
   const { nif } = req.params;
   var baliza = await db.query("SELECT * FROM localizacion WHERE nif=?", [nif]);
   if (baliza[0] == null || baliza[0] == undefined) {
-    baliza = {nif};
+    baliza = { nif };
   }
   else {
     baliza = baliza[0];
@@ -161,7 +176,7 @@ router.get("/editLampara/:nif", helpers.isAuthenticated, async (req, res) => {
   const { nif } = req.params;
   var baliza = await db.query("SELECT * FROM lampara WHERE nif=?", [nif]);
   if (baliza[0] == null || baliza[0] == undefined) {
-    baliza = {nif};
+    baliza = { nif };
   }
   else {
     baliza = baliza[0];
@@ -218,9 +233,9 @@ router.post("/editLocalizacion/:nif", helpers.isAuthenticated, async (req, res) 
   };
   var baliza = await db.query("SELECT * FROM localizacion WHERE nif=?", [nifviejo]);
   if (baliza[0] == null || baliza[0] == undefined) {
-      await db.query("INSERT into localizacion set ? ", [newBaliza]);
-  }else{
-      await db.query("UPDATE localizacion set ? WHERE nif = ?", [newBaliza,nifviejo]);
+    await db.query("INSERT into localizacion set ? ", [newBaliza]);
+  } else {
+    await db.query("UPDATE localizacion set ? WHERE nif = ?", [newBaliza, nifviejo]);
   }
   funciones.insertarLog(req.user.usuario, "UPDATE localizacion", newBaliza.nif + " " + newBaliza.puerto + " " + newBaliza.num_local + " " + newBaliza.localizacion + " " + newBaliza.latitud + " " + newBaliza.longitud);
   req.flash("success", "Localizacion de baliza modificada correctamente");
@@ -250,9 +265,9 @@ router.post("/editLampara/:nif", helpers.isAuthenticated, async (req, res) => {
 
   var baliza = await db.query("SELECT * FROM lampara WHERE nif=?", [nifviejo]);
   if (baliza[0] == null || baliza[0] == undefined) {
-      await db.query("INSERT into lampara set ? ", [newBaliza]);
-  }else{
-      await db.query("UPDATE lampara set ? WHERE nif = ?", [newBaliza,nifviejo]);
+    await db.query("INSERT into lampara set ? ", [newBaliza]);
+  } else {
+    await db.query("UPDATE lampara set ? WHERE nif = ?", [newBaliza, nifviejo]);
   }
 
 
@@ -411,7 +426,7 @@ router.get("/fotos/:nif/:src/delete", async (req, res) => {
 //GESTION mapa
 router.get("/mapa/:nif", async (req, res) => {
   const { nif } = req.params;
-  const baliza = await db.query(queryListadoAton+' where b.nif=?', [nif]);
+  const baliza = await db.query(queryListadoAton + ' where b.nif=?', [nif]);
   res.render("mapas/mapa", { layout: 'layoutMapa', baliza: baliza[0], });
 });
 router.get("/mapaGeneral/:valor", (req, res) => {
