@@ -1,11 +1,8 @@
  
- const { databasekeys } = require('./keys'); 
- 
-  
- const DB_HOST = process.env.DB_HOST || databasekeys.host;
- const DB_USER = process.env.DB_USER || databasekeys.user;
- const DB_PASS = process.env.DB_PASS || databasekeys.password;
- const DB_NAME = process.env.DB_NAME || databasekeys.database;
+ const DB_HOST = process.env.DB_HOST || 'localhost';
+ const DB_USER = process.env.DB_USER || 'myuser';
+ const DB_PASS = process.env.DB_PASS || 'mypass';
+ const DB_NAME = process.env.DB_NAME || 'mydatabase';
  const DB_PORT = process.env.DB_PORT || 3306;
 
  module.exports = {

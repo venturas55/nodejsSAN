@@ -1,6 +1,6 @@
 const mysql = require('mysql');
 const { promisify } = require('util');
-const { database } = require('./config'); //traigo el database desde el archivo keys
+const { database } = require('./config'); //traigo el database desde el archivo config
 const pool = mysql.createPool(database);
 
 
@@ -32,7 +32,7 @@ module.exports = pool;
 
 /* const mysql = require('mysql');
 const { promisify } = require('util');
-//const {database} = require('./keys'); //traigo el database desde el archivo keys
+//const {database} = require('./config'); //traigo el database desde el archivo config
 const { database } = require('./config.js');
 
 

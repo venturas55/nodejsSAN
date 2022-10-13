@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const morgan = require('morgan');
 const exphbs = require('express-handlebars'); //Para usar plantillas
@@ -10,7 +11,8 @@ const { database } = require('./config');
 
 //Initialization
 const app = express();
-require('./lib/passport'); //para que se entere de la autentificacion que se ha crea do 
+console.log(process.env)
+require('./lib/passport'); //para que se entere de la autentificacion que se ha creado 
 
 //Settings
 app.set('port', process.env.PORT || 4000);

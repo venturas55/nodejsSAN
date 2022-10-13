@@ -1,6 +1,6 @@
 const db = require("../database");
 const mysqldump = require('mysqldump');
-const {database} = require('../keys'); //traigo el database desde el archivo keys
+const {database} = require('../config'); //traigo el database desde el archivo config
 
 async function insertarLog(usuario,accion,observacion){
     const log={
