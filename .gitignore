@@ -3,3 +3,4 @@ node_modules
 src/public/img/imagenes
 ignore.txt
 src/keys.js
+src/config.js
