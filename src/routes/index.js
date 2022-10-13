@@ -22,7 +22,6 @@ router.get('/calculos', (req, res) => {
 
 //MOSTRAR PLAN
 router.get('/plan', (req, res) => {
-    helpers.alerta();
     res.render('plan', { layout: 'layoutPlan' });
 });
 
