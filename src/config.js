@@ -1,8 +1,12 @@
+ 
+ const { databasekeys } = require('./keys'); 
+ 
+  
  const PORT = process.env.PORT || 4000;
- const DB_HOST = process.env.DB_HOST || 'localhost';
- const DB_USER = process.env.DB_USER || 'venturas';
- const DB_PASS = process.env.DB_PASSWORD || 'weR65hS';
- const DB_NAME = process.env.DB_NAME || 'san';
+ const DB_HOST = process.env.DB_HOST || databasekeys.host;
+ const DB_USER = process.env.DB_USER || databasekeys.user;
+ const DB_PASS = process.env.DB_PASS || databasekeys.password;
+ const DB_NAME = process.env.DB_NAME || databasekeys.database;
  const DB_PORT = process.env.DB_PORT || 3306;
  const masterPass = process.env.DB_masterPass || '2a$10$.6weXYERL6XMB7nb0xcMTus/Qbi4aotItCWLs3QyBDk7cup4oCOo.';
 
