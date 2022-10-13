@@ -6,7 +6,6 @@ const flash = require('connect-flash'); //Para mostar mensajes
 const session = require('express-session'); //Lo necesita el flash tb
 const MySQLstore = require('express-mysql-session'); // para poder guardar la sesion en la sql
 const passport = require('passport');
-//const { database } = require('./keys');
 const { database } = require('./config');
 
 //Initialization
