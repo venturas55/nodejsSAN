@@ -1,9 +1,8 @@
 const db = require("../database");
 const mysqldump = require('mysqldump');
 const {database} = require('../keys'); //traigo el database desde el archivo keys
-const funcion={};
 
- funcion.insertarLog = async (usuario,accion,observacion)=>{
+async function insertarLog(usuario,accion,observacion){
     const log={
         usuario,
         accion,
@@ -14,7 +13,7 @@ const funcion={};
     return a;
 }
 
-funcion.consulta= () => {
+function consulta() {
     // dump the result straight to a file
     console.log(database);
      mysqldump({
@@ -28,4 +27,4 @@ funcion.consulta= () => {
     }); 
 } 
 
-module.exports = funcion;
+module.exports = {insertarLog,consulta};

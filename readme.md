@@ -19,16 +19,7 @@ create database san;
 
 mysql -u root -p san < san.sql
 
-crear  src/keys.js con las credenciales de la BBDD, por ejemplo:
-module.exports ={
-    database:{
-        host:'localhost',
-        user:'myusuario',
-        password:'mycontraseña',
-        database:'mydatabasename',
-        masterPass:'2a$10$.6weXYERL6XMB7nb0xcMTus/Qbi4aotItCWLs3QyBDk7cup4oCOo.'
-        }
-}
+
 
 Para correr en modo desarrollo ejecutar:    npm run dev
 
@@ -48,7 +39,23 @@ checkear si node esta en uso, y acabar con el:
 
 
 npm install pm2 -g
+pm2 restart [id]
 pm2 start ./src/index.js
+--------------------------
+Login => contraseña encriptada, foto de perfil
+Listado de señales AtoN
+CRUD
+Plantilla: Caracteristicas, observaciones y mantenimiento CRUD
+Plantilla: Simulacion con javascript
+Plantilla: Galeria de fotos CRUD
+Registro de actividad
+Busqueda: Listado por puerto, mapa, por número.
+OtrosLinks (staticos): Plan inspeccion, calculos
+Otros links (dinamicos): Backups BBDD, Informes preventivos, Inventario
+
+
+
+
 
 
 

@@ -33,7 +33,7 @@ router.get('/profile', helpers.isAuthenticated, (req, res) => {
 router.get('/profile/edit', helpers.isAuthenticated, (req, res) => {
     res.render('profileEdit');
 });
-router.post('/profile/edit/', helpers.isAuthenticated, async (req, res) => {
+router.post('/profile/edit/', helpers.isAuthenticated, async(req, res) => {
     const rows = await db.query("SELECT * FROM usuarios WHERE id= ?", [req.body.id]);
     var user = rows[0];
 
@@ -55,12 +55,12 @@ router.post('/profile/edit/', helpers.isAuthenticated, async (req, res) => {
         res.redirect('/noperm');
     }
 });
-router.get("/profile/delete/:id", helpers.isAuthenticated, async (req, res) => {
+router.get("/profile/delete/:id", helpers.isAuthenticated, async(req, res) => {
     console.log(req.params);
     const { id } = req.params;
     //borramos foto
     const filePath = path.resolve('src/public/img/profiles/' + user.pictureURL);
-    access(filePath, constants.F_OK, async (err) => {
+    access(filePath, constants.F_OK, async(err) => {
         if (err) {
             console.log("No tiene foto de perfil");
         } else {
@@ -79,7 +79,7 @@ router.get("/profile/delete/:id", helpers.isAuthenticated, async (req, res) => {
 
     res.redirect('/');
 });
-router.post('/doAdmin', helpers.isAuthenticated, async (req, res) => {
+router.post('/doAdmin', helpers.isAuthenticated, async(req, res) => {
     const { pass } = req.body;
     console.log(pass + " / " + req.masterPass);
 
@@ -97,14 +97,14 @@ router.post('/doAdmin', helpers.isAuthenticated, async (req, res) => {
 });
 
 //GESTION  foto perfil
-router.get("/profile/borrarfoto/:id/:url", helpers.isAuthenticated, async (req, res) => {
+router.get("/profile/borrarfoto/:id/:url", helpers.isAuthenticated, async(req, res) => {
     console.log(req.params);
     const { url } = req.params;
     const { id } = req.params;
     await db.query("UPDATE usuarios set pictureURL = NULL WHERE id=?", [id]);
 
     const filePath = path.resolve('src/public/img/profiles/' + url);
-    access(filePath, constants.F_OK, async (err) => {
+    access(filePath, constants.F_OK, async(err) => {
         if (err) {
             console.log("No tiene foto de perfil");
         } else {
@@ -118,18 +118,18 @@ router.get("/profile/borrarfoto/:id/:url", helpers.isAuthenticated, async (req, 
 });
 
 //GESTION INVENTARIO
-router.get('/inventario', async (req, res) => {
+router.get('/inventario', async(req, res) => {
     const inventario = await db.query("select * from inventario order by fila,columna");
     res.render('inventario/inventario', { inventario });
 });
-router.get('/inventario/edit/:id', async (req, res) => {
+router.get('/inventario/edit/:id', async(req, res) => {
     const { id } = req.params;
     console.log(id);
     const item = await db.query("select * from inventario where id=?", id);
     console.log(item[0]);
     res.render('inventario/edit', { item: item[0] });
 });
-router.post('/inventario/edit/:id', helpers.isAuthenticated, async (req, res) => {
+router.post('/inventario/edit/:id', helpers.isAuthenticated, async(req, res) => {
     var {
         id,
         tipo,
@@ -154,7 +154,7 @@ router.post('/inventario/edit/:id', helpers.isAuthenticated, async (req, res) =>
     req.flash("success", "Inventario actualizado correctamente");
     res.redirect("/inventario");
 });
-router.get("/inventario/delete/:id", helpers.isAuthenticated, async (req, res) => {
+router.get("/inventario/delete/:id", helpers.isAuthenticated, async(req, res) => {
     console.log(req.params.idObs);
     const { id } = req.params;
     await db.query("delete from inventario where id=?", [id]);
@@ -176,25 +176,25 @@ router.get('/noperm', (req, res) => {
 
 
 //GESTION BACKUPS BBDD
-router.get("/backups", async (req, res) => {
+router.get("/backups", async(req, res) => {
     var backups = helpers.listadoBackups();
     res.render("listadoBackups", { backups });
 });
-router.get("/backups/del/:nombre", async (req, res) => {
+router.get("/backups/del/:nombre", async(req, res) => {
     var { nombre } = req.params;
     var file = path.resolve('src/public/dumpSQL', nombre);
     console.log(file);
     await fs.unlinkSync(file);
     res.redirect('/backups');
 });
-router.get("/dumpSQL", async (req, res) => {
+router.get("/dumpSQL", async(req, res) => {
     funciones.consulta();
     req.flash("success", "Backup de la BBDD realizado correctamente");
     res.redirect("/backups");
 });
 
 //GESTION LOGSD
-router.get("/logs", async (req, res) => {
+router.get("/logs", async(req, res) => {
     var logs = await db.query("select * from logs order by fecha desc");
     res.render("listadoLogs", { logs });
 });
@@ -204,7 +204,7 @@ router.get("/prueba", (req, res) => {
     req.flash("success", "Prueba ejecutada correctamente en index");
     res.render("prueba");
 });
-router.post("/pruebaPost", async (req, res) => {
+router.post("/pruebaPost", async(req, res) => {
     var password = req.masterPass;
     userpass = req.body.pass;
     console.log("==>" + req.masterPass);
@@ -214,8 +214,7 @@ router.post("/pruebaPost", async (req, res) => {
 
         req.flash("success", "Prueba ejecutada correctamente doc");
         res.redirect("/");
-    }
-    else {
+    } else {
         req.flash("warning", "Sucedió algun error!");
         res.redirect("/error");
     }
