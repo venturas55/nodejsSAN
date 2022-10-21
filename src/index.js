@@ -1,4 +1,3 @@
-require('dotenv').config();
 const express = require('express');
 const morgan = require('morgan');
 const exphbs = require('express-handlebars'); //Para usar plantillas
@@ -7,12 +6,12 @@ const flash = require('connect-flash'); //Para mostar mensajes
 const session = require('express-session'); //Lo necesita el flash tb
 const MySQLstore = require('express-mysql-session'); // para poder guardar la sesion en la sql
 const passport = require('passport');
+//const { database } = require('./keys');
 const { database } = require('./config');
 
 //Initialization
 const app = express();
-console.log(process.env)
-require('./lib/passport'); //para que se entere de la autentificacion que se ha creado 
+require('./lib/passport'); //para que se entere de la autentificacion que se ha crea do 
 
 //Settings
 app.set('port', process.env.PORT || 4000);

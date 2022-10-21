@@ -193,7 +193,7 @@ router.get("/dumpSQL", async(req, res) => {
     res.redirect("/backups");
 });
 
-//GESTION LOGSD
+//GESTION LOGS
 router.get("/logs", async(req, res) => {
     var logs = await db.query("select * from logs order by fecha desc");
     res.render("listadoLogs", { logs });
@@ -216,7 +216,7 @@ router.post("/pruebaPost", async(req, res) => {
         res.redirect("/");
     } else {
         req.flash("warning", "Sucedió algun error!");
-        res.redirect("/error");
+        res.redirect("/noperm");
     }
 
 });

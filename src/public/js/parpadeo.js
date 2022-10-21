@@ -43,13 +43,13 @@ var repeticiones;
 var caracteristica = document.getElementById("caracteristicaID").innerText;
 if (caracteristica === null)
     caracteristica = "L0.5 oc1.5 L0.5 oc4.5";
-console.log(caracteristica);
+//console.log(caracteristica);
 caracteristica = caracteristica.toLowerCase();
 caracteristica = caracteristica.replace(/\ |\(|\[|\[|\)|\]\+/g, '');
 caracteristica = caracteristica.replace(/,/g, '.');
 caracteristica = caracteristica.replace(/oc/g, "l");
 caracteristica = caracteristica.replace(/o/g, "l");
-console.log(caracteristica)
+//console.log(caracteristica)
 
 //Tratamos las posibles repeticiones
 //Si hay X
@@ -61,7 +61,7 @@ if (caracteristica.search("x") != -1) {
     caracteristicaMod = caract[0].concat(caract[1]);
 } else
     caracteristicaMod = caracteristica;
-console.log(caracteristicaMod)
+//console.log(caracteristicaMod)
 
 
 //Doy por hecho que siempre se alternan L y O empezando por L
@@ -75,7 +75,7 @@ destellosAcum.fill(0, 0, destellos.length);
 for (var i = 0; i < destellos.length; i++) {
     destellos[i] = parseFloat(destellos[i]);
 }
-console.log(destellos);
+//console.log(destellos);
 
 for (var i = 0; i < destellosAcum.length; i++) {
     for (var j = 0; j <= i; j++) {
@@ -83,7 +83,7 @@ for (var i = 0; i < destellosAcum.length; i++) {
     }
 }
 
-console.log(destellosAcum);
+//console.log(destellosAcum);
 
 //ejecuto la primera vez
 secuencia();
